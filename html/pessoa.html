@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Patas e Pelos - Cadastro de pessoas</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.8/vue.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <h1>Patas e Pelos</h1>
+        <!-- TODO: LOGO E ESTILIZAÇÃO-->
+
+        <div class="col-xs-2">
+            <ul class="nav nav-pills nav-stacked">
+                <li><a data-toggle="pill" href="#menuPessoa">Pessoa</a></li>
+            </ul>
+        </div>
+
+        <div class="col-xs-6">
+            <div class="tab-content" id="appPessoa">
+                <div id="menuPessoa" class="tab-pane fade">
+                    <h2>CRUD de Pessoas</h2>
+                    <!--TODO: arrumar titulo  -->
+
+                    <table id="tblListagemPessoa" class="table table-striped">
+                        <tr>
+                            <!-- TODO: abstrair informações -->
+                            <th scope="col">Tipo</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">CPF</th>
+                            <th scope="col">CEP</th>
+                            <th scope="col">Complemento</th>
+                            <th scope="col">Data de cadastro</th>
+                            <th scope="col">Data de nascimento</th>
+                            <th scope="col">E-mail</th>
+                            <th scope="col">Endereço</th>
+                            <th scope="col">Numero de celular</th>
+                            <th scope="col">RG</th>
+                            <th scope="col">Senha</th>
+                            <th scope="col">Editar</th>
+                            <th scope="col">Remover</th>
+                        </tr>
+                        <tbody>
+                            <tr v-for="(p, indice) in pessoas">
+                                <td>{{p.tipo}}</td>
+                                <td>{{p.nome}}</td>
+                                <td>{{p.cpf}}</td>
+                                <td>{{p.cep}}</td>
+                                <td>{{p.complemento}}</td>
+                                <td>{{p.data_cadastro}}</td>
+                                <td>{{p.data_nascimento}}</td>
+                                <td>{{p.email}}</td>
+                                <td>{{p.endereco}}</td>
+                                <td>{{p.numero_celular}}</td>
+                                <td>{{p.rg}}</td>
+                                <td>{{p.senha}}</td>
+                                <td><button v-on:click="" class="btn" type="button">Editar</button></td>
+                                <td><button v-on:click="" class="btn" type="button">Remover</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div id="formularioPessoa">
+                        <h3>Formulário para cadastrar e alterar pessoa</h3>
+                        <div>
+                            
+                            <div class="form-group">
+                                <input type="radio"  v-model="form_pessoa.tipo" id="cliente" name="pes_input_tipo" value="cliente">
+                                <label for="cliente">Cliente</label><br>
+
+                                <input type="radio"  v-model="form_pessoa.tipo" id="funcionario" name="pes_input_tipo" value="funcionario">
+                                <label for="funcionario">Funcionário</label><br>
+                            </div>
+                            <div class="form-group">
+                                <label for="pes_input_nome">Nome:</label>
+                                <input type="text" class="form-control"  v-model="form_pessoa.nome" id="pes_input_nome">
+                            </div>
+                            <div class="form-group">
+                                <label for="pes_input_cpf">CPF:</label>
+                                <input type="number" class="form-control" v-model="form_pessoa.cpf" id="pes_input_cpf">
+                            </div>
+                            <div class="form-group">
+                                <label for="pes_input_cep">CEP:</label>
+                                <input type="number" class="form-control" v-model="form_pessoa.cep" id="pes_input_cep">
+                            </div>
+                            <div class="form-group">
+                                <!-- TODO: SELECT -->
+                                <h4>Complemento:</h4>
+                                <input type="radio" id="casa" name="pes_input_complemento" v-model="form_pessoa.complemento" value="casa">
+                                <label for="casa">Casa</label>
+                                <input type="radio" id="apartamento" name="pes_input_complemento"  v-model="form_pessoa.complemento"value="apartamento">
+                                <label for="apartamento">Apartamento</label>
+
+                            </div>
+                            <div class="form-group">
+                                <!-- TODO DATE -->
+                                <label for="pes_input_data_cadastro">Data de cadastro:</label>
+                                <input type="date" class="form-control" v-model="form_pessoa.data_cadastro"  id="pes_input_data_cadastro">
+                            </div>
+                            <div class="form-group">
+                                <label for="pes_input_data_nascimento">Data de nascimento:</label>
+                                <input type="date" class="form-control" v-model="form_pessoa.data_nascimento" id="pes_input_data_nascimento">
+                            </div>
+                            <div class="form-group">
+                                <label for="pes_input_email">Email:</label>
+                                <input type="email" class="form-control" v-model="form_pessoa.email" id="pes_input_email">
+                            </div>
+                            <div class="form-group">
+                                <label for="pes_input_endereco">Endereço:</label>
+                                <input type="text" class="form-control" v-model="form_pessoa.endereco" id="pes_input_endereco">
+                            </div>
+                            <div class="form-group">
+                                <label for="pes_input_numero_celular">Numero de celular:</label>
+                                <input type="number" class="form-control" v-model="form_pessoa.numero_celular" id="pes_input_numero_celular">
+                            </div>
+                            <div class="form-group">
+                                <label for="pes_input_rg">RG:</label>
+                                <input type="number" class="form-control" v-model="form_pessoa.rg" id="pes_input_rg">
+                            </div>
+                            <div class="form-group">
+                                <label for="pes_input_senha">Senha:</label>
+                                <input type="password" class="form-control" v-model="form_pessoa.senha" id="pes_input_senha">
+                            </div>
+
+                            <button @click="inserirPessoa()" class="btn btn-primary" type="button">Salvar</button>
+                            <button @click="" class="btn btn-primary" type="button">Limpar</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+  
+
+</body>
+
+
+<script>
+    $(document).ready(function () {
+        var pessoas = [];
+        var dados = {
+            "pessoas": pessoas,
+            "form_pessoa": {
+                tipo: '',
+                nome: '',
+                cpf: '',
+                rg: '',
+                email: '',
+                cep: '',
+                endereco: '',
+                complemento: '',
+                data_cadastro: '',
+                data_nascimento: '',
+                numero_celular: '',
+                senha: ''
+            }
+        }
+        Vue.filter('formataData', function (value) {
+            //yyyy-mm-dd
+            var data = new Date(value);
+            data.setDate(data.getDate() + 1); //incrementa a data em um dia para mostrar corretamente (pode nao ser necessário)              
+            dia = (data.getDate()).toString().padStart(2, '0'),
+                mes = (data.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.                
+                ano = data.getFullYear();
+            return dia + "/" + mes + "/" + ano;
+        })
+        Vue.prototype.$http = axios;
+        new Vue({
+            el: '#appPessoa',
+            data: dados,
+            methods: {
+                inserirPessoa: function (){
+                    var pessoa = jQuery.extend({}, this.form_pessoa);
+                    console.log(pessoa)
+                        //realiza um insert
+                        this.$http.post('http://localhost:4000/insertpessoa', pessoa)
+                            .then(response =>{
+                                this.pessoas.push(response.data);
+                                alert('pessoa inserida');
+                            })
+                            .catch(error => {
+                                alert('erro ao inserir pessoa');
+                            }); 
+                    //TODO: limpar formulario pessoa
+                },
+
+            },
+            created: function () {
+                this.$http.get('http://localhost:4000/listpessoa')
+                .then(response => {
+                    for (let e of response.data) {
+                        this.pessoas.push({
+                           
+                            tipo: e.tipo,
+                            nome: e.nome,
+                            cpf: e.cpf,
+                            rg: e.rg,
+                            email: e.email,
+                            cep: e.cep,
+                            endereco: e.endereco,
+                            complemento: e.complemento,
+                            data_cadastro: e.data_cadastro,
+                            data_nascimento: e.data_nascimento,
+                            numero_celular: e.numero_celular,
+                            senha: e.senha
+                        }
+                        );
+                    }
+                }).catch(response => {
+                    console.log(response);
+                });
+
+            }//fecha o created
+        })//fecha o vue
+    })//fecha o $doc ready
+</script>
+
+</html>
