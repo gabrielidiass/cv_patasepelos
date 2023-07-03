@@ -5,6 +5,7 @@ introduzidos no trabalho.
     static : define propriedades ou metodos que pertencem a classe em si e não a instancias individuais.
         exemplo de código e ultiliza um metodo estático e um não estático.
            
+           
             class Carro {
                 constructor(marca) {
                     this.marca = marca;
