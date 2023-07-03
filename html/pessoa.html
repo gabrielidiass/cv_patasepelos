@@ -1,12 +1,5 @@
 <!DOCTYPE html>
-<html>  
-
-
-
-
-
-
-
+<html>
 <head>
     <meta charset="utf-8">
     <title>Patas e Pelos - Cadastro de pessoas</title>
@@ -17,28 +10,24 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 </head>
-
 <body>
-
     <div class="container-fluid">
         <h1>Patas e Pelos</h1>
         <!-- TODO: LOGO E ESTILIZAÇÃO-->
-
         <div class="col-xs-2">
             <ul class="nav nav-pills nav-stacked">
                 <li><a data-toggle="pill" href="#menuPessoa">Pessoa</a></li>
             </ul>
         </div>
-
         <div class="col-xs-6">
             <div class="tab-content" id="appPessoa">
                 <div id="menuPessoa" class="tab-pane fade">
                     <h2>CRUD de Pessoas</h2>
                     <!--TODO: arrumar titulo  -->
-
                     <table id="tblListagemPessoa" class="table table-striped">
                         <tr>
                             <!-- TODO: abstrair informações -->
+                            <th scope="col">ID</th>
                             <th scope="col">Tipo</th>
                             <th scope="col">Nome</th>
                             <th scope="col">CPF</th>
@@ -56,6 +45,7 @@
                         </tr>
                         <tbody>
                             <tr v-for="(p, indice) in pessoas">
+                                <td>{{p.id}}</td>
                                 <td>{{p.tipo}}</td>
                                 <td>{{p.nome}}</td>
                                 <td>{{p.cpf}}</td>
@@ -68,7 +58,7 @@
                                 <td>{{p.numero_celular}}</td>
                                 <td>{{p.rg}}</td>
                                 <td>{{p.senha}}</td>
-                                <td><button v-on:click="" class="btn" type="button">Editar</button></td>
+                                <td><button v-on:click="editPessoa(indice)" class="btn" type="button">Editar</button></td>
                                 <td><button v-on:click="" class="btn" type="button">Remover</button></td>
                             </tr>
                         </tbody>
@@ -77,19 +67,24 @@
                     <div id="formularioPessoa">
                         <h3>Formulário para cadastrar e alterar pessoa</h3>
                         <div>
-                            
-                            <div class="form-group">
-                                <input type="radio"  v-model="form_pessoa.tipo" id="cliente" name="pes_input_tipo" value="cliente">
-                                <label for="cliente">Cliente</label><br>
 
-                                <input type="radio"  v-model="form_pessoa.tipo" id="funcionario" name="pes_input_tipo" value="funcionario">
+                            <div class="form-group">
+                                <p>NOT NULL</p>
+                                <input type="radio" v-model="form_pessoa.tipo" id="cliente" name="pes_input_tipo"
+                                    value="cliente">
+                                <label for="cliente">Cliente </label><br>
+
+                                <input type="radio" v-model="form_pessoa.tipo" id="funcionario" name="pes_input_tipo"
+                                    value="funcionario">
                                 <label for="funcionario">Funcionário</label><br>
                             </div>
                             <div class="form-group">
+                                <p>NOT NULL</p>
                                 <label for="pes_input_nome">Nome:</label>
-                                <input type="text" class="form-control"  v-model="form_pessoa.nome" id="pes_input_nome">
+                                <input type="text" class="form-control" v-model="form_pessoa.nome" id="pes_input_nome">
                             </div>
                             <div class="form-group">
+                                <p>NOT NULL</p>
                                 <label for="pes_input_cpf">CPF:</label>
                                 <input type="number" class="form-control" v-model="form_pessoa.cpf" id="pes_input_cpf">
                             </div>
@@ -100,40 +95,51 @@
                             <div class="form-group">
                                 <!-- TODO: SELECT -->
                                 <h4>Complemento:</h4>
-                                <input type="radio" id="casa" name="pes_input_complemento" v-model="form_pessoa.complemento" value="casa">
+                                <input type="radio" id="casa" name="pes_input_complemento"
+                                    v-model="form_pessoa.complemento" value="casa">
                                 <label for="casa">Casa</label>
-                                <input type="radio" id="apartamento" name="pes_input_complemento"  v-model="form_pessoa.complemento"value="apartamento">
+                                <input type="radio" id="apartamento" name="pes_input_complemento"
+                                    v-model="form_pessoa.complemento" value="apartamento">
                                 <label for="apartamento">Apartamento</label>
 
                             </div>
                             <div class="form-group">
                                 <!-- TODO DATE -->
+                                <p>NOT NULL</p>
                                 <label for="pes_input_data_cadastro">Data de cadastro:</label>
-                                <input type="date" class="form-control" v-model="form_pessoa.data_cadastro"  id="pes_input_data_cadastro">
+                                <input type="date" class="form-control" v-model="form_pessoa.data_cadastro"
+                                    id="pes_input_data_cadastro">
                             </div>
                             <div class="form-group">
                                 <label for="pes_input_data_nascimento">Data de nascimento:</label>
-                                <input type="date" class="form-control" v-model="form_pessoa.data_nascimento" id="pes_input_data_nascimento">
+                                <input type="date" class="form-control" v-model="form_pessoa.data_nascimento"
+                                    id="pes_input_data_nascimento">
                             </div>
                             <div class="form-group">
                                 <label for="pes_input_email">Email:</label>
-                                <input type="email" class="form-control" v-model="form_pessoa.email" id="pes_input_email">
+                                <input type="email" class="form-control" v-model="form_pessoa.email"
+                                    id="pes_input_email">
                             </div>
                             <div class="form-group">
                                 <label for="pes_input_endereco">Endereço:</label>
-                                <input type="text" class="form-control" v-model="form_pessoa.endereco" id="pes_input_endereco">
+                                <input type="text" class="form-control" v-model="form_pessoa.endereco"
+                                    id="pes_input_endereco">
                             </div>
                             <div class="form-group">
                                 <label for="pes_input_numero_celular">Numero de celular:</label>
-                                <input type="number" class="form-control" v-model="form_pessoa.numero_celular" id="pes_input_numero_celular">
+                                <input type="number" class="form-control" v-model="form_pessoa.numero_celular"
+                                    id="pes_input_numero_celular">
                             </div>
                             <div class="form-group">
+                                <p>NOT NULL</p>
                                 <label for="pes_input_rg">RG:</label>
                                 <input type="number" class="form-control" v-model="form_pessoa.rg" id="pes_input_rg">
                             </div>
                             <div class="form-group">
+                                <p>NOT NULL</p>
                                 <label for="pes_input_senha">Senha:</label>
-                                <input type="password" class="form-control" v-model="form_pessoa.senha" id="pes_input_senha">
+                                <input type="password" class="form-control" v-model="form_pessoa.senha"
+                                    id="pes_input_senha">
                             </div>
 
                             <button @click="inserirPessoa()" class="btn btn-primary" type="button">Salvar</button>
@@ -145,7 +151,7 @@
             </div>
         </div>
     </div>
-  
+
 
 </body>
 
@@ -156,6 +162,7 @@
         var dados = {
             "pessoas": pessoas,
             "form_pessoa": {
+                id:'',
                 tipo: '',
                 nome: '',
                 cpf: '',
@@ -170,60 +177,93 @@
                 senha: ''
             }
         }
-        Vue.filter('formataData', function (value) {
-            //yyyy-mm-dd
-            var data = new Date(value);
-            data.setDate(data.getDate() + 1); //incrementa a data em um dia para mostrar corretamente (pode nao ser necessário)              
-            dia = (data.getDate()).toString().padStart(2, '0'),
-                mes = (data.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.                
-                ano = data.getFullYear();
-            return dia + "/" + mes + "/" + ano;
-        })
         Vue.prototype.$http = axios;
         new Vue({
             el: '#appPessoa',
             data: dados,
             methods: {
-                inserirPessoa: function (){
-                    var pessoa = jQuery.extend({}, this.form_pessoa);
-                    console.log(pessoa)
-                        //realiza um insert
-                        this.$http.post('http://localhost:4000/insertpessoa', pessoa)
-                            .then(response =>{
-                                this.pessoas.push(response.data);
-                                alert('pessoa inserida');
-                            })
-                            .catch(error => {
-                                alert('erro ao inserir pessoa');
-                            }); 
+                inserirPessoa: function () {
+                var pessoa = jQuery.extend({}, this.form_pessoa);
+                if (isNaN(parseInt(pessoa.id))) {
+                    console.log("nova pessoa")
+                 this.$http.post('http://localhost:4000/insertpessoa', pessoa)
+                        .then(response => {
+                            pessoa.id = response.data.id;
+                            this.pessoas.push(response.data);
+                            alert('pessoa inserida');
+                        })
+                        .catch(error => {
+                            alert('erro ao inserir pessoa');
+                        });
+                } else {
+                      //realiza um update
+                      this.$http.post('http://localhost:4000/updatepessoa/:id', pessoa)
+                          .then(response => {
+                            console.log(pessoa)
+                           
+                            alert('Alterou a Especie id:' + response.data.id);
+                            console.log(response.data)
+                          })
+                          .catch(error => {
+                              alert('Erro ao alterar Especie: ' + error.response.data);
+                          });
+
+
+                }
                     //TODO: limpar formulario pessoa
                 },
+                editPessoa: function (param_index) {
+                    this.form_pessoa.id = this.pessoas[param_index].id;
+                    this.form_pessoa.tipo = this.pessoas[param_index].tipo;
+                    this.form_pessoa.nome = this.pessoas[param_index].nome;
+                    this.form_pessoa.cpf = this.pessoas[param_index].cpf;
+                    this.form_pessoa.rg = this.pessoas[param_index].rg;
+                    this.form_pessoa.email = this.pessoas[param_index].email;
+                    this.form_pessoa.cep = this.pessoas[param_index].cep;
+                    this.form_pessoa.endereco = this.pessoas[param_index].endereco;
+                    this.form_pessoa.complemento = this.pessoas[param_index].complemento;
+                    this.form_pessoa.data_cadastro = this.pessoas[param_index].data_cadastro;
+                    this.form_pessoa.data_nascimento = this.pessoas[param_index].data_nascimento;
+                    this.form_pessoa.numero_celular = this.pessoas[param_index].numero_celular;
+                    this.form_pessoa.senha = this.pessoas[param_index].senha;
+                },
+            },//fim do methods
+            filters: {
+                formataData: function (value) {
+                    //yyyy-mm-dd
+                    var data = new Date(value);
+                    data.setDate(data.getDate() + 1); //incrementa a data em um dia para mostrar corretamente (pode nao ser necessário)              
+                    dia = (data.getDate()).toString().padStart(2, '0'),
+                        mes = (data.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.                
+                        ano = data.getFullYear();
+                    return dia + "/" + mes + "/" + ano;
+                }
 
-            },
-            created: function () {
+            }, //fim do filters
+            created:  function () {
                 this.$http.get('http://localhost:4000/listpessoa')
-                .then(response => {
-                    for (let e of response.data) {
-                        this.pessoas.push({
-                           
-                            tipo: e.tipo,
-                            nome: e.nome,
-                            cpf: e.cpf,
-                            rg: e.rg,
-                            email: e.email,
-                            cep: e.cep,
-                            endereco: e.endereco,
-                            complemento: e.complemento,
-                            data_cadastro: e.data_cadastro,
-                            data_nascimento: e.data_nascimento,
-                            numero_celular: e.numero_celular,
-                            senha: e.senha
+                    .then(response => {
+                        for (let e of response.data) {
+                            this.pessoas.push({
+                                id: e.id,
+                                tipo: e.tipo,
+                                nome: e.nome,
+                                cpf: e.cpf,
+                                rg: e.rg,
+                                email: e.email,
+                                cep: e.cep,
+                                endereco: e.endereco,
+                                complemento: e.complemento,
+                                data_cadastro: this.$options.filters.formataData(e.data_cadastro),
+                                data_nascimento: this.$options.filters.formataData(e.data_nascimento),
+                                numero_celular: e.numero_celular,
+                                senha: e.senha
+                            }
+                            );
                         }
-                        );
-                    }
-                }).catch(response => {
-                    console.log(response);
-                });
+                    }).catch(response => {
+                        console.log(response);
+                    });
 
             }//fecha o created
         })//fecha o vue
