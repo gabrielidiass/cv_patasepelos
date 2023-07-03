@@ -201,11 +201,13 @@
                           .then(response => {
                             console.log(pessoa)
                            
-                            alert('Alterou a Especie id:' + response.data.id);
+                            alert('Alterou a pessoa id:' + response.data.id);
                             console.log(response.data)
+                    Vue.set(this.pessoas, response.data.id, response.data);//altera um elemento do vetor this.jogadores
+
                           })
                           .catch(error => {
-                              alert('Erro ao alterar Especie: ' + error.response.data);
+                              alert('Erro ao alterar a pessoa: ' + error.response);
                           });
 
 
@@ -227,7 +229,11 @@
                     this.form_pessoa.numero_celular = this.pessoas[param_index].numero_celular;
                     this.form_pessoa.senha = this.pessoas[param_index].senha;
                 },
-            },//fim do methods
+          
+            
+            },
+            
+            //fim do methods
             filters: {
                 formataData: function (value) {
                     //yyyy-mm-dd
