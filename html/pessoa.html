@@ -29,7 +29,6 @@
                     <table id="tblListagemPessoa" class="table table-striped">
                         <tr>
                             <!-- TODO: abstrair informações -->
-                            <th scope="col">ID</th>
                             <th scope="col">Tipo</th>
                             <th scope="col">Nome</th>
                             <th scope="col">CPF</th>
@@ -47,7 +46,6 @@
                         </tr>
                         <tbody>
                             <tr v-for="(p, indice) in pessoas">
-                                <td>{{p.id}}</td>
                                 <td>{{p.tipo}}</td>
                                 <td>{{p.nome}}</td>
                                 <td>{{p.cpf}}</td>
@@ -187,7 +185,7 @@
             methods: {
                 inserirPessoa: function () {
                     var pessoa = jQuery.extend({}, this.form_pessoa);
-                    if (isNaN(parseInt(pessoa.id))) {
+                    if (isNaN(parseInt(this.form_pessoa.id))) {
                         console.log("nova pessoa")
                         this.$http.post('http://localhost:4000/insertpessoa', pessoa)
                             .then(response => {
@@ -200,17 +198,20 @@
                             });
                     } else {
                         //realiza um update
-                        this.$http.post('http://localhost:4000/updatepessoa/:id', pessoa)
+
+                        console.log("caiu no alterar")
+                        this.$http.post('http://localhost:4000/updatepessoa/' + pessoa.id, pessoa)
                             .then(response => {
-                                console.log(pessoa)
-
-                                alert('Alterou a pessoa id:' + response.data.id);
-                                console.log(response.data)
-                                Vue.set(this.pessoas, response.data.id, response.data);//altera um elemento do vetor this.jogadores
-
+                                alert('Alterou a pessoa');
+                                console.log("linha 207" + response.data)
+                                const index = this.pessoas.findIndex(item => item.id === response.data.id);
+                                if (index !== -1) {
+                                  Vue.set(this.pessoas, index, response.data);
+                                }
                             })
                             .catch(error => {
-                                alert('Erro ao alterar a pessoa: ' + error.response);
+                                alert('Erro ao alterar a pessoa: ' + error.response.data.message);
+
                             });
 
 

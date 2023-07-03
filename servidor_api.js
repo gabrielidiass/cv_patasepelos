@@ -26,9 +26,8 @@ sw.post('/insertpessoa', function (req, res, next) {
       res.status(400).send('{' + err + '}');
     } else {
       var q = {
-        text: 'insert into tb_pessoa (tipo, nome, cpf, rg, email, cep, endereco, complemento, data_cadastro, data_nascimento, numero_celular, senha) values ($1, $2, $3, $4, $5, $6, $7, $8, now(), $9, $10, $11) returning nome, id, data_cadastro;',
+        text: 'insert into tb_pessoa (data_cadastro, tipo, nome, cpf, rg, email, cep, endereco, complemento, data_nascimento, numero_celular, senha) values (now(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) returning nome, id, data_cadastro;',
         values: [
-
           req.body.tipo,
           req.body.nome,
           req.body.cpf,
