@@ -70,16 +70,17 @@
                     <div id="formularioPessoa">
                         <h3>Formulário para cadastrar e alterar pessoa</h3>
                         <div>
-                            <div class="error" v-if="!$v.form_pessoa.tipo.required">Este campo é required </div>
+                            <div class="error" v-if="!$v.form_pessoa.tipo.required">
+                              Este campo é obrigatório
+                            </div>
                             <div class="form-group">
-                                <input type="radio" v-model="form_pessoa.tipo.$model" :class="status($v.form_pessoa.tipo)"  @blur="markAsDirty($v.form_pessoa.tipo)"  id="cliente" name="pes_input_tipo"
-                                    value="cliente">
-                                <label for="cliente">Cliente </label><br>
-
-                                <input type="radio" v-model="form_pessoa.tipo.$model" :class="status($v.form_pessoa.tipo)"   @blur="markAsDirty($v.form_pessoa.tipo)" id="funcionario" name="pes_input_tipo"
-                                    value="funcionario">
-                                <label for="funcionario">Funcionário</label><br>
-                            </div> 
+                              <input type="radio" v-model="form_pessoa.tipo" :class="status($v.form_pessoa.tipo)" @blur="$v.form_pessoa.tipo.$touch()" id="cliente" name="pes_input_tipo" value="cliente">
+                              <label for="cliente">Cliente</label><br>
+                          
+                              <input type="radio" v-model="form_pessoa.tipo" :class="status($v.form_pessoa.tipo)" @blur="$v.form_pessoa.tipo.$touch()" id="funcionario" name="pes_input_tipo" value="funcionario">
+                              <label for="funcionario">Funcionário</label><br>
+                            </div>
+                          </div>
                             <div class="error" v-if="!$v.form_pessoa.nome.required">Este campo é required </div>
                             <div class="form-group">
                                 <label for="pes_input_nome">Nome:</label>
@@ -360,5 +361,34 @@
         })//fecha o vue
     })//fecha o $doc ready
 </script>
-
+<style>body{ 
+    padding: 5%;
+  }
+  input {
+      border: 1px solid silver;
+      border-radius: 4px;
+      background: white;
+      padding: 5px 10px;
+    }
+    
+    .dirty {
+      border-color: #5A5;
+      background: #EFE;
+    }
+    
+    .dirty:focus {
+      outline-color: #8E8;
+    }
+    
+    .error {
+      border-color: red;
+      background: #FDD;
+    }
+    
+    .error:focus {
+      outline-color: #F99;
+    }
+    th[scope="col"] {
+      background-color: #bd1c1c;
+    }</style>
 </html>
