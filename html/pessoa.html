@@ -195,8 +195,6 @@
                             .then(response => {
                                 const pessoa_alterada = response.data;
                                 pessoa_alterada.data_cadastro = this.$options.filters.formataData(pessoa_alterada.data_cadastro);
-
-
                                 const index = this.pessoas.findIndex(item => item.id === pessoa_alterada.id);
                                 if (index !== -1) {
                                     Vue.set(this.pessoas, index, pessoa_alterada);

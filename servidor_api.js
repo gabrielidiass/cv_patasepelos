@@ -18,7 +18,6 @@ const config = {
   password: 'postgres',
   port: 5432
 };
-
 sw.post('/insertpessoa', function (req, res, next) {
   postgres.connect(function (err, client, done) {
     if (err) {
