@@ -1,3 +1,4 @@
+
 var express = require('express');
 var pg = require("pg");
 var sw = express();
@@ -24,6 +25,12 @@ sw.post('/insertpessoa', function (req, res, next) {
       console.log("Nao conseguiu acessar o  BD " + err);
       res.status(400).send('{' + err + '}');
     } else {
+
+      if (req.body.tipo == "cliente"){
+        console.log("é cliente")
+
+        
+      }
       var q = {
         text: 'insert into tb_pessoa (data_cadastro, tipo, nome, cpf, rg, email, cep, endereco, complemento, data_nascimento, numero_celular, senha) values (now(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) returning nome, id, data_cadastro;',
         values: [
@@ -95,6 +102,11 @@ sw.post('/updatepessoa/:id', (req, res) => {
       console.log("Não conseguiu acessar o BD: " + err);
       res.status(400).send('{' + err + '}');
     } else {
+
+      
+      if (req.body.tipo == "cliente"){
+        console.log("é cliente")
+      }
       var q = {
         text: 'update tb_pessoa set tipo= $2, nome = $3, cpf= $4, rg= $5, email= $6, cep= $7, endereco= $8, complemento= $9, data_cadastro= now(), data_nascimento= $10, numero_celular= $11, senha= $12 where id = $1 returning id, nome, data_cadastro',
         values: [
@@ -111,7 +123,7 @@ sw.post('/updatepessoa/:id', (req, res) => {
           req.body.numero_celular,
           req.body.senha
         ]
-      }
+      } 
       console.log(q);
       client.query(q, function (err, result) {
         done(); // closing the connection;
