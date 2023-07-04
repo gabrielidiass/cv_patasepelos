@@ -5,11 +5,15 @@
     <meta charset="utf-8">
     <title>Patas e Pelos - Cadastro de pessoas</title>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.8/vue.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <link href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/vuelidate@0.7.4/dist/vuelidate.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/vuelidate@0.7.4/dist/validators.min.js"></script>
+    
 </head>
 
 <body>
@@ -66,78 +70,78 @@
                     <div id="formularioPessoa">
                         <h3>Formulário para cadastrar e alterar pessoa</h3>
                         <div>
-
+                            <div class="error" v-if="!$v.form_pessoa.tipo.required">Este campo é required </div>
                             <div class="form-group">
-                                <p>NOT NULL</p>
-                                <input type="radio" v-model="form_pessoa.tipo" id="cliente" name="pes_input_tipo"
+                                <input type="radio" v-model="form_pessoa.tipo.$model" :class="status($v.form_pessoa.tipo)"  @blur="markAsDirty($v.form_pessoa.tipo)"  id="cliente" name="pes_input_tipo"
                                     value="cliente">
                                 <label for="cliente">Cliente </label><br>
 
-                                <input type="radio" v-model="form_pessoa.tipo" id="funcionario" name="pes_input_tipo"
+                                <input type="radio" v-model="form_pessoa.tipo.$model" :class="status($v.form_pessoa.tipo)"   @blur="markAsDirty($v.form_pessoa.tipo)" id="funcionario" name="pes_input_tipo"
                                     value="funcionario">
                                 <label for="funcionario">Funcionário</label><br>
-                            </div>
+                            </div> 
+                            <div class="error" v-if="!$v.form_pessoa.nome.required">Este campo é required </div>
                             <div class="form-group">
-                                <p>NOT NULL</p>
                                 <label for="pes_input_nome">Nome:</label>
-                                <input type="text" class="form-control" v-model="form_pessoa.nome" id="pes_input_nome">
+                                <input type="text" class="form-control" v-model="$v.form_pessoa.nome.$model" :class="status($v.form_pessoa.nome)"  @blur="markAsDirty($v.form_pessoa.nome)"  id="pes_input_nome">
                             </div>
+                             <div class="error" v-if="!$v.form_pessoa.rg.required">Este campo é required </div>
                             <div class="form-group">
-                                <p>NOT NULL</p>
                                 <label for="pes_input_rg">RG:</label>
-                                <input type="number" class="form-control" v-model="form_pessoa.rg" id="pes_input_rg">
+                                <input type="number" class="form-control" v-model="$v.form_pessoa.rg.$model" :class="status($v.form_pessoa.rg)"   @blur="markAsDirty($v.form_pessoa.rg)" id="pes_input_rg">
                             </div>
+
+                             <div class="error" v-if="!$v.form_pessoa.cpf.required">Este campo é required </div>
                             <div class="form-group">
-                                <p>NOT NULL</p>
                                 <label for="pes_input_cpf">CPF:</label>
-                                <input type="number" class="form-control" v-model="form_pessoa.cpf" id="pes_input_cpf">
+                                <input type="number" class="form-control" v-model="$v.form_pessoa.cpf.$model" :class="status($v.form_pessoa.cpf)"  @blur="markAsDirty($v.form_pessoa.cpf)" id="pes_input_cpf">
                             </div>
 
-
+                                <div class="error" v-if="!$v.form_pessoa.data_nascimento.required">Este campo é required </div>
                             <div class="form-group">
                                 <label for="pes_input_data_nascimento">Data de nascimento:</label>
-                                <input type="date" class="form-control" v-model="form_pessoa.data_nascimento"
+                                <input type="date" class="form-control" v-model="$v.form_pessoa.data_nascimento.$model" :class="status($v.form_pessoa.data_nascimento)"   @blur="markAsDirty($v.form_pessoa.data_nascimento)"
                                     id="pes_input_data_nascimento">
                             </div>
                             <div class="form-group">
                                 <label for="pes_input_email">Email:</label>
-                                <input type="email" class="form-control" v-model="form_pessoa.email"
+                                <input type="email" class="form-control" v-model="$v.form_pessoa.email.$model" :class="status($v.form_pessoa.email)" 
                                     id="pes_input_email">
                             </div>
                             <div class="form-group">
                                 <label for="pes_input_endereco">Endereço:</label>
-                                <input type="text" class="form-control" v-model="form_pessoa.endereco"
+                                <input type="text" class="form-control" v-model="$v.form_pessoa.endereco.$model" :class="status($v.form_pessoa.endereco)" 
                                     id="pes_input_endereco">
                             </div>
                             <div class="form-group">
                                 <label for="pes_input_cep">CEP:</label>
-                                <input type="number" class="form-control" v-model="form_pessoa.cep" id="pes_input_cep">
+                                <input type="number" class="form-control" v-model="$v.form_pessoa.cep.$model" :class="status($v.form_pessoa.cep)"  id="pes_input_cep">
                             </div>
                             <div class="form-group">
-                                <!-- TODO: SELECT -->
                                 <h4>Complemento:</h4>
                                 <input type="radio" id="casa" name="pes_input_complemento"
-                                    v-model="form_pessoa.complemento" value="casa">
+                                    v-model="$v.form_pessoa.complemento.$model" :class="status($v.form_pessoa.complemento)"  value="casa">
                                 <label for="casa">Casa</label>
                                 <input type="radio" id="apartamento" name="pes_input_complemento"
-                                    v-model="form_pessoa.complemento" value="apartamento">
+                                    v-model="$v.form_pessoa.complemento.$model" :class="status($v.form_pessoa.complemento)"  value="apartamento">
                                 <label for="apartamento">Apartamento</label>
 
                             </div>
                             <div class="form-group">
                                 <label for="pes_input_numero_celular">Numero de celular:</label>
-                                <input type="number" class="form-control" v-model="form_pessoa.numero_celular"
+                                <input type="number" class="form-control" v-model="$v.form_pessoa.numero_celular.$model" :class="status($v.form_pessoa.numero_celular)" 
                                     id="pes_input_numero_celular">
                             </div>
 
                             <div class="form-group">
-                                <p>NOT NULL</p>
+                                <div class="error" v-if="!$v.form_pessoa.senha.required">Senha deve ter no mínimo {{$v.form_pessoa.senha.$params.minLength.min}} caracteres.</div>
+
                                 <label for="pes_input_senha">Senha:</label>
-                                <input type="password" class="form-control" v-model="form_pessoa.senha"
+                                <input type="password" class="form-control" v-model="$v.form_pessoa.senha.$model" :class="status($v.form_pessoa.senha)"  @blur="markAsDirty($v.form_pessoa.senha)"
                                     id="pes_input_senha">
                             </div>
 
-                            <button @click="inserirPessoa()" class="btn btn-primary" type="button">Salvar</button>
+                            <button @click="inserirPessoa($v)" class="btn btn-primary" type="button">Salvar</button>
                             <button @click="limparFormPessoa()" class="btn btn-primary" type="button">Limpar</button>
                         </div>
                     </div>
@@ -149,7 +153,6 @@
 
 
 </body>
-
 
 <script>
     $(document).ready(function () {
@@ -173,10 +176,72 @@
             }
         }
         Vue.prototype.$http = axios;
+        Vue.use(window.vuelidate.default);
+
+        const {
+            required,
+            minLength,
+            minValue,
+            maxLength,
+        } = window.validators
+
         new Vue({
             el: '#appPessoa',
             data: dados,
+            validations: {
+                form_pessoa: {
+                tipo: {
+                    required 
+                },
+                nome: {
+                    required,
+                    minLength: minLength(4)
+                },
+                cpf: {
+                    required,
+                    minLength: minLength(8),
+                    maxLength: maxLength(11)
+                },
+                rg: {
+                    required,
+                    minLength: minLength(11),
+                    maxLength: maxLength(11)
+                },
+                
+                cep: {
+                    minLength: minLength(8),
+                    maxLength: maxLength(11)
+                },
+                endereco: {
+                    
+                },
+                complemento: {
+                    
+                },
+                data_nascimento: {
+                    required,
+                    minValue: value => value < new Date().toISOString()
+                },
+                numero_celular: {
+                    maxLength: maxLength(11)
+                },
+                email: {
+                    maxLength: maxLength(100)
+                },
+                senha: {
+                    required,
+                    minLength: minLength(4)
+                }}
+            },
             methods: {
+                status(validation) {
+                    return {
+                        error: validation.$error,
+                        dirty: validation.$dirty
+                    }},
+                    markAsDirty(validation) {
+                        validation.$touch();
+                      },
                 limparFormPessoa: function () {
                     this.form_pessoa.tipo = '';
                     this.form_pessoa.nome = '';
@@ -199,7 +264,7 @@
                                 response.data.data_cadastro = this.$options.filters.formataData(response.data.data_cadastro);
                                 this.pessoas.push(response.data);
                                 alert('pessoa inserida');
-                                limparFormPessoa();
+                                this.limparFormPessoa();
                             })
                             .catch(error => {
                                 alert('erro ao inserir pessoa');
@@ -217,7 +282,7 @@
                                 alert('Erro ao alterar a pessoa ' + error);
                             });
                     }
-                  
+
                 },
                 editPessoa: function (param_index) {
                     this.form_pessoa.id = this.pessoas[param_index].id;
@@ -258,7 +323,7 @@
                 formataData: function (value) {
                     //yyyy-mm-dd
                     var data = new Date(value);
-                    data.setDate(data.getDate() + 1); //incrementa a data em um dia para mostrar corretamente (pode nao ser necessário)              
+                    data.setDate(data.getDate()); //incrementa a data em um dia para mostrar corretamente (pode nao ser necessário)              
                     dia = (data.getDate()).toString().padStart(2, '0'),
                         mes = (data.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.                
                         ano = data.getFullYear();
