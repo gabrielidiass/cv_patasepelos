@@ -92,8 +92,8 @@
                                 <label for="pes_input_cpf">CPF:</label>
                                 <input type="number" class="form-control" v-model="form_pessoa.cpf" id="pes_input_cpf">
                             </div>
-                           
-                            
+
+
                             <div class="form-group">
                                 <label for="pes_input_data_nascimento">Data de nascimento:</label>
                                 <input type="date" class="form-control" v-model="form_pessoa.data_nascimento"
@@ -129,7 +129,7 @@
                                 <input type="number" class="form-control" v-model="form_pessoa.numero_celular"
                                     id="pes_input_numero_celular">
                             </div>
-                            
+
                             <div class="form-group">
                                 <p>NOT NULL</p>
                                 <label for="pes_input_senha">Senha:</label>
@@ -180,12 +180,10 @@
                 inserirPessoa: function () {
                     var pessoa = jQuery.extend({}, this.form_pessoa);
                     if (isNaN(parseInt(this.form_pessoa.id))) {
-                    
                         this.$http.post('http://localhost:4000/insertpessoa', pessoa)
                             .then(response => {
                                 pessoa.id = response.data.id;
-                                response.data.data_cadastro= this.$options.filters.formataData(response.data.data_cadastro);
-                            console.log(response.data.data_cadastro)
+                                response.data.data_cadastro = this.$options.filters.formataData(response.data.data_cadastro);
                                 this.pessoas.push(response.data);
                                 alert('pessoa inserida');
                             })
@@ -193,14 +191,11 @@
                                 alert('erro ao inserir pessoa');
                             });
                     } else {
-                        //realiza um update
-
-
                         this.$http.post('http://localhost:4000/updatepessoa/' + pessoa.id, pessoa)
                             .then(response => {
                                 const pessoa_alterada = response.data;
                                 pessoa_alterada.data_cadastro = this.$options.filters.formataData(pessoa_alterada.data_cadastro);
-                        
+
 
                                 const index = this.pessoas.findIndex(item => item.id === pessoa_alterada.id);
                                 if (index !== -1) {
