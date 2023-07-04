@@ -22,6 +22,7 @@
         <div class="col-xs-2">
             <ul class="nav nav-pills nav-stacked">
                 <li><a data-toggle="pill" href="#menuPessoa">Pessoa</a></li>
+
             </ul>
         </div>
         <div class="col-xs-6">
@@ -70,16 +71,17 @@
                     <div id="formularioPessoa">
                         <h3>Formulário para cadastrar e alterar pessoa</h3>
                         <div>
-                            <div class="error" v-if="!$v.form_pessoa.tipo.required">Este campo é required </div>
+                            <div class="error" v-if="!$v.form_pessoa.tipo.required">
+                              Este campo é obrigatório
+                            </div>
                             <div class="form-group">
-                                <input type="radio" v-model="form_pessoa.tipo.$model" :class="status($v.form_pessoa.tipo)"  @blur="markAsDirty($v.form_pessoa.tipo)"  id="cliente" name="pes_input_tipo"
-                                    value="cliente">
-                                <label for="cliente">Cliente </label><br>
-
-                                <input type="radio" v-model="form_pessoa.tipo.$model" :class="status($v.form_pessoa.tipo)"   @blur="markAsDirty($v.form_pessoa.tipo)" id="funcionario" name="pes_input_tipo"
-                                    value="funcionario">
-                                <label for="funcionario">Funcionário</label><br>
-                            </div> 
+                              <input type="radio" v-model="form_pessoa.tipo" :class="status($v.form_pessoa.tipo)" @blur="$v.form_pessoa.tipo.$touch()" id="cliente" name="pes_input_tipo" value="cliente">
+                              <label for="cliente">Cliente</label><br>
+                          
+                              <input type="radio" v-model="form_pessoa.tipo" :class="status($v.form_pessoa.tipo)" @blur="$v.form_pessoa.tipo.$touch()" id="funcionario" name="pes_input_tipo" value="funcionario" >
+                              <label for="funcionario">Funcionário</label><br>
+                            </div>
+                          </div>
                             <div class="error" v-if="!$v.form_pessoa.nome.required">Este campo é required </div>
                             <div class="form-group">
                                 <label for="pes_input_nome">Nome:</label>
@@ -140,6 +142,7 @@
                                 <input type="password" class="form-control" v-model="$v.form_pessoa.senha.$model" :class="status($v.form_pessoa.senha)"  @blur="markAsDirty($v.form_pessoa.senha)"
                                     id="pes_input_senha">
                             </div>
+                           
 
                             <button @click="inserirPessoa($v)" class="btn btn-primary" type="button">Salvar</button>
                             <button @click="limparFormPessoa()" class="btn btn-primary" type="button">Limpar</button>
@@ -147,6 +150,7 @@
                     </div>
 
                 </div>
+                
             </div>
         </div>
     </div>
@@ -172,7 +176,8 @@
                 data_cadastro: '',
                 data_nascimento: '',
                 numero_celular: '',
-                senha: ''
+                senha: '',
+                
             }
         }
         Vue.prototype.$http = axios;
@@ -231,7 +236,8 @@
                 senha: {
                     required,
                     minLength: minLength(4)
-                }}
+                },
+           }
             },
             methods: {
                 status(validation) {
@@ -348,7 +354,8 @@
                                 data_cadastro: this.$options.filters.formataData(e.data_cadastro),
                                 data_nascimento: this.$options.filters.formataData(e.data_nascimento),
                                 numero_celular: e.numero_celular,
-                                senha: e.senha
+                                senha: e.senha,
+                              
                             }
                             );
                         }
@@ -360,5 +367,35 @@
         })//fecha o vue
     })//fecha o $doc ready
 </script>
-
+<style>
+    body{ 
+    padding: 5%;
+  }
+  input {
+      border: 1px solid silver;
+      border-radius: 4px;
+      background: white;
+      padding: 5px 10px;
+    }
+    
+    .dirty {
+      border-color: #5A5;
+      background: #EFE;
+    }
+    
+    .dirty:focus {
+      outline-color: #8E8;
+    }
+    
+    .error {
+      border-color: red;
+      background: #FDD;
+    }
+    
+    .error:focus {
+      outline-color: #F99;
+    }
+    th[scope="col"] {
+      background-color: #bd1c1c;
+    }</style>
 </html>
