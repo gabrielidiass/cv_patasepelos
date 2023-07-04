@@ -142,10 +142,11 @@
                                     id="pes_input_senha">
                             </div>
 
-                            <div id="inputContainer" class="hidden">
-                                <label>Data da última visita:</label>
-                                <input type="date" name="data_ultima_visita" id="data_ultima_visita">
+                            <div id="inputContainer" class="form-group.hidden">
+                                <label for="pes_input_ultimaVisita">Data da última visita:</label>
+                                <input type="date" class="form-control" v-model="$v.form_pessoa.ultimaVisita.$model" :class="status($v.form_pessoa.ultimaVisita)"  id="pes_input_ultimaVisita">
                               </div>
+                              
 
                             <button @click="inserirPessoa($v)" class="btn btn-primary" type="button">Salvar</button>
                             <button @click="limparFormPessoa()" class="btn btn-primary" type="button">Limpar</button>
@@ -178,7 +179,8 @@
                 data_cadastro: '',
                 data_nascimento: '',
                 numero_celular: '',
-                senha: ''
+                senha: '',
+                ultimaVisita: ''
             }
         }
         Vue.prototype.$http = axios;
@@ -237,7 +239,11 @@
                 senha: {
                     required,
                     minLength: minLength(4)
-                }}
+                },
+                ultimaVisita: {
+                    
+                }
+            }
             },
             methods: {
                 mostrarInput: function () {
