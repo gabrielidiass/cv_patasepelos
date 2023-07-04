@@ -138,7 +138,7 @@
                             </div>
 
                             <button @click="inserirPessoa()" class="btn btn-primary" type="button">Salvar</button>
-                            <button @click="" class="btn btn-primary" type="button">Limpar</button>
+                            <button @click="limparFormPessoa()" class="btn btn-primary" type="button">Limpar</button>
                         </div>
                     </div>
 
@@ -177,6 +177,19 @@
             el: '#appPessoa',
             data: dados,
             methods: {
+                limparFormPessoa: function () {
+                    this.form_pessoa.tipo = '';
+                    this.form_pessoa.nome = '';
+                    this.form_pessoa.cpf = '';
+                    this.form_pessoa.rg = '';
+                    this.form_pessoa.email = '';
+                    this.form_pessoa.cep = '';
+                    this.form_pessoa.endereco = '';
+                    this.form_pessoa.complemento = '';
+                    this.form_pessoa.data_nascimento = '';
+                    this.form_pessoa.numero_celular = '';
+                    this.form_pessoa.senha = '';
+                },
                 inserirPessoa: function () {
                     var pessoa = jQuery.extend({}, this.form_pessoa);
                     if (isNaN(parseInt(this.form_pessoa.id))) {
@@ -186,6 +199,7 @@
                                 response.data.data_cadastro = this.$options.filters.formataData(response.data.data_cadastro);
                                 this.pessoas.push(response.data);
                                 alert('pessoa inserida');
+                                limparFormPessoa();
                             })
                             .catch(error => {
                                 alert('erro ao inserir pessoa');
@@ -196,18 +210,14 @@
                                 const pessoa_alterada = response.data;
                                 pessoa_alterada.data_cadastro = this.$options.filters.formataData(pessoa_alterada.data_cadastro);
                                 const index = this.pessoas.findIndex(item => item.id === pessoa_alterada.id);
-                                if (index !== -1) {
-                                    Vue.set(this.pessoas, index, pessoa_alterada);
-                                }
+                                if (index !== -1) { Vue.set(this.pessoas, index, pessoa_alterada); }
+                                alert('Pessoa alterada ');
                             })
                             .catch(error => {
-                                alert('Erro ao alterar a pessoa: ' + error.response.data.message);
-
+                                alert('Erro ao alterar a pessoa ' + error);
                             });
-
-
                     }
-                    //TODO: limpar formulario pessoa
+                  
                 },
                 editPessoa: function (param_index) {
                     this.form_pessoa.id = this.pessoas[param_index].id;
