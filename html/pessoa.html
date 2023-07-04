@@ -74,10 +74,10 @@
                               Este campo é obrigatório
                             </div>
                             <div class="form-group">
-                              <input type="radio" v-model="form_pessoa.tipo" :class="status($v.form_pessoa.tipo)" @blur="$v.form_pessoa.tipo.$touch()" id="cliente" name="pes_input_tipo" value="cliente">
+                              <input type="radio" v-model="form_pessoa.tipo" :class="status($v.form_pessoa.tipo)" @blur="$v.form_pessoa.tipo.$touch()" id="cliente" name="pes_input_tipo" value="cliente" v-on:click="mostrarInput()">
                               <label for="cliente">Cliente</label><br>
                           
-                              <input type="radio" v-model="form_pessoa.tipo" :class="status($v.form_pessoa.tipo)" @blur="$v.form_pessoa.tipo.$touch()" id="funcionario" name="pes_input_tipo" value="funcionario">
+                              <input type="radio" v-model="form_pessoa.tipo" :class="status($v.form_pessoa.tipo)" @blur="$v.form_pessoa.tipo.$touch()" id="funcionario" name="pes_input_tipo" value="funcionario" v-on:click="esconderInput()">
                               <label for="funcionario">Funcionário</label><br>
                             </div>
                           </div>
@@ -141,6 +141,11 @@
                                 <input type="password" class="form-control" v-model="$v.form_pessoa.senha.$model" :class="status($v.form_pessoa.senha)"  @blur="markAsDirty($v.form_pessoa.senha)"
                                     id="pes_input_senha">
                             </div>
+
+                            <div id="inputContainer" class="hidden">
+                                <label>Data da última visita:</label>
+                                <input type="date" name="data_ultima_visita" id="data_ultima_visita">
+                              </div>
 
                             <button @click="inserirPessoa($v)" class="btn btn-primary" type="button">Salvar</button>
                             <button @click="limparFormPessoa()" class="btn btn-primary" type="button">Limpar</button>
@@ -235,6 +240,14 @@
                 }}
             },
             methods: {
+                mostrarInput: function () {
+                    var inputContainer = document.getElementById("inputContainer");
+                    inputContainer.classList.remove("hidden");
+                  },
+                 esconderInput:  function () {
+                    var inputContainer = document.getElementById("inputContainer");
+                    inputContainer.classList.add("hidden");
+                  },
                 status(validation) {
                     return {
                         error: validation.$error,
@@ -390,5 +403,11 @@
     }
     th[scope="col"] {
       background-color: #bd1c1c;
-    }</style>
+    }
+    .hidden {
+        display: none;
+      }
+
+
+</style>
 </html>
