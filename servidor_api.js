@@ -97,7 +97,7 @@ sw.post('/updatepessoa/:id', (req, res) => {
       res.status(400).send('{' + err + '}');
     } else {
       var q = {
-        text: 'update tb_pessoa set tipo= $2, nome = $3, cpf= $4, rg= $5, email= $6, cep= $7, endereco= $8, complemento= $9, data_cadastro= $10, data_nascimento= $11, numero_celular= $12, senha= $13 where id = $1 returning id, nome, data_cadastro',
+        text: 'update tb_pessoa set tipo= $2, nome = $3, cpf= $4, rg= $5, email= $6, cep= $7, endereco= $8, complemento= $9, data_cadastro= now(), data_nascimento= $10, numero_celular= $11, senha= $12 where id = $1 returning id, nome, data_cadastro',
         values: [
           req.body.id,
           req.body.tipo,
@@ -108,7 +108,6 @@ sw.post('/updatepessoa/:id', (req, res) => {
           req.body.cep,
           req.body.endereco,
           req.body.complemento,
-          req.body.data_cadastro,
           req.body.data_nascimento,
           req.body.numero_celular,
           req.body.senha

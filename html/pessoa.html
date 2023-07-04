@@ -15,7 +15,6 @@
 <body>
     <div class="container-fluid">
         <h1>Patas e Pelos</h1>
-        <!-- TODO: LOGO E ESTILIZAÇÃO-->
         <div class="col-xs-2">
             <ul class="nav nav-pills nav-stacked">
                 <li><a data-toggle="pill" href="#menuPessoa">Pessoa</a></li>
@@ -30,37 +29,36 @@
                         <tr>
                             <!-- TODO: abstrair informações -->
                             <th scope="col">Tipo</th>
-                            <th scope="col">Nome</th>
                             <th scope="col">CPF</th>
-                            <th scope="col">CEP</th>
-                            <th scope="col">Complemento</th>
-                            <th scope="col">Data de cadastro</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">RG</th>
                             <th scope="col">Data de nascimento</th>
                             <th scope="col">E-mail</th>
                             <th scope="col">Endereço</th>
+                            <th scope="col">CEP</th>
+                            <th scope="col">Complemento</th>
                             <th scope="col">Numero de celular</th>
-                            <th scope="col">RG</th>
-                            <th scope="col">Senha</th>
+                            <th scope="col">Data de cadastro</th>
                             <th scope="col">Editar</th>
                             <th scope="col">Remover</th>
                         </tr>
                         <tbody>
                             <tr v-for="(p, indice) in pessoas">
                                 <td>{{p.tipo}}</td>
-                                <td>{{p.nome}}</td>
                                 <td>{{p.cpf}}</td>
-                                <td>{{p.cep}}</td>
-                                <td>{{p.complemento}}</td>
-                                <td>{{p.data_cadastro}}</td>
+                                <td>{{p.nome}}</td>
+                                <td>{{p.rg}}</td>
                                 <td>{{p.data_nascimento}}</td>
                                 <td>{{p.email}}</td>
                                 <td>{{p.endereco}}</td>
+                                <td>{{p.cep}}</td>
+                                <td>{{p.complemento}}</td>
                                 <td>{{p.numero_celular}}</td>
-                                <td>{{p.rg}}</td>
-                                <td>{{p.senha}}</td>
+                                <td>{{p.data_cadastro}}</td>
                                 <td><button v-on:click="editPessoa(indice)" class="btn" type="button">Editar</button>
                                 </td>
-                                <td><button v-on:click="remPessoa(indice, p.id)" class="btn" type="button">Remover</button></td>
+                                <td><button v-on:click="remPessoa(indice, p.id)" class="btn"
+                                        type="button">Remover</button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -86,8 +84,30 @@
                             </div>
                             <div class="form-group">
                                 <p>NOT NULL</p>
+                                <label for="pes_input_rg">RG:</label>
+                                <input type="number" class="form-control" v-model="form_pessoa.rg" id="pes_input_rg">
+                            </div>
+                            <div class="form-group">
+                                <p>NOT NULL</p>
                                 <label for="pes_input_cpf">CPF:</label>
                                 <input type="number" class="form-control" v-model="form_pessoa.cpf" id="pes_input_cpf">
+                            </div>
+                           
+                            
+                            <div class="form-group">
+                                <label for="pes_input_data_nascimento">Data de nascimento:</label>
+                                <input type="date" class="form-control" v-model="form_pessoa.data_nascimento"
+                                    id="pes_input_data_nascimento">
+                            </div>
+                            <div class="form-group">
+                                <label for="pes_input_email">Email:</label>
+                                <input type="email" class="form-control" v-model="form_pessoa.email"
+                                    id="pes_input_email">
+                            </div>
+                            <div class="form-group">
+                                <label for="pes_input_endereco">Endereço:</label>
+                                <input type="text" class="form-control" v-model="form_pessoa.endereco"
+                                    id="pes_input_endereco">
                             </div>
                             <div class="form-group">
                                 <label for="pes_input_cep">CEP:</label>
@@ -105,37 +125,11 @@
 
                             </div>
                             <div class="form-group">
-                                <!-- TODO DATE -->
-                                <p>NOT NULL</p>
-                                <label for="pes_input_data_cadastro">Data de cadastro:</label>
-                                <input type="date" class="form-control" v-model="form_pessoa.data_cadastro"
-                                    id="pes_input_data_cadastro">
-                            </div>
-                            <div class="form-group">
-                                <label for="pes_input_data_nascimento">Data de nascimento:</label>
-                                <input type="date" class="form-control" v-model="form_pessoa.data_nascimento"
-                                    id="pes_input_data_nascimento">
-                            </div>
-                            <div class="form-group">
-                                <label for="pes_input_email">Email:</label>
-                                <input type="email" class="form-control" v-model="form_pessoa.email"
-                                    id="pes_input_email">
-                            </div>
-                            <div class="form-group">
-                                <label for="pes_input_endereco">Endereço:</label>
-                                <input type="text" class="form-control" v-model="form_pessoa.endereco"
-                                    id="pes_input_endereco">
-                            </div>
-                            <div class="form-group">
                                 <label for="pes_input_numero_celular">Numero de celular:</label>
                                 <input type="number" class="form-control" v-model="form_pessoa.numero_celular"
                                     id="pes_input_numero_celular">
                             </div>
-                            <div class="form-group">
-                                <p>NOT NULL</p>
-                                <label for="pes_input_rg">RG:</label>
-                                <input type="number" class="form-control" v-model="form_pessoa.rg" id="pes_input_rg">
-                            </div>
+                            
                             <div class="form-group">
                                 <p>NOT NULL</p>
                                 <label for="pes_input_senha">Senha:</label>
@@ -186,10 +180,12 @@
                 inserirPessoa: function () {
                     var pessoa = jQuery.extend({}, this.form_pessoa);
                     if (isNaN(parseInt(this.form_pessoa.id))) {
-                        console.log("nova pessoa")
+                    
                         this.$http.post('http://localhost:4000/insertpessoa', pessoa)
                             .then(response => {
                                 pessoa.id = response.data.id;
+                                response.data.data_cadastro= this.$options.filters.formataData(response.data.data_cadastro);
+                            console.log(response.data.data_cadastro)
                                 this.pessoas.push(response.data);
                                 alert('pessoa inserida');
                             })
@@ -199,14 +195,16 @@
                     } else {
                         //realiza um update
 
-                        console.log("caiu no alterar")
+
                         this.$http.post('http://localhost:4000/updatepessoa/' + pessoa.id, pessoa)
                             .then(response => {
-                                alert('Alterou a pessoa');
-                                console.log("linha 207" + response.data)
-                                const index = this.pessoas.findIndex(item => item.id === response.data.id);
+                                const pessoa_alterada = response.data;
+                                pessoa_alterada.data_cadastro = this.$options.filters.formataData(pessoa_alterada.data_cadastro);
+                        
+
+                                const index = this.pessoas.findIndex(item => item.id === pessoa_alterada.id);
                                 if (index !== -1) {
-                                  Vue.set(this.pessoas, index, response.data);
+                                    Vue.set(this.pessoas, index, pessoa_alterada);
                                 }
                             })
                             .catch(error => {
@@ -251,20 +249,20 @@
                     }
 
                 }
- },
+            },
             //fim do methods
             filters: {
-            formataData: function (value) {
-                //yyyy-mm-dd
-                var data = new Date(value);
-                data.setDate(data.getDate() + 1); //incrementa a data em um dia para mostrar corretamente (pode nao ser necessário)              
-                dia = (data.getDate()).toString().padStart(2, '0'),
-                    mes = (data.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.                
-                    ano = data.getFullYear();
-                return dia + "/" + mes + "/" + ano;
-            }
+                formataData: function (value) {
+                    //yyyy-mm-dd
+                    var data = new Date(value);
+                    data.setDate(data.getDate() + 1); //incrementa a data em um dia para mostrar corretamente (pode nao ser necessário)              
+                    dia = (data.getDate()).toString().padStart(2, '0'),
+                        mes = (data.getMonth() + 1).toString().padStart(2, '0'), //+1 pois no getMonth Janeiro começa com zero.                
+                        ano = data.getFullYear();
+                    return dia + "/" + mes + "/" + ano;
+                }
 
-        }, //fim do filters
+            }, //fim do filters
             created: function () {
                 this.$http.get('http://localhost:4000/listpessoa')
                     .then(response => {
