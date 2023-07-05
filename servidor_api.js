@@ -77,7 +77,7 @@ sw.post('/insertcliente', function (req, res, next) {
       res.status(400).send('{' + err + '}');
     } else {
       var q = {
-        text: 'insert into tb_cliente (data_ultima_visita, cpf) values ($1, $2) returning data_ultima_visita;',
+        text: 'insert into tb_cliente (data_ultima_visita, cpf) values ($1, $2) returning cpf, data_ultima_visita;',
         values: [
           req.body.cpf,
           req.body.ultimaVisita,
