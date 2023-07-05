@@ -263,9 +263,9 @@
                 }
             },
             methods: {
-                cliente: function (){
-                    if (this.form_pessoa.tipo == "cliente"){
-                        console.log("CLIENTE")
+                cliente: function (cliente){
+                    if (cliente.tipo == "cliente"){
+                        return true;
                 //resto da função cliente
                     }
                 },
@@ -301,6 +301,8 @@
                 },
                 inserirPessoa: function () {
                     var pessoa = jQuery.extend({}, this.form_pessoa);
+                    let ehcliente = this.cliente(pessoa);
+                    console.log(ehcliente)
                     if (isNaN(parseInt(this.form_pessoa.id))) {
                         this.$http.post('http://localhost:4000/insertpessoa', pessoa)
                             .then(response => {

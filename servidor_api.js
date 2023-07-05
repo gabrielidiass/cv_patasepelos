@@ -70,6 +70,41 @@ sw.post('/insertpessoa', function (req, res, next) {
   });
 });
 
+sw.post('/insertcliente', function (req, res, next) {
+  postgres.connect(function (err, client, done) {
+    if (err) {
+      console.log("Nao conseguiu acessar o  BD " + err);
+      res.status(400).send('{' + err + '}');
+    } else {
+      var q = {
+        text: 'insert into tb_cliente (data_ultima_visita, cpf) values ($1, $2) returning data_ultima_visita;',
+        values: [
+          req.body.cpf,
+          req.body.ultimaVisita,
+        ]
+      }
+      console.log(q);
+      client.query(q, function (err, result) {
+        done();
+        if (err) {
+          console.log('retornou 400 pelo insertcliente');
+          res.status(400).send('{' + err + '}');
+        } else {
+          console.log('retornou 201 no insertcliente');
+          res.status(201).send({
+            "cpf": req.body.cpf,
+            "ultimaVisita": req.body.data_ultima_visita,
+          })
+
+        }
+      });
+    }
+  });
+});
+
+
+
+
 sw.get('/listpessoa', function (req, res) {
   postgres.connect(function (err, client, done) {
     if (err) {
