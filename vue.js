@@ -1,6 +1,7 @@
 
     $(document).ready(function () {
         var pessoas = [];
+        var clientes = [];
         var dados = {
             "pessoas": pessoas,
             "form_pessoa": {
