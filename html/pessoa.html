@@ -315,71 +315,50 @@
                         <button @click="inserir_funcionario($v)" class="btn btn-primary" type="button">Salvar</button>
                         <button @click="limpar_form_funcionario()" class="btn btn-primary" type="button">Limpar</button>
                     </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 </div>
-                <!-- <div id="menuCliente" class="tab-pane fade">
-                    <h2>CRUD de Pessoas</h2>
-
-                    <table id="tblListagemPessoa" class="table table-striped">
-                        <thead>Nossos funcionários</thead>
+                <div id="menu_cliente" class="tab-pane fade"> 
+                    <h2>CRUD de cliente</h2>
+                    <table id="tabela_cliente" class="table table-striped">
+                        <thead>Nossos </thead>
                         <tr>
-                            <th scope="col">CPF</th>
-                            <th scope="col">Nome</th>
-                            <th scope="col">RG</th>
-                            <th scope="col">Data de nascimento</th>
-                            <th scope="col">E-mail</th>
-                            <th scope="col">Endereço</th>
-                            <th scope="col">CEP</th>
-                            <th scope="col">Complemento</th>
-                            <th scope="col">Numero de celular</th>
-                            <th scope="col">Data de cadastro</th>
-                            <th scope="col">Editar</th>
-                            <th scope="col">Remover</th>
+                                <th scope="col">CPF</th>
+                                <th scope="col">Nome</th>
+                                <th scope="col">RG</th>
+                                <th scope="col">Data de nascimento</th>
+                                <th scope="col">E-mail</th>
+                                <th scope="col">Endereço</th>
+                                <th scope="col">CEP</th>
+                                <th scope="col">Complemento</th>
+                                <th scope="col">Numero de celular</th>
+                                <th scope="col">Data de cadastro</th>
+                                <th scope="col">Última visita</th>
+                                <th scope="col">Editar</th>
+                                <th scope="col">Remover</th>
+                    
                         </tr>
                         <tbody>
-                            <tr v-for="(p, indice) in pessoas">
-                                <td>{{p.tipo}}</td>
-                                <td>{{p.cpf}}</td>
-                                <td>{{p.nome}}</td>
-                                <td>{{p.rg}}</td>
-                                <td>{{p.data_nascimento}}</td>
-                                <td>{{p.email}}</td>
-                                <td>{{p.endereco}}</td>
-                                <td>{{p.cep}}</td>
-                                <td>{{p.complemento}}</td>
-                                <td>{{p.numero_celular}}</td>
-                                <td>{{p.data_cadastro}}</td>
-                                <td><button v-on:click="editPessoa(indice)" class="btn" type="button">Editar</button>
+                            <tr v-for="(c, indice) in clientes">
+                                <td>{{c.cpf}}</td>
+                                <td>{{c.nome}}</td>
+                                <td>{{c.rg}}</td>
+                                <td>{{c.data_nascimento}}</td>
+                                <td>{{c.email}}</td>
+                                <td>{{c.endereco}}</td>
+                                <td>{{c.cep}}</td>
+                                <td>{{c.complemento}}</td>
+                                <td>{{c.numero_celular}}</td>
+                                <td>{{c.data_cadastro}}</td>
+                                <td>{{c.ultima_visita}}</td>
+                                <td><button v-on:click="edita_cliente(indice)" class="btn" type="button">Editar</button>
                                 </td>
-                                <td><button v-on:click="remPessoa(indice, p.id)" class="btn"
+                                <td><button v-on:click="remove_cliente(indice, c.id)" class="btn"
                                         type="button">Remover</button></td>
                             </tr>
                         </tbody>
                     </table>
 
                     <div id="formularioPessoa">
-                        <h3>Formulário para cadastrar e alterar pessoa</h3>
+                        <h3>Formulário para cadastrar e alterar clientes</h3>
                         <div>
                             <div class="error" v-if="!$v.form_funcionario.tipo.required">
                                 Este campo é obrigatório
