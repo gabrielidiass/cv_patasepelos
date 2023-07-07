@@ -89,14 +89,7 @@
                         return true;
                     }
                 },
-                mostrarInput: function () {
-                    var inputContainer = document.getElementById("inputContainer");
-                    inputContainer.classList.remove("hidden");
-                },
-                esconderInput: function () {
-                    var inputContainer = document.getElementById("inputContainer");
-                    inputContainer.classList.add("hidden");
-                },
+        
                 status(validation) {
                     return {
                         error: validation.$error,

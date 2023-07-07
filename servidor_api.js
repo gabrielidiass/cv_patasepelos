@@ -124,6 +124,25 @@ sw.get('/listpessoa', function (req, res) {
   });
 });
 
+sw.get('/listpessoa', function (req, res) {
+  postgres.connect(function (err, client, done) {
+    if (err) {
+      console.log("Não conseguiu acessar o BD :" + err);
+      res.status(400).send('{' + err + '}');
+    } else {
+      client.query('select * from tb_pessoa order by id asc;', function (err, result) {
+        done(); // closing the connection;
+        if (err) {
+          console.log(err);
+          res.status(400).send('{' + err + '}');
+        } else {
+          res.status(200).send(result.rows);
+        }
+      });
+    }
+  });
+});
+
 sw.post('/updatepessoa/:id', (req, res) => {
   postgres.connect(function (err, client, done) {
     if (err) {
