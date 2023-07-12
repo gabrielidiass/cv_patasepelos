@@ -1,12 +1,8 @@
-
     $(document).ready(function () {
-        var pessoas = [];
         var clientes = [];
         var dados = {
-            "pessoas": pessoas,
-            "form_pessoa": {
-                id: '',
-                tipo: '',
+            "clientes": clientes,
+            "form_cliente": {
                 nome: '',
                 cpf: '',
                 rg: '',
@@ -18,12 +14,11 @@
                 data_nascimento: '',
                 numero_celular: '',
                 senha: '',
-                ultimaVisita: ''
+                ultima_visita: ''
             }
         }
         Vue.prototype.$http = axios;
         Vue.use(window.vuelidate.default);
-
         const {
             required,
             minLength,
@@ -32,161 +27,161 @@
         } = window.validators
 
         new Vue({
-            el: '#appPessoa',
+            el: '#app',
             data: dados,
-            validations: {
-                form_pessoa: {
-                    tipo: {
-                        required
-                    },
-                    nome: {
-                        required,
-                        minLength: minLength(4)
-                    },
-                    cpf: {
-                        required,
-                        minLength: minLength(8),
-                        maxLength: maxLength(11)
-                    },
-                    rg: {
-                        required,
-                        minLength: minLength(11),
-                        maxLength: maxLength(11)
-                    },
+            // validations: {
+            //     form_cliente: {
+            //         tipo: {
+            //             required
+            //         },
+            //         nome: {
+            //             required,
+            //             minLength: minLength(4)
+            //         },
+            //         cpf: {
+            //             required,
+            //             minLength: minLength(8),
+            //             maxLength: maxLength(11)
+            //         },
+            //         rg: {
+            //             required,
+            //             minLength: minLength(11),
+            //             maxLength: maxLength(11)
+            //         },
 
-                    cep: {
-                        minLength: minLength(8),
-                        maxLength: maxLength(11)
-                    },
-                    endereco: {
+            //         cep: {
+            //             minLength: minLength(8),
+            //             maxLength: maxLength(11)
+            //         },
+            //         endereco: {
 
-                    },
-                    complemento: {
+            //         },
+            //         complemento: {
 
-                    },
-                    data_nascimento: {
-                        required,
-                        minValue: value => value < new Date().toISOString()
-                    },
-                    numero_celular: {
-                        maxLength: maxLength(11)
-                    },
-                    email: {
-                        maxLength: maxLength(100)
-                    },
-                    senha: {
-                        required,
-                        minLength: minLength(4)
-                    },
-                    ultimaVisita: {
+            //         },
+            //         data_nascimento: {
+            //             required,
+            //             minValue: value => value < new Date().toISOString()
+            //         },
+            //         numero_celular: {
+            //             maxLength: maxLength(11)
+            //         },
+            //         email: {
+            //             maxLength: maxLength(100)
+            //         },
+            //         senha: {
+            //             required,
+            //             minLength: minLength(4)
+            //         },
+            //         ultimaVisita: {
 
-                    }
-                }
-            },
-            methods: {
-                cliente: function (cliente) {
-                    if (cliente.tipo == "cliente") {
-                        return true;
-                    }
-                },
+            //         }
+            //     }
+            // },
+            // methods: {
+            //     cliente: function (cliente) {
+            //         if (cliente.tipo == "cliente") {
+            //             return true;
+            //         }
+            //     },
         
-                status(validation) {
-                    return {
-                        error: validation.$error,
-                        dirty: validation.$dirty
-                    }
-                },
-                markAsDirty(validation) {
-                    validation.$touch();
-                },
-                limparFormPessoa: function () {
-                    this.form_pessoa.tipo = '';
-                    this.form_pessoa.nome = '';
-                    this.form_pessoa.cpf = '';
-                    this.form_pessoa.rg = '';
-                    this.form_pessoa.email = '';
-                    this.form_pessoa.cep = '';
-                    this.form_pessoa.endereco = '';
-                    this.form_pessoa.complemento = '';
-                    this.form_pessoa.data_nascimento = '';
-                    this.form_pessoa.numero_celular = '';
-                    this.form_pessoa.senha = '';
-                },
-                inserirPessoa: function () {
-                    var pessoa = jQuery.extend({}, this.form_pessoa);
-                    // copia e cria um novo objeto chamado pessoa 
-                    let ehcliente = this.cliente(pessoa);
-                    // testa se pessoa é cliente e retorna true 
-                    if (ehcliente == true) {
-                        console.log("é cliente")
-                    }
-                    else { console.log("não é cliente") }
+            //     status(validation) {
+            //         return {
+            //             error: validation.$error,
+            //             dirty: validation.$dirty
+            //         }
+            //     },
+            //     markAsDirty(validation) {
+            //         validation.$touch();
+            //     },
+            //     limparFormPessoa: function () {
+            //         this.form_cliente.tipo = '';
+            //         this.form_cliente.nome = '';
+            //         this.form_cliente.cpf = '';
+            //         this.form_cliente.rg = '';
+            //         this.form_cliente.email = '';
+            //         this.form_cliente.cep = '';
+            //         this.form_cliente.endereco = '';
+            //         this.form_cliente.complemento = '';
+            //         this.form_cliente.data_nascimento = '';
+            //         this.form_cliente.numero_celular = '';
+            //         this.form_cliente.senha = '';
+            //     },
+            //     inserirPessoa: function () {
+            //         var pessoa = jQuery.extend({}, this.form_cliente);
+            //         // copia e cria um novo objeto chamado pessoa 
+            //         let ehcliente = this.cliente(pessoa);
+            //         // testa se pessoa é cliente e retorna true 
+            //         if (ehcliente == true) {
+            //             console.log("é cliente")
+            //         }
+            //         else { console.log("não é cliente") }
 
-                    // se o id existe
-                    if (isNaN(parseInt(this.form_pessoa.id))) {
+            //         // se o id existe
+            //         if (isNaN(parseInt(this.form_cliente.id))) {
                     
-                        this.$http.post('http://localhost:4000/insertpessoa', pessoa)
+            //             this.$http.post('http://localhost:4000/insertpessoa', pessoa)
                         
-                            .then(response => {
-                                pessoa.id = response.data.id;
-                                response.data.data_cadastro = this.$options.filters.formataData(response.data.data_cadastro);
-                                this.pessoas.push(response.data);
-                                alert('pessoa inserida');
-                                this.limparFormPessoa();
-                            })
-                            .catch(error => {
-                                alert('erro ao inserir pessoa');
-                            });
-                    } else {
-                        this.$http.post('http://localhost:4000/updatepessoa/' + pessoa.id, pessoa)
-                            .then(response => {
-                                const pessoa_alterada = response.data;
-                                pessoa_alterada.data_cadastro = this.$options.filters.formataData(pessoa_alterada.data_cadastro);
-                                const index = this.pessoas.findIndex(item => item.id === pessoa_alterada.id);
-                                if (index !== -1) { Vue.set(this.pessoas, index, pessoa_alterada); }
-                                alert('Pessoa alterada ');
+            //                 .then(response => {
+            //                     pessoa.id = response.data.id;
+            //                     response.data.data_cadastro = this.$options.filters.formataData(response.data.data_cadastro);
+            //                     this.pessoas.push(response.data);
+            //                     alert('pessoa inserida');
+            //                     this.limparFormPessoa();
+            //                 })
+            //                 .catch(error => {
+            //                     alert('erro ao inserir pessoa');
+            //                 });
+            //         } else {
+            //             this.$http.post('http://localhost:4000/updatepessoa/' + pessoa.id, pessoa)
+            //                 .then(response => {
+            //                     const pessoa_alterada = response.data;
+            //                     pessoa_alterada.data_cadastro = this.$options.filters.formataData(pessoa_alterada.data_cadastro);
+            //                     const index = this.pessoas.findIndex(item => item.id === pessoa_alterada.id);
+            //                     if (index !== -1) { Vue.set(this.pessoas, index, pessoa_alterada); }
+            //                     alert('Pessoa alterada ');
 
-                            })
-                            .catch(error => {
-                                alert('Erro ao alterar a pessoa ' + error);
-                            });
-                    }
+            //                 })
+            //                 .catch(error => {
+            //                     alert('Erro ao alterar a pessoa ' + error);
+            //                 });
+            //         }
 
-                },
-                editPessoa: function (param_index) {
-                    this.form_pessoa.id = this.pessoas[param_index].id;
-                    this.form_pessoa.tipo = this.pessoas[param_index].tipo;
-                    this.form_pessoa.nome = this.pessoas[param_index].nome;
-                    this.form_pessoa.cpf = this.pessoas[param_index].cpf;
-                    this.form_pessoa.rg = this.pessoas[param_index].rg;
-                    this.form_pessoa.email = this.pessoas[param_index].email;
-                    this.form_pessoa.cep = this.pessoas[param_index].cep;
-                    this.form_pessoa.endereco = this.pessoas[param_index].endereco;
-                    this.form_pessoa.complemento = this.pessoas[param_index].complemento;
-                    this.form_pessoa.data_cadastro = this.pessoas[param_index].data_cadastro;
-                    this.form_pessoa.data_nascimento = this.pessoas[param_index].data_nascimento;
-                    this.form_pessoa.numero_celular = this.pessoas[param_index].numero_celular;
-                    this.form_pessoa.senha = this.pessoas[param_index].senha;
-                },
-                remPessoa: function (param_index, param_id) {
-                    var decisao = confirm('Deseja realmente remover a pessoa id:' + param_id + ' ?');
-                    if (decisao) {
-                        this.$http.get('http://localhost:4000/delpessoa/' + param_id)
-                            .then(response => {
-                                this.pessoas.splice(param_index, 1);
-                                alert('Removeu com sucesso a pessoa id:' + response.data.id);
-                            })
-                            .catch(error => {
-                                // error callback                                        
-                                alert('Erro ao remover a pessoa ' + param_id + ': ' + error);
-                                console.log(error);
-                            });
-                    } else {
-                        alert('pessoa não removida !!!');
-                    }
+            //     },
+            //     editPessoa: function (param_index) {
+            //         this.form_cliente.id = this.pessoas[param_index].id;
+            //         this.form_cliente.tipo = this.pessoas[param_index].tipo;
+            //         this.form_cliente.nome = this.pessoas[param_index].nome;
+            //         this.form_cliente.cpf = this.pessoas[param_index].cpf;
+            //         this.form_cliente.rg = this.pessoas[param_index].rg;
+            //         this.form_cliente.email = this.pessoas[param_index].email;
+            //         this.form_cliente.cep = this.pessoas[param_index].cep;
+            //         this.form_cliente.endereco = this.pessoas[param_index].endereco;
+            //         this.form_cliente.complemento = this.pessoas[param_index].complemento;
+            //         this.form_cliente.data_cadastro = this.pessoas[param_index].data_cadastro;
+            //         this.form_cliente.data_nascimento = this.pessoas[param_index].data_nascimento;
+            //         this.form_cliente.numero_celular = this.pessoas[param_index].numero_celular;
+            //         this.form_cliente.senha = this.pessoas[param_index].senha;
+            //     },
+            //     remPessoa: function (param_index, param_id) {
+            //         var decisao = confirm('Deseja realmente remover a pessoa id:' + param_id + ' ?');
+            //         if (decisao) {
+            //             this.$http.get('http://localhost:4000/delpessoa/' + param_id)
+            //                 .then(response => {
+            //                     this.pessoas.splice(param_index, 1);
+            //                     alert('Removeu com sucesso a pessoa id:' + response.data.id);
+            //                 })
+            //                 .catch(error => {
+            //                     // error callback                                        
+            //                     alert('Erro ao remover a pessoa ' + param_id + ': ' + error);
+            //                     console.log(error);
+            //                 });
+            //         } else {
+            //             alert('pessoa não removida !!!');
+            //         }
 
-                }
-            },
+            //     }
+            // },
             //fim do methods
             filters: {
                 formataData: function (value) {
@@ -201,12 +196,10 @@
 
             }, //fim do filters
             created: function () {
-                this.$http.get('http://localhost:4000/listpessoa')
+                this.$http.get('http://localhost:4000/listarclientes')
                     .then(response => {
                         for (let e of response.data) {
-                            this.pessoas.push({
-                                id: e.id,
-                                tipo: e.tipo,
+                            this.clientes.push({
                                 nome: e.nome,
                                 cpf: e.cpf,
                                 rg: e.rg,
@@ -217,6 +210,7 @@
                                 data_cadastro: this.$options.filters.formataData(e.data_cadastro),
                                 data_nascimento: this.$options.filters.formataData(e.data_nascimento),
                                 numero_celular: e.numero_celular,
+                                ultima_visita:this.$options.filters.formataData(e.data_ultima_visita),
                                 senha: e.senha
                             }
                             );
