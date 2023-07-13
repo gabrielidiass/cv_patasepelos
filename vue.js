@@ -78,111 +78,104 @@
             //         }
             //     }
             // },
-            // methods: {
-            //     cliente: function (cliente) {
-            //         if (cliente.tipo == "cliente") {
-            //             return true;
-            //         }
-            //     },
-        
-            //     status(validation) {
-            //         return {
-            //             error: validation.$error,
-            //             dirty: validation.$dirty
-            //         }
-            //     },
-            //     markAsDirty(validation) {
-            //         validation.$touch();
-            //     },
-            //     limparFormPessoa: function () {
-            //         this.form_cliente.tipo = '';
-            //         this.form_cliente.nome = '';
-            //         this.form_cliente.cpf = '';
-            //         this.form_cliente.rg = '';
-            //         this.form_cliente.email = '';
-            //         this.form_cliente.cep = '';
-            //         this.form_cliente.endereco = '';
-            //         this.form_cliente.complemento = '';
-            //         this.form_cliente.data_nascimento = '';
-            //         this.form_cliente.numero_celular = '';
-            //         this.form_cliente.senha = '';
-            //     },
-            //     inserirPessoa: function () {
-            //         var pessoa = jQuery.extend({}, this.form_cliente);
-            //         // copia e cria um novo objeto chamado pessoa 
-            //         let ehcliente = this.cliente(pessoa);
-            //         // testa se pessoa é cliente e retorna true 
-            //         if (ehcliente == true) {
-            //             console.log("é cliente")
-            //         }
-            //         else { console.log("não é cliente") }
+            methods: {
+                // status(validation) {
+                //     return {
+                //         error: validation.$error,
+                //         dirty: validation.$dirty
+                //     }
+                // },
+                // markAsDirty(validation) {
+                //     validation.$touch();
+                // },
+                limpar_form_cliente: function () {
+                    this.form_cliente.nome = '';
+                    this.form_cliente.cpf = '';
+                    this.form_cliente.rg = '';
+                    this.form_cliente.email = '';
+                    this.form_cliente.cep = '';
+                    this.form_cliente.endereco = '';
+                    this.form_cliente.complemento = '';
+                    this.form_cliente.data_nascimento = '';
+                    this.form_cliente.numero_celular = '';
+                    this.form_cliente.senha = '';
+                    this.form_cliente.ultima_visita = '';
+                },
+                inserir_pessoa: function (pessoa){
+                       console.log("oii") ;console.log(pessoa);
+                       this.$http.post('http://localhost:4000/insertpessoa', pessoa)
+                       .then(
+                           console.log('pessoa inserida')
+                       )
+                       .catch(error => {
+                           console.log('erro ao inserir pessoa');
+                       });
+                },
+                inserir_cliente: function () {
+                    // faz uma cópia de cliente e transforma em objeto jquerry
+                    var cliente = jQuery.extend({}, this.form_cliente) ;
+                    //adiciona a propriedade "tipo", pra que no bd, o objeto seja inserido como cliente
+                     cliente.tipo = "cliente";   
 
-            //         // se o id existe
-            //         if (isNaN(parseInt(this.form_cliente.id))) {
-                    
-            //             this.$http.post('http://localhost:4000/insertpessoa', pessoa)
+                    if (isNaN(parseInt(this.form_cliente.cpf))) {
+                         // chama a função "inserir pessoa" passando o objeto jquerry "cliente"
+                        this.inserir_pessoa(cliente);
                         
-            //                 .then(response => {
-            //                     pessoa.id = response.data.id;
-            //                     response.data.data_cadastro = this.$options.filters.formataData(response.data.data_cadastro);
-            //                     this.pessoas.push(response.data);
-            //                     alert('pessoa inserida');
-            //                     this.limparFormPessoa();
-            //                 })
-            //                 .catch(error => {
-            //                     alert('erro ao inserir pessoa');
-            //                 });
-            //         } else {
-            //             this.$http.post('http://localhost:4000/updatepessoa/' + pessoa.id, pessoa)
-            //                 .then(response => {
-            //                     const pessoa_alterada = response.data;
-            //                     pessoa_alterada.data_cadastro = this.$options.filters.formataData(pessoa_alterada.data_cadastro);
-            //                     const index = this.pessoas.findIndex(item => item.id === pessoa_alterada.id);
-            //                     if (index !== -1) { Vue.set(this.pessoas, index, pessoa_alterada); }
-            //                     alert('Pessoa alterada ');
 
-            //                 })
-            //                 .catch(error => {
-            //                     alert('Erro ao alterar a pessoa ' + error);
-            //                 });
-            //         }
 
-            //     },
-            //     editPessoa: function (param_index) {
-            //         this.form_cliente.id = this.pessoas[param_index].id;
-            //         this.form_cliente.tipo = this.pessoas[param_index].tipo;
-            //         this.form_cliente.nome = this.pessoas[param_index].nome;
-            //         this.form_cliente.cpf = this.pessoas[param_index].cpf;
-            //         this.form_cliente.rg = this.pessoas[param_index].rg;
-            //         this.form_cliente.email = this.pessoas[param_index].email;
-            //         this.form_cliente.cep = this.pessoas[param_index].cep;
-            //         this.form_cliente.endereco = this.pessoas[param_index].endereco;
-            //         this.form_cliente.complemento = this.pessoas[param_index].complemento;
-            //         this.form_cliente.data_cadastro = this.pessoas[param_index].data_cadastro;
-            //         this.form_cliente.data_nascimento = this.pessoas[param_index].data_nascimento;
-            //         this.form_cliente.numero_celular = this.pessoas[param_index].numero_celular;
-            //         this.form_cliente.senha = this.pessoas[param_index].senha;
-            //     },
-            //     remPessoa: function (param_index, param_id) {
-            //         var decisao = confirm('Deseja realmente remover a pessoa id:' + param_id + ' ?');
-            //         if (decisao) {
-            //             this.$http.get('http://localhost:4000/delpessoa/' + param_id)
-            //                 .then(response => {
-            //                     this.pessoas.splice(param_index, 1);
-            //                     alert('Removeu com sucesso a pessoa id:' + response.data.id);
-            //                 })
-            //                 .catch(error => {
-            //                     // error callback                                        
-            //                     alert('Erro ao remover a pessoa ' + param_id + ': ' + error);
-            //                     console.log(error);
-            //                 });
-            //         } else {
-            //             alert('pessoa não removida !!!');
-            //         }
 
-            //     }
-            // },
-            //fim do methods
+
+                    } else {
+                        this.$http.post('http://localhost:4000/updatepessoa/' + pessoa.id, pessoa)
+                            .then(response => {
+                                const pessoa_alterada = response.data;
+                                pessoa_alterada.data_cadastro = this.$options.filters.formataData(pessoa_alterada.data_cadastro);
+                                const index = this.pessoas.findIndex(item => item.id === pessoa_alterada.id);
+                                if (index !== -1) { Vue.set(this.pessoas, index, pessoa_alterada); }
+                                alert('Pessoa alterada ');
+
+                            })
+                            .catch(error => {
+                                alert('Erro ao alterar a pessoa ' + error);
+                            });
+                    }
+
+                },
+                editPessoa: function (param_index) {
+                    this.form_cliente.id = this.pessoas[param_index].id;
+                    this.form_cliente.tipo = this.pessoas[param_index].tipo;
+                    this.form_cliente.nome = this.pessoas[param_index].nome;
+                    this.form_cliente.cpf = this.pessoas[param_index].cpf;
+                    this.form_cliente.rg = this.pessoas[param_index].rg;
+                    this.form_cliente.email = this.pessoas[param_index].email;
+                    this.form_cliente.cep = this.pessoas[param_index].cep;
+                    this.form_cliente.endereco = this.pessoas[param_index].endereco;
+                    this.form_cliente.complemento = this.pessoas[param_index].complemento;
+                    this.form_cliente.data_cadastro = this.pessoas[param_index].data_cadastro;
+                    this.form_cliente.data_nascimento = this.pessoas[param_index].data_nascimento;
+                    this.form_cliente.numero_celular = this.pessoas[param_index].numero_celular;
+                    this.form_cliente.senha = this.pessoas[param_index].senha;
+                },
+                remPessoa: function (param_index, param_id) {
+                    var decisao = confirm('Deseja realmente remover a pessoa id:' + param_id + ' ?');
+                    if (decisao) {
+                        this.$http.get('http://localhost:4000/delpessoa/' + param_id)
+                            .then(response => {
+                                this.pessoas.splice(param_index, 1);
+                                alert('Removeu com sucesso a pessoa id:' + response.data.id);
+                            })
+                            .catch(error => {
+                                // error callback                                        
+                                alert('Erro ao remover a pessoa ' + param_id + ': ' + error);
+                                console.log(error);
+                            });
+                    } else {
+                        alert('pessoa não removida !!!');
+                    }
+
+                }
+            },
+            // fim do methods
             filters: {
                 formataData: function (value) {
                     //yyyy-mm-dd

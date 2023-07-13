@@ -1,2 +1,3 @@
-- mudar os campos do required pra uma mensagem mais explicativa
-- adicionar mais complementos
+- mudar os campos do required pra uma mensagem mais explicativa;
+- adicionar mais complementos;
+- arrumar a resposta do insert pessoa;

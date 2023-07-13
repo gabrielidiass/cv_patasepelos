@@ -33,6 +33,86 @@ sw.get('/listarclientes', function (req, res) {
     }
   });
 });
+sw.post('/inserirpessoa', function (req, res, next) {
+  postgres.connect(function (err, client, done) {
+    if (err) {
+      console.log("Nao conseguiu acessar o  BD " + err);
+      res.status(400).send('{' + err + '}');
+    } else {
+      var q = {
+        text: 'insert into tb_pessoa (data_cadastro, tipo, nome, cpf, rg, email, cep, endereco, complemento, data_nascimento, numero_celular, senha) values (now(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) returning nome, cpf;',
+        values: [
+          req.body.tipo,
+          req.body.nome,
+          req.body.cpf,
+          req.body.rg,
+          req.body.email,
+          req.body.cep,
+          req.body.endereco,
+          req.body.complemento,
+          req.body.data_nascimento,
+          req.body.numero_celular,
+          req.body.senha
+        ]
+      }
+      console.log(q);
+      client.query(q, function (err, result) {
+        done();
+        if (err) {
+          console.log('retornou 400 pelo insertpessoa');
+          res.status(400).send('{' + err + '}');
+        } else {
+          console.log('retornou 201 no insertpessoa');
+          res.status(201).send({
+            "tipo": req.body.tipo,
+            "nome": req.body.nome,
+            "cpf": req.body.cpf,
+            "rg": req.body.rg,
+            "email": req.body.email,
+            "cep": req.body.cep,
+            "endereco": req.body.endereco,
+            "complemento": req.body.complemento,
+            "data_cadastro": result.rows[0].data_cadastro,
+            "data_nascimento": req.body.data_nascimento,
+            "numero_celular": req.body.numero_celular,
+            "senha": req.body.senha
+          })
+
+        }
+      });
+    }
+  });
+});
+sw.post('/inserircliente', function (req, res, next) {
+  postgres.connect(function (err, client, done) {
+    if (err) {
+      console.log("Nao conseguiu acessar o  BD " + err);
+      res.status(400).send('{' + err + '}');
+    } else {
+      var q = {
+        text: ' insert into tb_cliente (data_ultima_visita, cpf) values ($1, $2) returning cpf;',
+        values: [
+          req.body.ultima_visita,
+          req.body.cpf
+        ]
+      }
+      console.log(q);
+      client.query(q, function (err, result) {
+        done();
+        if (err) {
+          console.log('retornou 400 pelo inserircliente');
+          res.status(400).send('{' + err + '}');
+        } else {
+          console.log('retornou 201 no inserircliente');
+          res.status(201).send({
+            "cpf": req.body.cpf,
+            "ultima_visita": req.body.data_ultima_visita
+          })
+        }
+      });
+    }
+  });
+});
 const postgres = new pg.Pool(config);
 sw.listen(4000, function () {
   console.log('Server is running.. on Port 4000');
