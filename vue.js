@@ -105,9 +105,10 @@ $(document).ready(function () {
 
                 console.log(pessoa);
                 this.$http.post('http://localhost:4000/inserirpessoa', pessoa)
-                    .then(
+                    .then(() => {
                         console.log('pessoa inserida')
-                    )
+                        console.log(response.data)
+                        })
                     .catch(error => {
                         console.log('erro ao inserir pessoa');
                     });
