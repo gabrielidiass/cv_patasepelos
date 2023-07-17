@@ -134,7 +134,10 @@ $(document).ready(function () {
                         })})
 
                     var objeto_final = $.extend({}, objeto_cliente, objeto_pessoa);
-                    console.log(objeto_final.data_ultima_visita);
+                    objeto_final.data_cadastro = this.$options.filters.formataData(objeto_final.data_cadastro);
+                    objeto_final.data_ultima_visita = this.$options.filters.formataData(objeto_final.data_ultima_visita);
+                    objeto_final.data_nascimento = this.$options.filters.formataData(objeto_final.data_nascimento);
+            
                     
                     this.clientes.push(objeto_final);
                 } catch (error) { alert(error.message); }
