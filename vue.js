@@ -102,37 +102,40 @@ $(document).ready(function () {
                 this.form_cliente.ultima_visita = '';
             },
             inserir_pessoa: function (pessoa) {
-
                 console.log(pessoa);
-                this.$http.post('http://localhost:4000/inserirpessoa', pessoa)
-                    .then(() => {
-                        console.log('pessoa inserida')
-                        console.log(response.data)
-                        })
-                    .catch(error => {
-                        console.log('erro ao inserir pessoa');
-                    });
+                // var dataInsercao;
+                // this.$http.post('http://localhost:4000/inserirpessoa', pessoa)
+                //     .then(response => {
+                //         console.log('pessoa inserida');
+                //         dataInsercao = response.data;
+                //         })
+                //     .catch(error => {
+                //         console.log('erro ao inserir pessoa');
+                //     });
             },
             inserir_cliente: function () {
                 // faz uma cópia de cliente e transforma em objeto jquerry
                 var cliente = jQuery.extend({}, this.form_cliente);
+
                 //adiciona a propriedade "tipo", pra que no bd, o objeto seja inserido como cliente
                 cliente.tipo = "cliente";
+
                 // a condicional a seguir usa a função "some()", que procura se algum objeto do array
                 //  possui aquela propriedade específica, para testar se algum cliente no array de clientes possui aquele cpf
                 //  se retornar "false" indica que nenhum cliente possui aquele cpf, logo, se trata de um cliente novo
+
+
                 if ((clientes.some(cliente => cliente.cpf === this.form_cliente.cpf) == false)) {
                     // chama a função "inserir pessoa" passando o objeto jquerry "cliente"
-                    this.inserir_pessoa(cliente);
+                 this.inserir_pessoa(cliente);
                     this.$http.post('http://localhost:4000/inserircliente', cliente)
                         .then(response => {
-                            console.log(response.data);
                             response.data.data_cadastro = this.$options.filters.formataData(response.data.data_cadastro);
                             response.data.ultima_visita = this.$options.filters.formataData(response.data.ultima_visita);
                             response.data.data_nascimento = this.$options.filters.formataData(response.data.data_nascimento);
                             this.clientes.push(response.data);
                             console.log('cliente inserido');
-                            this.limpar_form_cliente();
+                            // this.limpar_form_cliente();
                             
                         })
                         .catch(error => {
