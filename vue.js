@@ -120,41 +120,28 @@ $(document).ready(function () {
                 cliente.tipo = "cliente";
 
                 if ((clientes.some(cliente => cliente.cpf === this.form_cliente.cpf) == false)) {
-                   try {
-                    // documentação do some(): https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/some
-                   var objeto_pessoa = await this.inserir_pessoa(cliente);
-                   var objeto_cliente = await new Promise((resolve, reject) => {
-                    this.$http.post('http://localhost:4000/inserircliente', cliente)
-                        .then(response => {
-                            resolve(objeto_cliente = response.data);
-                            console.log('cliente inserido');
+                    try {
+                        // documentação do some(): https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+                        var objeto_pessoa = await this.inserir_pessoa(cliente);
+                        var objeto_cliente = await new Promise((resolve, reject) => {
+                            this.$http.post('http://localhost:4000/inserircliente', cliente)
+                                .then(response => {
+                                    resolve(objeto_cliente = response.data);
+                                    console.log('cliente inserido');
+                                })
+                                .catch(error => {
+                                    reject(alert('erro ao inserir' + error));
+                                })
                         })
-                        .catch(error => {
-                          reject(alert('erro ao inserir' + error));
-                        })})
 
-                    var objeto_final = $.extend({}, objeto_cliente, objeto_pessoa);
-                    objeto_final.data_cadastro = this.$options.filters.formataData(objeto_final.data_cadastro);
-                    objeto_final.data_ultima_visita = this.$options.filters.formataData(objeto_final.data_ultima_visita);
-                    objeto_final.data_nascimento = this.$options.filters.formataData(objeto_final.data_nascimento);
-            
-                    
-                    this.clientes.push(objeto_final);
-                } catch (error) { alert(error.message); }
+                        var objeto_final = $.extend({}, objeto_cliente, objeto_pessoa);
 
+                        objeto_final.data_cadastro = this.$options.filters.formataData(objeto_final.data_cadastro);
+                        objeto_final.data_ultima_visita = this.$options.filters.formataData(objeto_final.data_ultima_visita);
+                        objeto_final.data_nascimento = this.$options.filters.formataData(objeto_final.data_nascimento);
 
-
-
-
-
-
-
-
-
-
-
-
-
+                        this.clientes.push(objeto_final);
+                    } catch (error) { alert(error.message); }
 
 
                 } else {
@@ -191,8 +178,6 @@ $(document).ready(function () {
                 this.form_cliente.senha = this.pessoas[param_index].senha;
             },
             remPessoa: function (param_index, param_id) {
-                var decisao = confirm('Deseja realmente remover a pessoa id:' + param_id + ' ?');
-                if (decisao) {
                     this.$http.get('http://localhost:4000/delpessoa/' + param_id)
                         .then(response => {
                             this.pessoas.splice(param_index, 1);
@@ -203,9 +188,7 @@ $(document).ready(function () {
                             alert('Erro ao remover a pessoa ' + param_id + ': ' + error);
                             console.log(error);
                         });
-                } else {
-                    alert('pessoa não removida !!!');
-                }
+              
 
             }
         },
@@ -223,7 +206,6 @@ $(document).ready(function () {
 
         }, //fim do filters
         created: function () {
-
             this.$http.get('http://localhost:4000/listarclientes')
                 .then(response => {
                     for (let e of response.data) {
