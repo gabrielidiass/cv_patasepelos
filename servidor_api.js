@@ -40,7 +40,7 @@ sw.post('/inserirpessoa', function (req, res, next) {
       res.status(400).send('{' + err + '}');
     } else {
       var q = {
-        text: 'insert into tb_pessoa (data_cadastro, tipo, nome, cpf, rg, email, cep, endereco, complemento, data_nascimento, numero_celular, senha) values (now(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) returning nome, cpf;',
+        text: 'insert into tb_pessoa (data_cadastro, tipo, nome, cpf, rg, email, cep, endereco, complemento, data_nascimento, numero_celular, senha) values (now(), $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) returning nome, cpf, data_cadastro, data_nascimento;',
         values: [
           req.body.tipo,
           req.body.nome,
@@ -90,9 +90,9 @@ sw.post('/inserircliente', function (req, res, next) {
       res.status(400).send('{' + err + '}');
     } else {
       var q = {
-        text: ' insert into tb_cliente (data_ultima_visita, cpf) values ($1, $2) returning cpf;',
+        text: ' insert into tb_cliente (data_ultima_visita, cpf) values ($1, $2) returning cpf, data_ultima_visita;',
         values: [
-          req.body.ultima_visita,
+          req.body.data_ultima_visita,
           req.body.cpf
         ]
       }
@@ -106,7 +106,7 @@ sw.post('/inserircliente', function (req, res, next) {
           console.log('retornou 201 no inserircliente');
           res.status(201).send({
             "cpf": req.body.cpf,
-            "ultima_visita": req.body.data_ultima_visita
+            "data_ultima_visita": req.body.data_ultima_visita
           })
         }
       });

@@ -58,7 +58,7 @@
                                 <td>{{c.complemento}}</td>
                                 <td>{{c.numero_celular}}</td>
                                 <td>{{c.data_cadastro}}</td>
-                                <td>{{c.ultima_visita}}</td>
+                                <td>{{c.data_ultima_visita}}</td>
                                 <td><button v-on:click="edita_cliente(indice)" class="btn" 
                                     type="button">Editar</button>
                                 </td>
@@ -112,8 +112,8 @@
                             <input type="number" class="form-control" v-model="form_cliente.numero_celular" id="funci_input_numero_celular">
                         </div>
                         <div id="inputContainer" class="form-group.hidden">
-                            <label for="funci_input_ultima_visita">Data da última visita:</label>
-                            <input type="date" class="form-control" v-model="form_cliente.ultima_visita" id="funci_input_ultima_visita">
+                            <label for="funci_input_data_ultima_visita">Data da última visita:</label>
+                            <input type="date" class="form-control" v-model="form_cliente.data_ultima_visita" id="funci_input_data_ultima_visita">
                         </div>
                             <label for="funci_input_senha">Senha:</label>
                             <input type="password" class="form-control" v-model="form_cliente.senha" id="funci_input_senha">

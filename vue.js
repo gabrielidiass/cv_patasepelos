@@ -14,7 +14,7 @@ $(document).ready(function () {
             data_nascimento: '',
             numero_celular: '',
             senha: '',
-            ultima_visita: ''
+            data_ultima_visita: ''
         }
     }
     Vue.prototype.$http = axios;
@@ -87,7 +87,7 @@ $(document).ready(function () {
             // },
             // markAsDirty(validation) {
             //     validation.$touch();
-            // },
+            // }, 
             limpar_form_cliente: function () {
                 this.form_cliente.nome = '';
                 this.form_cliente.cpf = '';
@@ -99,50 +99,62 @@ $(document).ready(function () {
                 this.form_cliente.data_nascimento = '';
                 this.form_cliente.numero_celular = '';
                 this.form_cliente.senha = '';
-                this.form_cliente.ultima_visita = '';
+                this.form_cliente.data_ultima_visita = '';
             },
             inserir_pessoa: function (pessoa) {
-                console.log(pessoa);
-                // var dataInsercao;
-                // this.$http.post('http://localhost:4000/inserirpessoa', pessoa)
-                //     .then(response => {
-                //         console.log('pessoa inserida');
-                //         dataInsercao = response.data;
-                //         })
-                //     .catch(error => {
-                //         console.log('erro ao inserir pessoa');
-                //     });
-            },
-            inserir_cliente: function () {
-                // faz uma cópia de cliente e transforma em objeto jquerry
-                var cliente = jQuery.extend({}, this.form_cliente);
-
-                //adiciona a propriedade "tipo", pra que no bd, o objeto seja inserido como cliente
-                cliente.tipo = "cliente";
-
-                // a condicional a seguir usa a função "some()", que procura se algum objeto do array
-                //  possui aquela propriedade específica, para testar se algum cliente no array de clientes possui aquele cpf
-                //  se retornar "false" indica que nenhum cliente possui aquele cpf, logo, se trata de um cliente novo
-
-
-                if ((clientes.some(cliente => cliente.cpf === this.form_cliente.cpf) == false)) {
-                    // chama a função "inserir pessoa" passando o objeto jquerry "cliente"
-                 this.inserir_pessoa(cliente);
-                    this.$http.post('http://localhost:4000/inserircliente', cliente)
+                // construção da Promise baseada no vídeo: https://www.youtube.com/watch?v=87gWRVGRZ5o;
+                return new Promise((resolve, reject) => {
+                    this.$http.post('http://localhost:4000/inserirpessoa', pessoa)
                         .then(response => {
-                            response.data.data_cadastro = this.$options.filters.formataData(response.data.data_cadastro);
-                            response.data.ultima_visita = this.$options.filters.formataData(response.data.ultima_visita);
-                            response.data.data_nascimento = this.$options.filters.formataData(response.data.data_nascimento);
-                            this.clientes.push(response.data);
-                            console.log('cliente inserido');
-                            // this.limpar_form_cliente();
-                            
+                            resolve(response.data);
                         })
                         .catch(error => {
-                            alert('erro ao inserir');
+                            console.log('erro ao inserir pessoa' + error);
+                            reject("erro ao inserir pessoa");
                         });
-                } else {
+                });
+            },
+            inserir_cliente: async function () {
+                var cliente = jQuery.extend({}, this.form_cliente);
 
+                cliente.tipo = "cliente";
+
+                if ((clientes.some(cliente => cliente.cpf === this.form_cliente.cpf) == false)) {
+                   try {
+                    // documentação do some(): https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+                   var objeto_pessoa = await this.inserir_pessoa(cliente);
+                   var objeto_cliente = await new Promise((resolve, reject) => {
+                    this.$http.post('http://localhost:4000/inserircliente', cliente)
+                        .then(response => {
+                            resolve(objeto_cliente = response.data);
+                            console.log('cliente inserido');
+                        })
+                        .catch(error => {
+                          reject(alert('erro ao inserir' + error));
+                        })})
+
+                    var objeto_final = $.extend({}, objeto_cliente, objeto_pessoa);
+                    console.log(objeto_final.data_ultima_visita);
+                    
+                    this.clientes.push(objeto_final);
+                } catch (error) { alert(error.message); }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                } else {
                     console.log("alterar cliente");
                     // console.log("caiu no else");
                     // this.$http.post('http://localhost:4000/updatepessoa/' + pessoa.id, pessoa)
@@ -208,6 +220,7 @@ $(document).ready(function () {
 
         }, //fim do filters
         created: function () {
+
             this.$http.get('http://localhost:4000/listarclientes')
                 .then(response => {
                     for (let e of response.data) {
@@ -222,7 +235,7 @@ $(document).ready(function () {
                             data_cadastro: this.$options.filters.formataData(e.data_cadastro),
                             data_nascimento: this.$options.filters.formataData(e.data_nascimento),
                             numero_celular: e.numero_celular,
-                            ultima_visita: this.$options.filters.formataData(e.data_ultima_visita),
+                            data_ultima_visita: this.$options.filters.formataData(e.data_ultima_visita),
                             senha: e.senha
                         }
                         );
