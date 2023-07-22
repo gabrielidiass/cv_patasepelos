@@ -177,20 +177,19 @@ $(document).ready(function () {
                 this.form_cliente.numero_celular = this.pessoas[param_index].numero_celular;
                 this.form_cliente.senha = this.pessoas[param_index].senha;
             },
-            remPessoa: function (param_index, param_id) {
-                    this.$http.get('http://localhost:4000/delpessoa/' + param_id)
+            deleta_cliente: function (param_index, cpf) {
+                    this.$http.get('http://localhost:4000/deletarpessoa/' + cpf)
                         .then(response => {
-                            this.pessoas.splice(param_index, 1);
-                            alert('Removeu com sucesso a pessoa id:' + response.data.id);
+                            this.clientes.splice(param_index, 1);
+                            //alert('Removeu com sucesso ' + response.data.cpf);
                         })
                         .catch(error => {
                             // error callback                                        
-                            alert('Erro ao remover a pessoa ' + param_id + ': ' + error);
+                            // alert('Erro ao remover ' + cpf + ': ' + error);
                             console.log(error);
                         });
-              
-
             }
+            
         },
         // fim do methods
         filters: {
