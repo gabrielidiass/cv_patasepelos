@@ -149,51 +149,54 @@ sw.get('/deletarpessoa/:cpf', (req, res) => {
     }
   });
 });
-sw.post('/alterarpessoa/', (req, res) => {
-  postgres.connect(function(err,client,done) {
-      if(err){
-          console.log("Não conseguiu acessar o BD: "+ err);
-          res.status(400).send('{'+err+'}');
-      }else{
-          var q ={
-              text: 'update tb_pessoa set nome = $1, rg = $2, email = $3, cep = $4, endereco = $5, complemento = $6, data_nascimento = $7, numero_celular = $8, senha = $9  where cpf = $10 returning cpf, nome',
-              values: [
-                req.body.nome, 
-                req.body.rg, 
-                req.body.email,
-                req.body.cep,
-                req.body.endereco,
-                req.body.complemento,
-                req.body.data_nascimento,
-                req.body.numero_celular,
-                req.body.senha,
-               req.body.cpf]
-          }
-          console.log(q);     
-          client.query(q,function(err,result) {
-              done(); // closing the connection;
-              if(err){
-                  console.log("Erro no update Pessoa: "+err);
-                  res.status(400).send('{'+err+'}');
-              }else{             
-                  res.status(200).send({
-                    "tipo": req.body.tipo,
-                    "nome": req.body.nome,
-                    "cpf": req.body.cpf,
-                    "rg": req.body.rg,
-                    "email": req.body.email,
-                    "cep": req.body.cep,
-                    "endereco": req.body.endereco,
-                    "complemento": req.body.complemento,
-                    "data_cadastro": result.rows[0].data_cadastro,
-                    "data_nascimento": req.body.data_nascimento,
-                    "numero_celular": req.body.numero_celular,
-                    "senha": req.body.senha              
-                   });
-                       }
-          });
+sw.post('/alterarpessoa/:cpf', (req, res) => {
+  postgres.connect(function (err, client, done) {
+    if (err) {
+      console.log("Não conseguiu acessar o BD: " + err);
+      res.status(400).send('{' + err + '}');
+    } else {
+      var q = {
+        text: 'update tb_pessoa set tipo= $1, nome = $2, cpf= $3, rg= $4, email= $5, cep= $6, endereco= $7, complemento= $8, data_nascimento= $9, numero_celular= $10, senha= $11 where cpf = $3 returning cpf, nome',
+        values: [
+          req.body.tipo,
+          req.body.nome,
+          req.body.cpf,
+          req.body.rg,
+          req.body.email,
+          req.body.cep,
+          req.body.endereco,
+          req.body.complemento,
+          req.body.data_nascimento,
+          req.body.numero_celular,
+          req.body.senha
+        ]
       }
-   });
+      console.log(q);
+      client.query(q, function (err, result) {
+        done(); // closing the connection;
+        if (err) {
+          console.log("Erro no alterar: " + err);
+          res.status(400).send('{' + err + '}');
+        } else {
+          res.status(200).send({
+            "nome": req.body.nome,
+            "tipo": req.body.tipo,
+            "nome": req.body.nome,
+            "cpf": req.body.cpf,
+            "rg": req.body.rg,
+            "email": req.body.email,
+            "cep": req.body.cep,
+            "endereco": req.body.endereco,
+            "complemento": req.body.complemento,
+            "data_cadastro": result.rows[0].data_cadastro,
+            "data_nascimento": req.body.data_nascimento,
+            "numero_celular": req.body.numero_celular,
+            "senha": req.body.senha
+          });
+        }
+      });
+    }
+  });
 });
 
 

@@ -114,6 +114,25 @@ $(document).ready(function () {
                         });
                 });
             },
+            alterar_pessoa: function (pessoa){
+                // chama a api e passa a pessoa (objeto) pra ela
+                // o cpf pra requisição será o cpf da pessoa passada como parametro
+                     this.$http.post('http://localhost:4000/alterarpessoa/' + pessoa.cpf, pessoa)
+                // quando bem sucedido
+                            .then(response => {
+                                // atribui a resposta do servidor a uma variável
+                                const pessoa_alterada = response.data;
+                                // aplica o filtro de data no data_cadastro
+                                // pessoa_alterada.data_cadastro = this.$options.filters.formataData(pessoa_alterada.data_cadastro);
+                                const index = this.clientes.findIndex(item => item.cpf === pessoa_alterada.cpf);
+                                if (index !== -1) { Vue.set(this.clientes, index, pessoa_alterada); }
+                                alert('Pessoa alterada ');
+                            })
+                            .catch(error => {
+                                alert('Erro ao alterar a pessoa ' + error);
+                            });
+                        return;
+            },
             inserir_cliente: async function () {
                 var cliente = jQuery.extend({}, this.form_cliente);
 
@@ -145,37 +164,23 @@ $(document).ready(function () {
 
 
                 } else {
-                    console.log("alterar cliente");
-                    // console.log("caiu no else");
-                    // this.$http.post('http://localhost:4000/updatepessoa/' + pessoa.id, pessoa)
-                    //     .then(response => {
-                    //         const pessoa_alterada = response.data;
-                    //         pessoa_alterada.data_cadastro = this.$options.filters.formataData(pessoa_alterada.data_cadastro);
-                    //         const index = this.pessoas.findIndex(item => item.id === pessoa_alterada.id);
-                    //         if (index !== -1) { Vue.set(this.pessoas, index, pessoa_alterada); }
-                    //         alert('Pessoa alterada ');
-
-                    //     })
-                    //     .catch(error => {
-                    //         alert('Erro ao alterar a pessoa ' + error);
-                    //     });
+                   console.log(cliente);
+                   this.alterar_pessoa(cliente);
                 }
 
             },
-            editPessoa: function (param_index) {
-                this.form_cliente.id = this.pessoas[param_index].id;
-                this.form_cliente.tipo = this.pessoas[param_index].tipo;
-                this.form_cliente.nome = this.pessoas[param_index].nome;
-                this.form_cliente.cpf = this.pessoas[param_index].cpf;
-                this.form_cliente.rg = this.pessoas[param_index].rg;
-                this.form_cliente.email = this.pessoas[param_index].email;
-                this.form_cliente.cep = this.pessoas[param_index].cep;
-                this.form_cliente.endereco = this.pessoas[param_index].endereco;
-                this.form_cliente.complemento = this.pessoas[param_index].complemento;
-                this.form_cliente.data_cadastro = this.pessoas[param_index].data_cadastro;
-                this.form_cliente.data_nascimento = this.pessoas[param_index].data_nascimento;
-                this.form_cliente.numero_celular = this.pessoas[param_index].numero_celular;
-                this.form_cliente.senha = this.pessoas[param_index].senha;
+            edita_cliente: function (param_index) {
+                this.form_cliente.tipo = this.clientes[param_index].tipo;
+                this.form_cliente.nome = this.clientes[param_index].nome;
+                this.form_cliente.cpf = this.clientes[param_index].cpf;
+                this.form_cliente.rg = this.clientes[param_index].rg;
+                this.form_cliente.email = this.clientes[param_index].email;
+                this.form_cliente.cep = this.clientes[param_index].cep;
+                this.form_cliente.endereco = this.clientes[param_index].endereco;
+                this.form_cliente.complemento = this.clientes[param_index].complemento;
+                this.form_cliente.data_nascimento = this.clientes[param_index].data_nascimento;
+                this.form_cliente.numero_celular = this.clientes[param_index].numero_celular;
+                this.form_cliente.senha = this.clientes[param_index].senha;
             },
             deleta_cliente: function (param_index, cpf) {
                     this.$http.get('http://localhost:4000/deletarpessoa/' + cpf)
