@@ -104,6 +104,7 @@ $(document).ready(function () {
             inserir_pessoa: function (pessoa) {
                 // construção da Promise baseada no vídeo: https://www.youtube.com/watch?v=87gWRVGRZ5o;
                 return new Promise((resolve, reject) => {
+
                     this.$http.post('http://localhost:4000/inserirpessoa', pessoa)
                         .then(response => {
                             resolve(response.data);
@@ -112,26 +113,23 @@ $(document).ready(function () {
                             console.log('erro ao inserir pessoa' + error);
                             reject("erro ao inserir pessoa");
                         });
+
                 });
             },
-            alterar_pessoa: function (pessoa){
-                // chama a api e passa a pessoa (objeto) pra ela
-                // o cpf pra requisição será o cpf da pessoa passada como parametro
-                     this.$http.post('http://localhost:4000/alterarpessoa/' + pessoa.cpf, pessoa)
-                // quando bem sucedido
+            alterar_pessoa: async function (pessoa) {
+                return new Promise((resolve, reject) => {
+                    try {
+                        this.$http.post('http://localhost:4000/alterarpessoa/' + pessoa.cpf, pessoa)
                             .then(response => {
-                                // atribui a resposta do servidor a uma variável
-                                const pessoa_alterada = response.data;
-                                // aplica o filtro de data no data_cadastro
-                                // pessoa_alterada.data_cadastro = this.$options.filters.formataData(pessoa_alterada.data_cadastro);
-                                const index = this.clientes.findIndex(item => item.cpf === pessoa_alterada.cpf);
-                                if (index !== -1) { Vue.set(this.clientes, index, pessoa_alterada); }
-                                alert('Pessoa alterada ');
+                                resolve(response.data);
                             })
                             .catch(error => {
-                                alert('Erro ao alterar a pessoa ' + error);
+                                reject(alert('Erro ao alterar a pessoa ' + error));
                             });
-                        return;
+                    } catch (error) {
+                        console.error("Erro ao executar a chamada assíncrona:", error);
+                    }
+                })
             },
             inserir_cliente: async function () {
                 var cliente = jQuery.extend({}, this.form_cliente);
@@ -164,10 +162,32 @@ $(document).ready(function () {
 
 
                 } else {
-                   console.log(cliente);
-                   this.alterar_pessoa(cliente);
-                }
+                    try {
+                        this.form_cliente.data_cadastro = cliente.data_cadastro;
+                        var pessoa_alterada = await this.alterar_pessoa(cliente);
+                        var cliente_alterado = await new Promise((resolve, reject) => {
+                            this.$http.post('http://localhost:4000/alterarcliente/' + cliente.cpf, cliente)
+                                .then(response => {
+                                    resolve(cliente_alterado = response.data);
+                                    // console.log('cliente alterado');
+                                })
+                                .catch(error => {
+                                    reject(alert('Erro ao alterar a cliente ' + error));
+                                });
+                        }
+                        )
+                        // console.log("voltando do alterar pessoa" + cliente_alterado.data_cadastro);
+                        console.log(pessoa_alterada);
+                        var alteracao_final = $.extend({}, cliente_alterado, pessoa_alterada);
+                        // alteracao_final.data_cadastro = this.$options.filters.formataData(alteracao_final.data_cadastro);
 
+                        // aqui mescla cliente alterado e pessoa alterada pra incluir no vetor
+                        const index = this.clientes.findIndex(item => item.cpf === alteracao_final.cpf);
+                        if (index !== -1) { Vue.set(this.clientes, index, alteracao_final); }
+                        alert('cliente alterado ');
+                        // console.log(alteracao_final.data_cadastro);
+                    } catch (error) { alert(error.message); }
+                }
             },
             edita_cliente: function (param_index) {
                 this.form_cliente.tipo = this.clientes[param_index].tipo;
@@ -179,22 +199,24 @@ $(document).ready(function () {
                 this.form_cliente.endereco = this.clientes[param_index].endereco;
                 this.form_cliente.complemento = this.clientes[param_index].complemento;
                 this.form_cliente.data_nascimento = this.clientes[param_index].data_nascimento;
+                this.form_cliente.data_ultima_visita = this.clientes[param_index].data_ultima_visita;
                 this.form_cliente.numero_celular = this.clientes[param_index].numero_celular;
                 this.form_cliente.senha = this.clientes[param_index].senha;
+                this.form_cliente.data_cadastro = this.clientes[param_index].data_cadastro;
             },
             deleta_cliente: function (param_index, cpf) {
-                    this.$http.get('http://localhost:4000/deletarpessoa/' + cpf)
-                        .then(response => {
-                            this.clientes.splice(param_index, 1);
-                            //alert('Removeu com sucesso ' + response.data.cpf);
-                        })
-                        .catch(error => {
-                            // error callback                                        
-                            // alert('Erro ao remover ' + cpf + ': ' + error);
-                            console.log(error);
-                        });
+                this.$http.get('http://localhost:4000/deletarpessoa/' + cpf)
+                    .then(response => {
+                        this.clientes.splice(param_index, 1);
+                        //alert('Removeu com sucesso ' + response.data.cpf);
+                    })
+                    .catch(error => {
+                        // error callback                                        
+                        // alert('Erro ao remover ' + cpf + ': ' + error);
+                        console.log(error);
+                    });
             }
-            
+
         },
         // fim do methods
         filters: {

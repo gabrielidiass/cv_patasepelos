@@ -156,7 +156,7 @@ sw.post('/alterarpessoa/:cpf', (req, res) => {
       res.status(400).send('{' + err + '}');
     } else {
       var q = {
-        text: 'update tb_pessoa set tipo= $1, nome = $2, cpf= $3, rg= $4, email= $5, cep= $6, endereco= $7, complemento= $8, data_nascimento= $9, numero_celular= $10, senha= $11 where cpf = $3 returning cpf, nome',
+        text: 'update tb_pessoa set tipo= $1, nome = $2, cpf= $3, rg= $4, email= $5, cep= $6, endereco= $7, complemento= $8, data_nascimento= $9, numero_celular= $10, senha= $11, data_cadastro = $12 where cpf = $3 returning cpf, nome',
         values: [
           req.body.tipo,
           req.body.nome,
@@ -168,7 +168,8 @@ sw.post('/alterarpessoa/:cpf', (req, res) => {
           req.body.complemento,
           req.body.data_nascimento,
           req.body.numero_celular,
-          req.body.senha
+          req.body.senha,
+          req.body.data_cadastro
         ]
       }
       console.log(q);
@@ -188,7 +189,7 @@ sw.post('/alterarpessoa/:cpf', (req, res) => {
             "cep": req.body.cep,
             "endereco": req.body.endereco,
             "complemento": req.body.complemento,
-            "data_cadastro": result.rows[0].data_cadastro,
+            "data_cadastro": req.body.data_cadastro,
             "data_nascimento": req.body.data_nascimento,
             "numero_celular": req.body.numero_celular,
             "senha": req.body.senha
@@ -198,7 +199,35 @@ sw.post('/alterarpessoa/:cpf', (req, res) => {
     }
   });
 });
-
+sw.post('/alterarcliente/:cpf', (req, res) => {
+  postgres.connect(function (err, client, done) {
+    if (err) {
+      console.log("Não conseguiu acessar o BD: " + err);
+      res.status(400).send('{' + err + '}');
+    } else {
+      var q = {
+        text: 'update tb_cliente set cpf= $1, data_ultima_visita = $2 where cpf = $1 returning cpf, data_ultima_visita',
+        values: [
+          req.body.cpf,
+          req.body.data_ultima_visita
+        ]
+      }
+      console.log(q);
+      client.query(q, function (err, result) {
+        done(); // closing the connection;
+        if (err) {
+          console.log("Erro no alterar: " + err);
+          res.status(400).send('{' + err + '}');
+        } else {
+          res.status(200).send({
+            "cpf": req.body.cpf,
+            "data_ultima_visita": req.body.data_ultima_visita
+          });
+        }
+      });
+    }
+  });
+});
 
 
 const postgres = new pg.Pool(config);
