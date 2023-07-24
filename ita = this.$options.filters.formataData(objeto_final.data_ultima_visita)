@@ -1,0 +1,221 @@
+[33mcommit f7b860f99d2c8c49aa0f7297d241d49a558dff77[m[33m ([m[1;36mHEAD -> [m[1;32mtb_cliente_branch[m[33m, [m[1;31morigin/tb_cliente_branch[m[33m)[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Mon Jul 24 20:28:53 2023 -0300
+
+    alterar completo
+
+[33mcommit 7686f2b5ff55d6b2746c9126c7ea09c2204a86e0[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Sun Jul 23 14:38:20 2023 -0300
+
+    alterar pessoa funcionando, falta alterar cliente
+
+[33mcommit 7fdbdca05352770f57389a23de22ce60f61778b4[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Sat Jul 22 20:46:15 2023 -0300
+
+    mudando branch
+
+[33mcommit a5723f97c94c39a64431b06275c64bb40b1c1805[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Mon Jul 17 20:57:13 2023 -0300
+
+    alterando branch
+
+[33mcommit b6607f85ab3f84e4ec8cb2341a83852aa96e7e87[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Mon Jul 17 19:51:49 2023 -0300
+
+    inserção de cliente concluida
+
+[33mcommit 9e9597f79fbe2eccda055d889bbd5ec3f86437e6[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Mon Jul 17 19:45:39 2023 -0300
+
+    inserindo cliente
+
+[33mcommit 5708ceb1275b1cd22326c9f68b06bc022542dafb[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Mon Jul 17 13:23:01 2023 -0300
+
+    cliente sendo inserido e passado para a função vazia 'pessoa' commit correto
+
+[33mcommit 8a1352e6a3314b24c61df88c8f8ced2b7c7a7328[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Thu Jul 13 21:21:37 2023 -0300
+
+    no message
+
+[33mcommit 29c0f46a4e2519232fe39fcb5014905d7058d5e6[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Thu Jul 13 20:55:28 2023 -0300
+
+    condição do inserir cliente feita
+
+[33mcommit f5c1eb1d57c24e1c38f93815c963ce8d948b920e[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Thu Jul 13 20:04:27 2023 -0300
+
+    sem mensagem
+
+[33mcommit c9d57698ea6527ba565e6ee65efbb367135e371b[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Wed Jul 12 21:43:15 2023 -0300
+
+    inserir cliente em processo
+
+[33mcommit fbd3713d94fee56ae5f7d8a1f4d4f8940b9e040d[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Wed Jul 12 00:35:10 2023 -0300
+
+    listar cliente funcionando; sem vuelidate; demais serviços e tabelas excluídos;
+
+[33mcommit ea79096b7b2f93ab45d7eca6d932fb960e97e728[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Fri Jul 7 19:18:06 2023 -0300
+
+    alterando serviços
+
+[33mcommit 759851733266f30cd8397691c6a19a938e1684ca[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Thu Jul 6 19:48:22 2023 -0300
+
+    formularios prontos
+
+[33mcommit ee9ef80f79c6569ed1122e8a6669df5f2af572df[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Thu Jul 6 15:55:35 2023 -0300
+
+    alterações no tb cliente
+
+[33mcommit 6c08c0789cce5b21958975f78f587d2a49a46123[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Thu Jul 6 14:40:16 2023 -0300
+
+    formulario de funcionario completo
+
+[33mcommit 505df9648c50a666e9e3ec57e9d0192ec4252ee7[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Thu Jul 6 13:10:44 2023 -0300
+
+    tb funcionario
+
+[33mcommit d51bec690109d4fa67f2b1580cfcb60f0427e33d[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Wed Jul 5 16:32:29 2023 -0300
+
+    criados arquivos próprios para css e js
+
+[33mcommit 75d0f3cd2fc30bee8d3a32338a0dd6557956478a[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Tue Jul 4 21:30:47 2023 -0300
+
+    serviço insertcliente funcionando; função cliente incompleta
+
+[33mcommit 52fb2e273571053bdbb033d8603f0f3e5f65405c[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Tue Jul 4 11:41:39 2023 -0300
+
+    chamando a função cliente
+
+[33mcommit 76a99487b8d38bf15bd2c07c0802e42defbfe892[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Tue Jul 4 11:24:31 2023 -0300
+
+    ultimaVisita formatado e adicionado aos dados do vue
+
+[33mcommit 202d977e782409334f1bf88a8b4489531940308b[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Tue Jul 4 11:10:54 2023 -0300
+
+    mostrando e escondendo o input sem formatação
+
+[33mcommit 1b496f858febeb0a14b414df2bf422c5e034717e[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Tue Jul 4 07:10:07 2023 -0300
+
+    vulidate com estilização funcionando
+
+[33mcommit 23c63f81f135a7e899f769664d816ffda580f9ee[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Tue Jul 4 07:04:50 2023 -0300
+
+    vuelidade funcionando
+
+[33mcommit 02d6ef2940e9635a26efbaabb49cbe0d96b005de[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Mon Jul 3 22:34:21 2023 -0300
+
+    limpar form implementado
+
+[33mcommit e712701835612ca603c6df6db9216b3805bda7b1[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Mon Jul 3 22:15:15 2023 -0300
+
+    crud completo e funcionando, sem vuelidate e sem limparform
+
+[33mcommit 02a2808419e58be586c5a55e3204d853cc299667[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Mon Jul 3 22:14:02 2023 -0300
+
+    crud completo e funcionando, sem vuelidate e sem limparform
+
+[33mcommit 47bd5e44e222b6b5b8401c946c4339c15dcee20d[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Mon Jul 3 22:09:01 2023 -0300
+
+    insert e update ok
+
+[33mcommit efe1f65a8dd6c87d5549ee12e14ca5aeffe9b0c6[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Mon Jul 3 20:43:03 2023 -0300
+
+    insert e alteração funcionando corretamente
+
+[33mcommit a6c6c1833483b4168bf718e2254ab68e5bdf0175[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Mon Jul 3 19:32:17 2023 -0300
+
+    delete feito
+
+[33mcommit 4470ebd461748ceba0752646bc3828e2e3c12ad6[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Mon Jul 3 13:30:55 2023 -0300
+
+    updtate funcionando
+
+[33mcommit d7c23e9b89e595be206b352e0f92c5ff0fbf9e2d[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Mon Jul 3 13:27:07 2023 -0300
+
+    update funcionando
+
+[33mcommit d88eb23b1d183c855b245fee10d66f3ffef2c947[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Mon Jul 3 11:15:43 2023 -0300
+
+    filtro de data; update apenas ao atualizar a página
+
+[33mcommit 7f44a8b1d6b306ba6bc5559d7de7e6855081f9e7[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Sun Jul 2 21:38:37 2023 -0300
+
+    insert e listagem versão
+
+[33mcommit c9497026a16ca172419a61dc163a0de4fb027686[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Sun Jul 2 21:35:49 2023 -0300
+
+    commit
+
+[33mcommit f6eadb47e1c3636aa7a960d3b788a546bf4265bf[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Sun Jul 2 21:01:38 2023 -0300
+
+    first commit
+
+[33mcommit 0dcc0987a49942cb213d9e54394aa8f25cedcc34[m
+Author: gabrielidiass <gabrielilocatellidias508@gmail.com>
+Date:   Sun Jul 2 20:32:22 2023 -0300
+
+    teste de commit

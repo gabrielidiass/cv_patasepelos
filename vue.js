@@ -145,7 +145,7 @@ $(document).ready(function () {
                                 .then(response => {
                                     resolve(objeto_cliente = response.data);
                                     console.log('cliente inserido');
-                                })
+                                }) 
                                 .catch(error => {
                                     reject(alert('erro ao inserir' + error));
                                 })
@@ -169,7 +169,7 @@ $(document).ready(function () {
                             this.$http.post('http://localhost:4000/alterarcliente/' + cliente.cpf, cliente)
                                 .then(response => {
                                     resolve(cliente_alterado = response.data);
-                                    // console.log('cliente alterado');
+                                 console.log('cliente alterado');
                                 })
                                 .catch(error => {
                                     reject(alert('Erro ao alterar a cliente ' + error));

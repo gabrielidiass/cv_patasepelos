@@ -174,7 +174,7 @@ sw.post('/alterarpessoa/:cpf', (req, res) => {
       }
       console.log(q);
       client.query(q, function (err, result) {
-        done(); // closing the connection;
+        done(); 
         if (err) {
           console.log("Erro no alterar: " + err);
           res.status(400).send('{' + err + '}');
