@@ -29,65 +29,7 @@ $(document).ready(function () {
     new Vue({
         el: '#app',
         data: dados,
-        // validations: {
-        //     form_cliente: {
-        //         tipo: {
-        //             required
-        //         },
-        //         nome: {
-        //             required,
-        //             minLength: minLength(4)
-        //         },
-        //         cpf: {
-        //             required,
-        //             minLength: minLength(8),
-        //             maxLength: maxLength(11)
-        //         },
-        //         rg: {
-        //             required,
-        //             minLength: minLength(11),
-        //             maxLength: maxLength(11)
-        //         },
-
-        //         cep: {
-        //             minLength: minLength(8),
-        //             maxLength: maxLength(11)
-        //         },
-        //         endereco: {
-
-        //         },
-        //         complemento: {
-
-        //         },
-        //         data_nascimento: {
-        //             required,
-        //             minValue: value => value < new Date().toISOString()
-        //         },
-        //         numero_celular: {
-        //             maxLength: maxLength(11)
-        //         },
-        //         email: {
-        //             maxLength: maxLength(100)
-        //         },
-        //         senha: {
-        //             required,
-        //             minLength: minLength(4)
-        //         },
-        //         ultimaVisita: {
-
-        //         }
-        //     }
-        // },
-        methods: {
-            // status(validation) {
-            //     return {
-            //         error: validation.$error,
-            //         dirty: validation.$dirty
-            //     }
-            // },
-            // markAsDirty(validation) {
-            //     validation.$touch();
-            // }, 
+         methods: { 
             limpar_form_cliente: function () {
                 this.form_cliente.nome = '';
                 this.form_cliente.cpf = '';
@@ -176,16 +118,13 @@ $(document).ready(function () {
                                 });
                         }
                         )
-                        // console.log("voltando do alterar pessoa" + cliente_alterado.data_cadastro);
                         console.log(pessoa_alterada);
                         var alteracao_final = $.extend({}, cliente_alterado, pessoa_alterada);
-                        // alteracao_final.data_cadastro = this.$options.filters.formataData(alteracao_final.data_cadastro);
 
                         // aqui mescla cliente alterado e pessoa alterada pra incluir no vetor
                         const index = this.clientes.findIndex(item => item.cpf === alteracao_final.cpf);
                         if (index !== -1) { Vue.set(this.clientes, index, alteracao_final); }
                         alert('cliente alterado ');
-                        // console.log(alteracao_final.data_cadastro);
                     } catch (error) { alert(error.message); }
                 }
             },
@@ -206,22 +145,18 @@ $(document).ready(function () {
             },
             deleta_cliente: function (param_index, cpf) {
                 this.$http.get('http://localhost:4000/deletarpessoa/' + cpf)
-                    .then(response => {
-                        this.clientes.splice(param_index, 1);
-                        //alert('Removeu com sucesso ' + response.data.cpf);
-                    })
+                    .then(
+                        this.clientes.splice(param_index, 1))
                     .catch(error => {
                         // error callback                                        
-                        // alert('Erro ao remover ' + cpf + ': ' + error);
+                      alert('Erro ao remover ' + cpf + ': ' + error);
                         console.log(error);
                     });
             }
 
         },
-        // fim do methods
         filters: {
             formataData: function (value) {
-                //yyyy-mm-dd
                 var data = new Date(value);
                 data.setDate(data.getDate()); //incrementa a data em um dia para mostrar corretamente (pode nao ser necessário)              
                 dia = (data.getDate()).toString().padStart(2, '0'),
@@ -255,6 +190,6 @@ $(document).ready(function () {
                     console.log(response);
                 });
 
-        }//fecha o created
-    })//fecha o vue
-})//fecha o $doc ready
+        }
+    })
+})

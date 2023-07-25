@@ -22,7 +22,7 @@ sw.get('/listarclientes', function (req, res) {
       res.status(400).send('{' + err + '}');
     } else {
       client.query('select * from tb_cliente, tb_pessoa where tb_cliente.cpf = tb_pessoa.cpf order by data_cadastro asc;', function (err, result) {
-        done(); // closing the connection;
+        done();
         if (err) {
           console.log(err);
           res.status(400).send('{' + err + '}');
@@ -123,28 +123,28 @@ sw.get('/deletarpessoa/:cpf', (req, res) => {
         text: 'delete FROM tb_pessoa where cpf = $1',
         values: [req.params.cpf]
       }
-      client.query(q, function (err, result) {
-        done(); 
-        if (err) {
-          console.log(err);
-          res.status(400).send('{' + err + '}');
-        } else {
-          res.status(200).send({ 'cpf': req.params.cpf });
-        }
-      });
       var c = {
         text: 'delete FROM tb_cliente where cpf = $1',
         values: [req.params.cpf]
       }
-      client.query(c, function (err, result) {
-        done(); 
+      client.query(q, function (err, result) {
         if (err) {
           console.log(err);
           res.status(400).send('{' + err + '}');
         } else {
-          res.status(200).send({ 'cpf': req.params.cpf });
+          client.query(c, function (err, result) {
+            done();
+            if (err) {
+              console.log(err);
+              res.status(400).send('{' + err + '}');
+            } else {
+              res.status(200).send({ 'cpf': req.params.cpf });
+            }
+          });
         }
       });
+
+
 
     }
   });
@@ -174,7 +174,7 @@ sw.post('/alterarpessoa/:cpf', (req, res) => {
       }
       console.log(q);
       client.query(q, function (err, result) {
-        done(); 
+        done();
         if (err) {
           console.log("Erro no alterar: " + err);
           res.status(400).send('{' + err + '}');
