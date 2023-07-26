@@ -29,7 +29,63 @@ $(document).ready(function () {
     new Vue({
         el: '#app',
         data: dados,
-         methods: { 
+        validations: {
+            form_cliente: {
+              
+                nome: {
+                    required,
+                    minLength: minLength(4)
+                },
+                cpf: {
+                    required,
+                    minLength: minLength(8),
+                    maxLength: maxLength(11)
+                },
+                rg: {
+                    required,
+                    minLength: minLength(11),
+                    maxLength: maxLength(11)
+                },
+
+                cep: {
+                    minLength: minLength(8),
+                    maxLength: maxLength(11)
+                },
+                endereco: {
+
+                },
+                complemento: {
+
+                },
+                data_nascimento: {
+                    required,
+                    minValue: value => value < new Date().toISOString()
+                },
+                numero_celular: {
+                    maxLength: maxLength(11)
+                },
+                email: {
+                    maxLength: maxLength(100)
+                },
+                senha: {
+                    required,
+                    minLength: minLength(4)
+                },
+                data_ultima_visita: {}
+            }
+        },
+
+        methods: {
+
+            status(validation) {
+                return {
+                    error: validation.$error,
+                    dirty: validation.$dirty
+                }
+            },
+            markAsDirty(validation) {
+                validation.$touch();
+            },
             limpar_form_cliente: function () {
                 this.form_cliente.nome = '';
                 this.form_cliente.cpf = '';
@@ -87,7 +143,7 @@ $(document).ready(function () {
                                 .then(response => {
                                     resolve(objeto_cliente = response.data);
                                     console.log('cliente inserido');
-                                }) 
+                                })
                                 .catch(error => {
                                     reject(alert('erro ao inserir' + error));
                                 })
@@ -111,7 +167,7 @@ $(document).ready(function () {
                             this.$http.post('http://localhost:4000/alterarcliente/' + cliente.cpf, cliente)
                                 .then(response => {
                                     resolve(cliente_alterado = response.data);
-                                 console.log('cliente alterado');
+                                    console.log('cliente alterado');
                                 })
                                 .catch(error => {
                                     reject(alert('Erro ao alterar a cliente ' + error));
@@ -149,7 +205,7 @@ $(document).ready(function () {
                         this.clientes.splice(param_index, 1))
                     .catch(error => {
                         // error callback                                        
-                      alert('Erro ao remover ' + cpf + ': ' + error);
+                        alert('Erro ao remover ' + cpf + ': ' + error);
                         console.log(error);
                     });
             }
