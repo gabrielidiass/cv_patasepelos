@@ -83,7 +83,7 @@
                         <div class="error" v-if="!$v.form_cliente.cpf.required">Este campo é obrigatório</div>
                         <div class="form-group">
                             <label for="cli_input_cpf">CPF:</label>
-                            <input type="number" class="form-control" v-model="form_cliente.cpf.$model"
+                            <input type="number" class="form-control" v-model="$v.form_cliente.cpf.$model"
                                 :class="status($v.form_cliente.cpf)" @blur="markAsDirty($v.form_cliente.cpf)"
                                 id="cli_input_cpf">
                         </div>
@@ -95,55 +95,55 @@
                         <div class="error" v-if="!$v.form_cliente.data_nascimento.required">Este campo é obrigatório</div>
                         <div class="form-group">
                             <label for="cli_input_data_nascimento">Data de nascimento:</label>
-                            <input type="date" class="form-control" v-model="$v.form_cliente.data_nascimento"
+                            <input type="date" class="form-control" v-model="$v.form_cliente.data_nascimento.$model"
                                 :class="status($v.form_cliente.data_nascimento)" @blur="markAsDirty($v.form_cliente.data_nascimento)"
                                 id="cli_input_data_nascimento">
                         </div>
                         <div class="error" v-if="!$v.form_cliente.email.email">Este campo é obrigatório</div>
                         <div class="form-group">
                             <label for="cli_input_email">Email:</label>
-                            <input type="email" class="form-control" v-model="$v.form_cliente.email"
+                            <input type="email" class="form-control" v-model="$v.form_cliente.email.$model"
                                 :class="status($v.form_cliente.email)" id="cli_input_email">
                         </div>
                         <div class="error" v-if="!$v.form_cliente.endereco.required">Este campo é obrigatório</div>
                         <div class="form-group">
                             <label for="cli_input_endereco">Endereço:</label>
-                            <input type="text" class="form-control" v-model="$v.form_cliente.endereco"
+                            <input type="text" class="form-control" v-model="$v.form_cliente.endereco.$model"
                                 :class="status($v.form_cliente.endereco)" id="cli_input_endereco">
                         </div>
                         <div class="error" v-if="!$v.form_cliente.cep.required">Este campo é obrigatório</div>
                         <div class="form-group">
                             <label for="cli_input_cep">CEP:</label>
-                            <input type="number" class="form-control" v-model="$v.form_cliente.cep"
+                            <input type="number" class="form-control" v-model="$v.form_cliente.cep.$model"
                                 :class="status($v.form_cliente.cep)" id="cli_input_cep">
                         </div>
                         <div class="error" v-if="!$v.form_cliente.complemento.required">Este campo é obrigatório</div>
                         <div class="form-group">
                             <h4>Complemento:</h4>
                             <input type="radio" id="casa" name="cli_input_complemento"
-                                v-model="$v.form_cliente.complemento" :class="status($v.form_cliente.complemento)"
+                                v-model="$v.form_cliente.complemento.$model" :class="status($v.form_cliente.complemento)"
                                 value="casa">
                             <label for="casa">Casa</label>
                             <input type="radio" id="apartamento" name="cli_input_complemento"
-                                v-model="$v.form_cliente.complemento" :class="status($v.form_cliente.complemento)"
+                                v-model="$v.form_cliente.complemento.$model" :class="status($v.form_cliente.complemento)"
                                 value="apartamento">
                             <label for="apartamento">Apartamento</label>
                         </div>
                         <div class="error" v-if="!$v.form_cliente.numero_celular.required">Este campo é obrigatório</div>
                         <div class="form-group">
                             <label for="cli_input_numero_celular">Numero de celular:</label>
-                            <input type="number" class="form-control" v-model="$v.form_cliente.numero_celular"
+                            <input type="number" class="form-control" v-model="$v.form_cliente.numero_celular.$model"
                                 :class="status($v.form_cliente.numero_celular)" id="cli_input_numero_celular">
                         </div>
                         <div class="error" v-if="!$v.form_cliente.data_ultima_visita.required">Este campo é obrigatório</div>
                         <div id="inputContainer" class="form-group.hidden">
                             <label for="cli_input_data_ultima_visita">Data da última visita:</label>
-                            <input type="date" class="form-control" v-model="$v.form_cliente.data_ultima_visita"
+                            <input type="date" class="form-control" v-model="$v.form_cliente.data_ultima_visita.$model"
                                 :class="status($v.form_cliente.data_ultima_visita)" id="cli_input_data_ultima_visita">
                         </div>
                         <div class="error" v-if="!$v.form_cliente.senha.required">Este campo é obrigatório</div>
                         <label for="cli_input_senha">Senha:</label>
-                        <input type="password" class="form-control" v-model="$v.form_cliente.senha"
+                        <input type="password" class="form-control" v-model="$v.form_cliente.senha.$model"
                             :class="status($v.form_cliente.senha)" @blur="markAsDirty($v.form_cliente.senha)"
                             id="cli_input_senha">
                     </div>
@@ -157,5 +157,35 @@
     </div>
     </div>
 </body>
-
+<style>
+    body{ 
+    padding: 5%;
+  }
+  input {
+      border: 1px solid silver;
+      border-radius: 4px;
+      background: white;
+      padding: 5px 10px;
+    }
+    
+    .dirty {
+      border-color: #5A5;
+      background: #EFE;
+    }
+    
+    .dirty:focus {
+      outline-color: #8E8;
+    }
+    
+    .error {
+      border-color: red;
+      background: #FDD;
+    }
+    
+    .error:focus {
+      outline-color: #F99;
+    }
+    th[scope="col"] {
+      background-color: #bd1c1c;
+    }</style>
 </html>
