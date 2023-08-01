@@ -11,10 +11,13 @@
     <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/v-mask/2.0.1/v-mask.min.js" integrity="sha512-CkTt3uvVyl/Jh5WRxXDutyvzI40vj0nb0V1RNW0MwSf/qxMu28OmGMlKWfw1/UZ38vpw2zJgfH84XC/TyDvwjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
     <script type="text/javascript" src="https://unpkg.com/vuelidate@0.7.4/dist/vuelidate.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/vuelidate@0.7.4/dist/validators.min.js"></script>
     <script type="text/javascript" src="../vue.js"></script>
+    
+
 </head>
 
 <body>
@@ -83,7 +86,7 @@
                         <div class="error" v-if="!$v.form_cliente.cpf.required">Este campo é obrigatório</div>
                         <div class="form-group">
                             <label for="cli_input_cpf">CPF:</label>
-                            <input type="number" class="form-control" v-model="$v.form_cliente.cpf.$model"
+                            <input type="text" v-mask="'###.###.###-##'" class="form-control" v-model="$v.form_cliente.cpf.$model" 
                                 :class="status($v.form_cliente.cpf)" @blur="markAsDirty($v.form_cliente.cpf)"
                                 id="cli_input_cpf">
                         </div>
@@ -114,7 +117,7 @@
                         <div class="error" v-if="!$v.form_cliente.cep.required">Este campo é obrigatório</div>
                         <div class="form-group">
                             <label for="cli_input_cep">CEP:</label>
-                            <input type="number" class="form-control" v-model="$v.form_cliente.cep.$model"
+                            <input type="text" class="form-control" v-mask="'#####-###'" v-model="$v.form_cliente.cep.$model"
                                 :class="status($v.form_cliente.cep)" id="cli_input_cep">
                         </div>
                         <div class="error" v-if="!$v.form_cliente.complemento.required">Este campo é obrigatório</div>
@@ -132,7 +135,7 @@
                         <div class="error" v-if="!$v.form_cliente.numero_celular.required">Este campo é obrigatório</div>
                         <div class="form-group">
                             <label for="cli_input_numero_celular">Numero de celular:</label>
-                            <input type="number" class="form-control" v-model="$v.form_cliente.numero_celular.$model"
+                            <input type="text" class="form-control" v-mask="'+55 (##) #####-####'" v-model="$v.form_cliente.numero_celular.$model"
                                 :class="status($v.form_cliente.numero_celular)" id="cli_input_numero_celular">
                         </div>
                         <div class="error" v-if="!$v.form_cliente.data_ultima_visita.required">Este campo é obrigatório</div>
@@ -157,6 +160,7 @@
     </div>
     </div>
 </body>
+
 <style>
     body{ 
     padding: 5%;
