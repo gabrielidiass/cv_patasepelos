@@ -137,6 +137,7 @@
 
                     
                     var cliente = jQuery.extend({}, this.form_cliente);
+    console.log(this.form_cliente.cep.length);
     console.log(this.form_cliente.numero_celular.length);
                     cliente.tipo = "cliente";
     
