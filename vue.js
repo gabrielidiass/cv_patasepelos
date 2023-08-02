@@ -128,8 +128,15 @@
                         }
                     })
                 },
-                mostrar_cliente: function (param_index, cpf){
-                   
+                mostrar_cliente:async function (param_index, cpf){
+                   return new Promise ((resolve,reject) => {
+                    try{
+                        this.$http.get('http://localhost:4000/mostrarcliente/' + cpf)
+                        .then ( response =>{
+                           resolve(console.log(response.data));
+                        }) .catch (error => { reject(alert('Erro ' + error)); })
+                    } catch (error){console.error("Erro ao executar a chamada assíncrona:", error);}
+                   })
                 },
                 inserir_cliente: async function () {
 
