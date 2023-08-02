@@ -35,6 +35,28 @@ sw.get('/listarclientes', function (req, res) {
     }
   });
 });
+sw.get('/mostrarcliente/:cpf', function (req, res) {
+  postgres.connect(function (err, client, done) {
+    if (err) {
+      console.log("Não conseguiu acessar o BD :" + err);
+      res.status(400).send('{' + err + '}');
+    } else {
+      const q = {
+        text: 'SELECT * FROM tb_cliente JOIN tb_pessoa ON tb_cliente.cpf = tb_pessoa.cpf WHERE tb_cliente.cpf = $1;',
+        values: [req.params.cpf]
+      }
+      client.query(q, function (err, result) {
+        done();
+        if (err) {
+          console.log(err);
+          res.status(400).send('{' + err + '}');
+        } else {
+          res.status(200).send(result.rows);
+        }
+      });
+    }
+  });
+});
 sw.post('/inserirpessoa', function (req, res, next) {
   postgres.connect(function (err, client, done) {
     if (err) {

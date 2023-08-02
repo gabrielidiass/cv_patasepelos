@@ -11,12 +11,14 @@
     <script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/v-mask/2.0.1/v-mask.min.js" integrity="sha512-CkTt3uvVyl/Jh5WRxXDutyvzI40vj0nb0V1RNW0MwSf/qxMu28OmGMlKWfw1/UZ38vpw2zJgfH84XC/TyDvwjQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/v-mask/2.0.1/v-mask.min.js"
+        integrity="sha512-CkTt3uvVyl/Jh5WRxXDutyvzI40vj0nb0V1RNW0MwSf/qxMu28OmGMlKWfw1/UZ38vpw2zJgfH84XC/TyDvwjQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
     <script type="text/javascript" src="https://unpkg.com/vuelidate@0.7.4/dist/vuelidate.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/vuelidate@0.7.4/dist/validators.min.js"></script>
     <script type="text/javascript" src="../vue.js"></script>
-    
+
 
 </head>
 
@@ -38,14 +40,6 @@
                         <tr>
                             <th scope="col">CPF</th>
                             <th scope="col">Nome</th>
-                            <th scope="col">RG</th>
-                            <th scope="col">Data de nascimento</th>
-                            <th scope="col">E-mail</th>
-                            <th scope="col">Endereço</th>
-                            <th scope="col">CEP</th>
-                            <th scope="col">Complemento</th>
-                            <th scope="col">Numero de celular</th>
-                            <th scope="col">Data de cadastro</th>
                             <th scope="col">Última visita</th>
                             <th scope="col">Editar</th>
                             <th scope="col">Remover</th>
@@ -54,23 +48,17 @@
                             <tr v-for="(c, indice) in clientes">
                                 <td>{{c.cpf}}</td>
                                 <td>{{c.nome}}</td>
-                                <td>{{c.rg}}</td>
-                                <td>{{c.data_nascimento}}</td>
-                                <td>{{c.email}}</td>
-                                <td>{{c.endereco}}</td>
-                                <td>{{c.cep}}</td>
-                                <td>{{c.complemento}}</td>
-                                <td>{{c.numero_celular}}</td>
-                                <td>{{c.data_cadastro}}</td>
                                 <td>{{c.data_ultima_visita}}</td>
                                 <td><button v-on:click="edita_cliente(indice)" class="btn" type="button">Editar</button>
                                 </td>
                                 <td><button v-on:click="deleta_cliente(indice, c.cpf)" class="btn"
                                         type="button">Remover</button>
                                 </td>
+                                <td><button v-on:click="mostrar_cliente(indice, c.cpf)" class="btn"
+                                    type="button">Mostrar</button>
+                            </td>
                             </tr>
                         </tbody>
-
 
                     </table>
                     <div id="formulario_cliente">
@@ -80,27 +68,27 @@
                         <div class="form-group">
                             <label for="cli_input_nome">Nome:</label>
                             <input type="text" class="form-control" v-model="$v.form_cliente.nome.$model"
-                                :class="status($v.form_cliente.nome)" @blur="markAsDirty($v.form_cliente.nome)"
-                                id="cli_input_nome">
+                                :class="status($v.form_cliente.nome)" id="cli_input_nome">
                         </div>
                         <div class="error" v-if="!$v.form_cliente.cpf.required">Este campo é obrigatório</div>
                         <div class="form-group">
                             <label for="cli_input_cpf">CPF:</label>
-                            <input type="text" v-mask="'###.###.###-##'" class="form-control" v-model="$v.form_cliente.cpf.$model" 
-                                :class="status($v.form_cliente.cpf)" @blur="markAsDirty($v.form_cliente.cpf)"
+                            <input type="text" v-mask="'###.###.###-##'" class="form-control"
+                                v-model="$v.form_cliente.cpf.$model" :class="status($v.form_cliente.cpf)"
                                 id="cli_input_cpf">
                         </div>
                         <div class="error" v-if="!$v.form_cliente.rg.required">Este campo é required </div>
-                            <div class="form-group">
-                                <label for=" cli_input_rg">RG:</label>
-                                <input type="text" class="form-control" v-model="$v.form_cliente.rg.$model" :class="status($v.form_cliente.rg)"   @blur="markAsDirty($v.form_cliente.rg)" id="cli_input_rg">
-                            </div>
-                        <div class="error" v-if="!$v.form_cliente.data_nascimento.required">Este campo é obrigatório</div>
+                        <div class="form-group">
+                            <label for=" cli_input_rg">RG:</label>
+                            <input type="text" class="form-control" v-model="$v.form_cliente.rg.$model"
+                                :class="status($v.form_cliente.rg)" id="cli_input_rg">
+                        </div>
+                        <div class="error" v-if="!$v.form_cliente.data_nascimento.required">Este campo é obrigatório
+                        </div>
                         <div class="form-group">
                             <label for="cli_input_data_nascimento">Data de nascimento:</label>
-                            <input type="date"  class="form-control" v-model="$v.form_cliente.data_nascimento.$model"
-                                :class="status($v.form_cliente.data_nascimento)" @blur="markAsDirty($v.form_cliente.data_nascimento)"
-                                id="cli_input_data_nascimento">
+                            <input type="date" class="form-control" v-model="$v.form_cliente.data_nascimento.$model"
+                                :class="status($v.form_cliente.data_nascimento)" id="cli_input_data_nascimento">
                         </div>
                         <div class="error" v-if="!$v.form_cliente.email.email">Este campo é obrigatório</div>
                         <div class="form-group">
@@ -117,28 +105,29 @@
                         <div class="error" v-if="!$v.form_cliente.cep.required">Este campo é obrigatório</div>
                         <div class="form-group">
                             <label for="cli_input_cep">CEP:</label>
-                            <input type="text" class="form-control" v-mask="'#####-###'" v-model="$v.form_cliente.cep.$model"
-                                :class="status($v.form_cliente.cep)" id="cli_input_cep">
+                            <input type="text" class="form-control" v-mask="'#####-###'"
+                                v-model="$v.form_cliente.cep.$model" :class="status($v.form_cliente.cep)"
+                                id="cli_input_cep">
                         </div>
-                        <div class="error" v-if="!$v.form_cliente.complemento.required">Este campo é obrigatório</div>
                         <div class="form-group">
                             <h4>Complemento:</h4>
                             <input type="radio" id="casa" name="cli_input_complemento"
-                                v-model="$v.form_cliente.complemento.$model" :class="status($v.form_cliente.complemento)"
-                                value="casa">
+                                v-model="$v.form_cliente.complemento.$model"
+                                :class="status($v.form_cliente.complemento)" value="casa">
                             <label for="casa">Casa</label>
                             <input type="radio" id="apartamento" name="cli_input_complemento"
-                                v-model="$v.form_cliente.complemento.$model" :class="status($v.form_cliente.complemento)"
-                                value="apartamento">
+                                v-model="$v.form_cliente.complemento.$model"
+                                :class="status($v.form_cliente.complemento)" value="apartamento">
                             <label for="apartamento">Apartamento</label>
                         </div>
-                        <div class="error" v-if="!$v.form_cliente.numero_celular.required">Este campo é obrigatório</div>
                         <div class="form-group">
                             <label for="cli_input_numero_celular">Numero de celular:</label>
-                            <input type="text" class="form-control" v-mask="'+55 (##) #####-####'" v-model="$v.form_cliente.numero_celular.$model"
+                            <input type="text" class="form-control" v-mask="'+55 (##) #####-####'"
+                                v-model="$v.form_cliente.numero_celular.$model"
                                 :class="status($v.form_cliente.numero_celular)" id="cli_input_numero_celular">
                         </div>
-                        <div class="error" v-if="!$v.form_cliente.data_ultima_visita.required">Este campo é obrigatório</div>
+                        <div class="error" v-if="!$v.form_cliente.data_ultima_visita.required">Este campo é obrigatório
+                        </div>
                         <div id="inputContainer" class="form-group.hidden">
                             <label for="cli_input_data_ultima_visita">Data da última visita:</label>
                             <input type="date" class="form-control" v-model="$v.form_cliente.data_ultima_visita.$model"
@@ -147,8 +136,7 @@
                         <div class="error" v-if="!$v.form_cliente.senha.required">Este campo é obrigatório</div>
                         <label for="cli_input_senha">Senha:</label>
                         <input type="password" class="form-control" v-model="$v.form_cliente.senha.$model"
-                            :class="status($v.form_cliente.senha)" @blur="markAsDirty($v.form_cliente.senha)"
-                            id="cli_input_senha">
+                            :class="status($v.form_cliente.senha)" id="cli_input_senha">
                     </div>
                     <button @click="inserir_cliente($v)" class="btn btn-primary" type="button">Salvar</button>
                     <button @click="limpar_form_cliente()" class="btn btn-primary" type="button">Limpar</button>
@@ -162,34 +150,38 @@
 </body>
 
 <style>
-    body{ 
-    padding: 5%;
-  }
-  input {
-      border: 1px solid silver;
-      border-radius: 4px;
-      background: white;
-      padding: 5px 10px;
+    body {
+        padding: 5%;
     }
-    
+
+    input {
+        border: 1px solid silver;
+        border-radius: 4px;
+        background: white;
+        padding: 5px 10px;
+    }
+
     .dirty {
-      border-color: #5A5;
-      background: #EFE;
+        border-color: #5A5;
+        background: #EFE;
     }
-    
+
     .dirty:focus {
-      outline-color: #8E8;
+        outline-color: #8E8;
     }
-    
+
     .error {
-      border-color: red;
-      background: #FDD;
+        border-color: red;
+        background: #FDD;
     }
-    
+
     .error:focus {
-      outline-color: #F99;
+        outline-color: #F99;
     }
+
     th[scope="col"] {
-      background-color: #bd1c1c;
-    }</style>
+        background-color: #bd1c1c;
+    }
+</style>
+
 </html>

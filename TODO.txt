@@ -1,3 +1,13 @@
 - mudar os campos do required pra uma mensagem mais explicativa;
 - adicionar mais complementos;
 - arrumar a resposta do insert pessoa;
+
+- pega o index
+- chama o serviço
+- anota a resposta 
+- coloca em uma div
+- poe a div num pop up
+- cria a função popup para substituir alerts
+
+
+SELECT * FROM tb_cliente JOIN tb_pessoa ON tb_cliente.cpf = tb_pessoa.cpf WHERE tb_cliente.cpf = $1';

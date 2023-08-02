@@ -29,11 +29,6 @@
         outline-color: #F99;
     }
 
-    th[scope="col"] {
-        background-color: #bd1c1c;
-    }
-
     .hidden {
         display: none;
     }
-

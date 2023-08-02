@@ -41,8 +41,8 @@
                     },
                     cpf: {
                         required,
-                        minLength: minLength(8),
-                        maxLength: maxLength(11)
+                        minLength: minLength(14),
+                        maxLength: maxLength(14)
                     },
                     rg: {
                         required,
@@ -78,17 +78,12 @@
                     data_ultima_visita: {}
                 }
             },
-    
             methods: {
-    
                 status(validation) {
                     return {
                         error: validation.$error,
                         dirty: validation.$dirty
                     }
-                },
-                markAsDirty(validation) {
-                    validation.$touch();
                 },
                 limpar_form_cliente: function () {
                     this.form_cliente.nome = '';
@@ -132,6 +127,9 @@
                             console.error("Erro ao executar a chamada assíncrona:", error);
                         }
                     })
+                },
+                mostrar_cliente: function (param_index, cpf){
+                   
                 },
                 inserir_cliente: async function () {
 
