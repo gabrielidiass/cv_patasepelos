@@ -55,8 +55,8 @@
                                         type="button">Remover</button>
                                 </td>
                                 <td><button v-on:click="mostrar_cliente(indice, c.cpf)" class="btn"
-                                    type="button">Mostrar</button>
-                            </td>
+                                        type="button">Mostrar</button>
+                                </td>
                             </tr>
                         </tbody>
 
@@ -90,19 +90,16 @@
                             <input type="date" class="form-control" v-model="$v.form_cliente.data_nascimento.$model"
                                 :class="status($v.form_cliente.data_nascimento)" id="cli_input_data_nascimento">
                         </div>
-                        <div class="error" v-if="!$v.form_cliente.email.email">Este campo é obrigatório</div>
                         <div class="form-group">
                             <label for="cli_input_email">Email:</label>
                             <input type="email" class="form-control" v-model="$v.form_cliente.email.$model"
                                 :class="status($v.form_cliente.email)" id="cli_input_email">
                         </div>
-                        <div class="error" v-if="!$v.form_cliente.endereco.required">Este campo é obrigatório</div>
                         <div class="form-group">
                             <label for="cli_input_endereco">Endereço:</label>
                             <input type="text" class="form-control" v-model="$v.form_cliente.endereco.$model"
                                 :class="status($v.form_cliente.endereco)" id="cli_input_endereco">
                         </div>
-                        <div class="error" v-if="!$v.form_cliente.cep.required">Este campo é obrigatório</div>
                         <div class="form-group">
                             <label for="cli_input_cep">CEP:</label>
                             <input type="text" class="form-control" v-mask="'#####-###'"
@@ -140,6 +137,24 @@
                     </div>
                     <button @click="inserir_cliente($v)" class="btn btn-primary" type="button">Salvar</button>
                     <button @click="limpar_form_cliente()" class="btn btn-primary" type="button">Limpar</button>
+
+                    <div class="overlay" v-if="cliente_popup" id="popupOverlay">
+                        <div class="popup-content">
+                            <p>Nome: {{ cliente_popup.nome }}</p>
+                            <p>CPF: {{ cliente_popup.cpf }}</p>
+                            <p>RG: {{ cliente_popup.rg }}</p>
+                            <p>E-mail: {{ cliente_popup.email }}</p>
+                            <p>CEP: {{ cliente_popup.cep }}</p>
+                            <p>Endereço: {{ cliente_popup.endereco }}</p>
+                            <p>Complemento: {{ cliente_popup.complemento }}</p>
+                            <p>Data de nascimento: {{ cliente_popup.data_nascimento }}</p>
+                            <p>Celular: {{ cliente_popup.celular }}</p>
+                            <p>Última visita: {{ cliente_popup.data_ultima_visita }}</p>
+                            <p>Cadastrado desde: {{ cliente_popup.data_cadastro }}</p>
+                
+                            <button @click="fecharPopup()">Fechar</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -148,40 +163,5 @@
     </div>
     </div>
 </body>
-
-<style>
-    body {
-        padding: 5%;
-    }
-
-    input {
-        border: 1px solid silver;
-        border-radius: 4px;
-        background: white;
-        padding: 5px 10px;
-    }
-
-    .dirty {
-        border-color: #5A5;
-        background: #EFE;
-    }
-
-    .dirty:focus {
-        outline-color: #8E8;
-    }
-
-    .error {
-        border-color: red;
-        background: #FDD;
-    }
-
-    .error:focus {
-        outline-color: #F99;
-    }
-
-    th[scope="col"] {
-        background-color: #bd1c1c;
-    }
-</style>
 
 </html>
