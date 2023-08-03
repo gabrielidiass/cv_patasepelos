@@ -34,6 +34,7 @@
         </div>
         <div class="col-xs-6">
             <div class="tab-content" id="app">
+                <div class="alertas"> oiiiiiii</div>
                 <div id="menu_cliente" class="tab-pane fade">
                     <h2>Clientes</h2>
                     <table id="tabela_cliente" class="table table-striped">
@@ -43,6 +44,7 @@
                             <th scope="col">Última visita</th>
                             <th scope="col">Editar</th>
                             <th scope="col">Remover</th>
+                            <th scope="col">Mostrar</th>
                         </tr>
                         <tbody>
                             <tr v-for="(c, indice) in clientes">
@@ -165,3 +167,37 @@
 </body>
 
 </html>
+<style>
+    body {
+        padding: 5%;
+    }
+
+    input {
+        border: 1px solid silver;
+        border-radius: 4px;
+        background: white;
+        padding: 5px 10px;
+    }
+
+    .dirty {
+        border-color: #5A5;
+        background: #EFE;
+    }
+
+    .dirty:focus {
+        outline-color: #8E8;
+    }
+
+    .error {
+        border-color: red;
+        background: #FDD;
+    }
+
+    .error:focus {
+        outline-color: #F99;
+    }
+
+    th[scope="col"] {
+        background-color: #bd1c1c;
+    }
+</style>

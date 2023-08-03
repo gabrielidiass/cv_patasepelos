@@ -81,8 +81,8 @@ $(document).ready(function () {
             }
         },
         methods: {
-            abrirPopup: abrirPopup => { document.getElementById("popupOverlay").style.display = "block"; },
-            fecharPopup: fecharPopup => { document.getElementById("popupOverlay").style.display = "none"; },
+            abrirPopup: function () { document.getElementById("popupOverlay").style.display = "block"; },
+            fecharPopup: function () { document.getElementById("popupOverlay").style.display = "none"; },
             status(validation) {
                 return {
                     error: validation.$error,
@@ -104,6 +104,7 @@ $(document).ready(function () {
             },
             inserir_pessoa: function (pessoa) {
                 // construção da Promise baseada no vídeo: https://www.youtube.com/watch?v=87gWRVGRZ5o;
+
                 return new Promise((resolve, reject) => {
 
                     this.$http.post('http://localhost:4000/inserirpessoa', pessoa)
@@ -115,10 +116,14 @@ $(document).ready(function () {
                             reject("erro ao inserir pessoa");
                         });
 
-                });
+                })
+
+
             },
+
             alterar_pessoa: async function (pessoa) {
                 return new Promise((resolve, reject) => {
+
                     try {
                         this.$http.post('http://localhost:4000/alterarpessoa/' + pessoa.cpf, pessoa)
                             .then(response => {
@@ -134,70 +139,80 @@ $(document).ready(function () {
             },
             mostrar_cliente: async function (param_index, cpf) {
                 try {
-                  const response = await  this.$http.get('http://localhost:4000/mostrarcliente/' + cpf)
-                  const cliente = response.data[0];
-                  this.cliente_popup = cliente; 
-                  this.abrirPopup(); 
-                  console.log(this.cliente_popup); 
-                } catch (error) { console.error("Erro ao mostrar o cliente:", error);
-                alert('Erro ao mostrar o cliente: ' + error);}
+                    const response = await this.$http.get('http://localhost:4000/mostrarcliente/' + cpf)
+                    const cliente = response.data[0];
+                    this.cliente_popup = cliente;
+                    this.abrirPopup();
+                    console.log(this.cliente_popup);
+                } catch (error) {
+                    console.error("Erro ao mostrar o cliente:", error);
+                    alert('Erro ao mostrar o cliente: ' + error);
+                }
 
-               
+
             },
-            inserir_cliente: async function () {
+            inserir_cliente: async function ($v) {
+                if ($v.$invalid) {
+                    alert("preencha o formulario corretamente")
+                }
+                else {
+                    var cliente = jQuery.extend({}, this.form_cliente);
+                    cliente.tipo = "cliente";
 
-
-                var cliente = jQuery.extend({}, this.form_cliente);
-                cliente.tipo = "cliente";
-
-                if ((clientes.some(cliente => cliente.cpf === this.form_cliente.cpf) == false)) {
-                    try {
-                        // documentação do some(): https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/some
-                        var objeto_pessoa = await this.inserir_pessoa(cliente);
-                        var objeto_cliente = await new Promise((resolve, reject) => {
-                            this.$http.post('http://localhost:4000/inserircliente', cliente)
+                    if ((clientes.some(cliente => cliente.cpf === this.form_cliente.cpf) == false)) {
+                        try {
+                            // documentação do some(): https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/some
+                            var objeto_pessoa = await this.inserir_pessoa(cliente);
+                            var objeto_cliente = await this.$http.post('http://localhost:4000/inserircliente', cliente)
                                 .then(response => {
-                                    resolve(objeto_cliente = response.data);
+                                    objeto_cliente = response.data;
                                     console.log('cliente inserido');
                                 })
-                                .catch(error => {
-                                    reject(alert('erro ao inserir' + error));
-                                })
-                        })
-
-                        var objeto_final = $.extend({}, objeto_cliente, objeto_pessoa);
-
-                        objeto_final.data_cadastro = this.$options.filters.formataData(objeto_final.data_cadastro);
-                        objeto_final.data_ultima_visita = this.$options.filters.formataData(objeto_final.data_ultima_visita);
-                        objeto_final.data_nascimento = this.$options.filters.formataData(objeto_final.data_nascimento);
-
-                        this.clientes.push(objeto_final);
-                    } catch (error) { alert(error.message); }
+                                .catch(error => { alert('erro ao inserir' + error); })
 
 
-                } else {
-                    try {
-                        this.form_cliente.data_cadastro = cliente.data_cadastro;
-                        var pessoa_alterada = await this.alterar_pessoa(cliente);
-                        var cliente_alterado = await new Promise((resolve, reject) => {
-                            this.$http.post('http://localhost:4000/alterarcliente/' + cliente.cpf, cliente)
-                                .then(response => {
-                                    resolve(cliente_alterado = response.data);
-                                    console.log('cliente alterado');
-                                })
-                                .catch(error => {
-                                    reject(alert('Erro ao alterar a cliente ' + error));
-                                });
-                        }
-                        )
-                        console.log(pessoa_alterada);
-                        var alteracao_final = $.extend({}, cliente_alterado, pessoa_alterada);
+                            var objeto_final = $.extend({}, objeto_cliente, objeto_pessoa);
 
-                        // aqui mescla cliente alterado e pessoa alterada pra incluir no vetor
-                        const index = this.clientes.findIndex(item => item.cpf === alteracao_final.cpf);
-                        if (index !== -1) { Vue.set(this.clientes, index, alteracao_final); }
-                        alert('cliente alterado ');
-                    } catch (error) { alert(error.message); }
+                            objeto_final.data_cadastro = this.$options.filters.formataData(objeto_final.data_cadastro);
+                            objeto_final.data_ultima_visita = this.$options.filters.formataData(objeto_final.data_ultima_visita);
+                            objeto_final.data_nascimento = this.$options.filters.formataData(objeto_final.data_nascimento);
+
+                            this.clientes.push(objeto_final);
+                        } catch (error) { alert(error.message); }
+
+
+                    } else {
+                        try {
+                            this.form_cliente.data_cadastro = cliente.data_cadastro;
+                            var pessoa_alterada = await this.alterar_pessoa(cliente);
+                            var cliente_alterado = await new Promise((resolve, reject) => {
+                                this.$http.post('http://localhost:4000/alterarcliente/' + cliente.cpf, cliente)
+                                    .then(response => {
+                                        resolve(cliente_alterado = response.data);
+                                        console.log('cliente alterado');
+                                    })
+                                    .catch(error => {
+                                        reject(alert('Erro ao alterar a cliente ' + error));
+                                    });
+                            }
+                            )
+                            console.log(pessoa_alterada);
+                            var alteracao_final = $.extend({}, cliente_alterado, pessoa_alterada);
+
+                            // aqui mescla cliente alterado e pessoa alterada pra incluir no vetor
+                            const index = this.clientes.findIndex(item => item.cpf === alteracao_final.cpf);
+                            if (index !== -1) { Vue.set(this.clientes, index, alteracao_final); }
+                            alert('cliente alterado ');
+                        } catch (error) { alert(error.message); }
+                    }
+
+
+
+
+
+
+
+
                 }
             },
             edita_cliente: function (param_index) {
