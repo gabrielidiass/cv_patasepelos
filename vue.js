@@ -1,8 +1,10 @@
 
 $(document).ready(function () {
     var cliente_popup = [];
+  
     var clientes = [];
     var dados = {
+        sobrepor: false,
         "clientes": clientes,
         "form_cliente": {
             nome: '',
@@ -18,9 +20,10 @@ $(document).ready(function () {
             senha: '',
             data_ultima_visita: ''
         },
-        "cliente_popup": cliente_popup
+        "cliente_popup": cliente_popup,
 
     }
+    
     Vue.prototype.$http = axios;
     Vue.use(window.vuelidate.default);
     Vue.use(window.VueMask.default)
@@ -34,6 +37,7 @@ $(document).ready(function () {
     new Vue({
         el: '#app',
         data: dados,
+       
         validations: {
             form_cliente: {
 
@@ -80,6 +84,7 @@ $(document).ready(function () {
                 data_ultima_visita: {}
             }
         },
+        
         methods: {
             abrirPopup: function () { document.getElementById("popupOverlay").style.display = "block"; },
             fecharPopup: function () { document.getElementById("popupOverlay").style.display = "none"; },
@@ -156,8 +161,10 @@ $(document).ready(function () {
                     alert("preencha o formulario corretamente")
                 }
                 else {
+                    
                     var cliente = jQuery.extend({}, this.form_cliente);
                     cliente.tipo = "cliente";
+
 
                     if ((clientes.some(cliente => cliente.cpf === this.form_cliente.cpf) == false)) {
                         try {
@@ -229,6 +236,7 @@ $(document).ready(function () {
                 this.form_cliente.numero_celular = this.clientes[param_index].numero_celular;
                 this.form_cliente.senha = this.clientes[param_index].senha;
                 this.form_cliente.data_cadastro = this.clientes[param_index].data_cadastro;
+                editando = true;
             },
             deleta_cliente: function (param_index, cpf) {
                 this.$http.get('http://localhost:4000/deletarpessoa/' + cpf)
