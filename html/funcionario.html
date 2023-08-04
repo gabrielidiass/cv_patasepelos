@@ -136,12 +136,12 @@
                         </div>
                         <div id="inputContainer" class="form-group.hidden">
                             <label for="funci_input_numero_ctps">Numero da Carteira de Trabalho:</label>
-                            <input type="text" class="form-control" v-model="$v.form_funcionario.numero_ctps.$model"
+                            <input type="text" class="form-control" v-mask="'######/####'" v-model="$v.form_funcionario.numero_ctps.$model"
                                 :class="status($v.form_funcionario.numero_ctps)" id="funci_input_numero_ctps">
                         </div>
                         <div id="inputContainer" class="form-group.hidden">
                             <label for="funci_input_numero_pis">Numero do PIS:</label>
-                            <input type="text" class="form-control" v-model="$v.form_funcionario.numero_pis.$model"
+                            <input type="text" class="form-control" v-mask="'###.#####.##-#'" v-model="$v.form_funcionario.numero_pis.$model"
                                 :class="status($v.form_funcionario.numero_pis)" id="funci_input_numero_pis">
                         </div>
                         <div class="error" v-if="!$v.form_funcionario.senha.required">Este campo é obrigatório</div>
