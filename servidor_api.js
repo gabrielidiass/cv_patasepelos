@@ -252,7 +252,7 @@ sw.post('/alterarcliente/:cpf', (req, res) => {
   });
 });
 
-sw.get('/listarfuncionários', function (req, res) {
+sw.get('/listarfuncionarios', function (req, res) {
   postgres.connect(function (err, client, done) {
     if (err) {
       console.log("Não conseguiu acessar o BD :" + err);
@@ -299,7 +299,7 @@ sw.post('/inserirfuncionario', function (req, res, next) {
       res.status(400).send('{' + err + '}');
     } else {
       var q = {
-        text: ' insert into tb_funcionario (cargo, numero_ctps, numero_pis, cpf) values ($1, $2, $3, $4) returning cpf;',
+        text: ' insert into tb_funcionario (cargo, numero_ctps, numero_pis, cpf) values ($1, $2, $3, $4) returning cpf, cargo;',
         values: [
           req.body.cargo,
           req.body.numero_ctps,
@@ -325,7 +325,7 @@ sw.post('/inserirfuncionario', function (req, res, next) {
       });
     }
   });
-});
+}); 
 sw.post('/alterarfuncionario/:cpf', (req, res) => {
   postgres.connect(function (err, client, done) {
     if (err) {
