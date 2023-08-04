@@ -117,7 +117,7 @@ $(document).ready(function () {
                             resolve(response.data);
                         })
                         .catch(error => {
-                            console.log('erro ao inserir pessoa' + error);
+                            alert('erro ao inserir pessoa' + error);
                             reject("erro ao inserir pessoa");
                         });
 
@@ -148,7 +148,7 @@ $(document).ready(function () {
                     const cliente = response.data[0];
                     this.cliente_popup = cliente;
                     this.abrirPopup();
-                    console.log(this.cliente_popup);
+                  
                 } catch (error) {
                     console.error("Erro ao mostrar o cliente:", error);
                     alert('Erro ao mostrar o cliente: ' + error);
@@ -173,7 +173,7 @@ $(document).ready(function () {
                             var objeto_cliente = await this.$http.post('http://localhost:4000/inserircliente', cliente)
                                 .then(response => {
                                     objeto_cliente = response.data;
-                                    console.log('cliente inserido');
+                                    alert('cliente inserido');
                                 })
                                 .catch(error => { alert('erro ao inserir' + error); })
 
@@ -196,14 +196,14 @@ $(document).ready(function () {
                                 this.$http.post('http://localhost:4000/alterarcliente/' + cliente.cpf, cliente)
                                     .then(response => {
                                         resolve(cliente_alterado = response.data);
-                                        console.log('cliente alterado');
+                                        alert('cliente alterado');
                                     })
                                     .catch(error => {
                                         reject(alert('Erro ao alterar a cliente ' + error));
                                     });
                             }
                             )
-                            console.log(pessoa_alterada);
+                          
                             var alteracao_final = $.extend({}, cliente_alterado, pessoa_alterada);
 
                             // aqui mescla cliente alterado e pessoa alterada pra incluir no vetor
@@ -245,7 +245,7 @@ $(document).ready(function () {
                     .catch(error => {
                         // error callback                                        
                         alert('Erro ao remover ' + cpf + ': ' + error);
-                        console.log(error);
+                        alert(error);
                     });
             }
 
@@ -282,7 +282,7 @@ $(document).ready(function () {
                         );
                     }
                 }).catch(response => {
-                    console.log(response);
+                    alert(response);
                 });
 
         }

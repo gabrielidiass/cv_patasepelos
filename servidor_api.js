@@ -1,6 +1,4 @@
 var express = require('express');
-
-
 var pg = require("pg");
 var sw = express();
 sw.use(express.json());
@@ -17,46 +15,6 @@ const config = {
   password: 'postgres',
   port: 5432
 };
-sw.get('/listarclientes', function (req, res) {
-  postgres.connect(function (err, client, done) {
-    if (err) {
-      console.log("Não conseguiu acessar o BD :" + err);
-      res.status(400).send('{' + err + '}');
-    } else {
-      client.query('select * from tb_cliente, tb_pessoa where tb_cliente.cpf = tb_pessoa.cpf order by data_cadastro asc;', function (err, result) {
-        done();
-        if (err) {
-          console.log(err);
-          res.status(400).send('{' + err + '}');
-        } else {
-          res.status(200).send(result.rows);
-        }
-      });
-    }
-  });
-});
-sw.get('/mostrarcliente/:cpf', function (req, res) {
-  postgres.connect(function (err, client, done) {
-    if (err) {
-      console.log("Não conseguiu acessar o BD :" + err);
-      res.status(400).send('{' + err + '}');
-    } else {
-      const q = {
-        text: 'SELECT * FROM tb_cliente JOIN tb_pessoa ON tb_cliente.cpf = tb_pessoa.cpf WHERE tb_cliente.cpf = $1;',
-        values: [req.params.cpf]
-      }
-      client.query(q, function (err, result) {
-        done();
-        if (err) {
-          console.log(err);
-          res.status(400).send('{' + err + '}');
-        } else {
-          res.status(200).send(result.rows);
-        }
-      });
-    }
-  });
-});
 sw.post('/inserirpessoa', function (req, res, next) {
   postgres.connect(function (err, client, done) {
     if (err) {
@@ -104,72 +62,6 @@ sw.post('/inserirpessoa', function (req, res, next) {
 
         }
       });
-    }
-  });
-});
-sw.post('/inserircliente', function (req, res, next) {
-  postgres.connect(function (err, client, done) {
-    if (err) {
-      console.log("Nao conseguiu acessar o  BD " + err);
-      res.status(400).send('{' + err + '}');
-    } else {
-      var q = {
-        text: ' insert into tb_cliente (data_ultima_visita, cpf) values ($1, $2) returning cpf, data_ultima_visita;',
-        values: [
-          req.body.data_ultima_visita,
-          req.body.cpf
-        ]
-      }
-      console.log(q);
-      client.query(q, function (err, result) {
-        done();
-        if (err) {
-          console.log('retornou 400 pelo inserircliente');
-          res.status(400).send('{' + err + '}');
-        } else {
-          console.log('retornou 201 no inserircliente');
-          res.status(201).send({
-            "cpf": req.body.cpf,
-            "data_ultima_visita": req.body.data_ultima_visita
-          })
-        }
-      });
-    }
-  });
-});
-sw.get('/deletarpessoa/:cpf', (req, res) => {
-  postgres.connect(function (err, client, done) {
-    if (err) {
-      console.log("Não conseguiu acessar o banco de dados" + err);
-      res.status(400).send('{' + err + '}');
-    } else {
-      var q = {
-        text: 'delete FROM tb_pessoa where cpf = $1',
-        values: [req.params.cpf]
-      }
-      var c = {
-        text: 'delete FROM tb_cliente where cpf = $1',
-        values: [req.params.cpf]
-      }
-      client.query(q, function (err, result) {
-        if (err) {
-          console.log(err);
-          res.status(400).send('{' + err + '}');
-        } else {
-          client.query(c, function (err, result) {
-            done();
-            if (err) {
-              console.log(err);
-              res.status(400).send('{' + err + '}');
-            } else {
-              res.status(200).send({ 'cpf': req.params.cpf });
-            }
-          });
-        }
-      });
-
-
-
     }
   });
 });
@@ -223,6 +115,113 @@ sw.post('/alterarpessoa/:cpf', (req, res) => {
     }
   });
 });
+sw.get('/deletarpessoa/:cpf', (req, res) => {
+  postgres.connect(function (err, client, done) {
+    if (err) {
+      console.log("Não conseguiu acessar o banco de dados" + err);
+      res.status(400).send('{' + err + '}');
+    } else {
+      var q = {
+        text: 'delete FROM tb_pessoa where cpf = $1',
+        values: [req.params.cpf]
+      }
+      var c = {
+        text: 'delete FROM tb_cliente where cpf = $1',
+        values: [req.params.cpf]
+      }
+      client.query(q, function (err, result) {
+        if (err) {
+          console.log(err);
+          res.status(400).send('{' + err + '}');
+        } else {
+          client.query(c, function (err, result) {
+            done();
+            if (err) {
+              console.log(err);
+              res.status(400).send('{' + err + '}');
+            } else {
+              res.status(200).send({ 'cpf': req.params.cpf });
+            }
+          });
+        }
+      });
+
+
+
+    }
+  });
+});
+
+sw.get('/listarclientes', function (req, res) {
+  postgres.connect(function (err, client, done) {
+    if (err) {
+      console.log("Não conseguiu acessar o BD :" + err);
+      res.status(400).send('{' + err + '}');
+    } else {
+      client.query('select * from tb_cliente, tb_pessoa where tb_cliente.cpf = tb_pessoa.cpf order by data_cadastro asc;', function (err, result) {
+        done();
+        if (err) {
+          console.log(err);
+          res.status(400).send('{' + err + '}');
+        } else {
+          res.status(200).send(result.rows);
+        }
+      });
+    }
+  });
+});
+sw.get('/mostrarcliente/:cpf', function (req, res) {
+  postgres.connect(function (err, client, done) {
+    if (err) {
+      console.log("Não conseguiu acessar o BD :" + err);
+      res.status(400).send('{' + err + '}');
+    } else {
+      const q = {
+        text: 'SELECT * FROM tb_cliente JOIN tb_pessoa ON tb_cliente.cpf = tb_pessoa.cpf WHERE tb_cliente.cpf = $1;',
+        values: [req.params.cpf]
+      }
+      client.query(q, function (err, result) {
+        done();
+        if (err) {
+          console.log(err);
+          res.status(400).send('{' + err + '}');
+        } else {
+          res.status(200).send(result.rows);
+        }
+      });
+    }
+  });
+});
+sw.post('/inserircliente', function (req, res, next) {
+  postgres.connect(function (err, client, done) {
+    if (err) {
+      console.log("Nao conseguiu acessar o  BD " + err);
+      res.status(400).send('{' + err + '}');
+    } else {
+      var q = {
+        text: ' insert into tb_cliente (data_ultima_visita, cpf) values ($1, $2) returning cpf, data_ultima_visita;',
+        values: [
+          req.body.data_ultima_visita,
+          req.body.cpf
+        ]
+      }
+      console.log(q);
+      client.query(q, function (err, result) {
+        done();
+        if (err) {
+          console.log('retornou 400 pelo inserircliente');
+          res.status(400).send('{' + err + '}');
+        } else {
+          console.log('retornou 201 no inserircliente');
+          res.status(201).send({
+            "cpf": req.body.cpf,
+            "data_ultima_visita": req.body.data_ultima_visita
+          })
+        }
+      });
+    }
+  });
+}); 
 sw.post('/alterarcliente/:cpf', (req, res) => {
   postgres.connect(function (err, client, done) {
     if (err) {
@@ -253,8 +252,116 @@ sw.post('/alterarcliente/:cpf', (req, res) => {
   });
 });
 
+sw.get('/listarfuncionários', function (req, res) {
+  postgres.connect(function (err, client, done) {
+    if (err) {
+      console.log("Não conseguiu acessar o BD :" + err);
+      res.status(400).send('{' + err + '}');
+    } else {
+      client.query('select * from tb_funcionario, tb_pessoa where tb_funcionario.cpf = tb_pessoa.cpf order by data_cadastro asc;', function (err, result) {
+        done();
+        if (err) {
+          console.log(err);
+          res.status(400).send('{' + err + '}');
+        } else {
+          res.status(200).send(result.rows);
+        }
+      });
+    }
+  });
+});
+sw.get('/mostrarfuncionario/:cpf', function (req, res) {
+  postgres.connect(function (err, client, done) {
+    if (err) {
+      console.log("Não conseguiu acessar o BD :" + err);
+      res.status(400).send('{' + err + '}');
+    } else {
+      const q = {
+        text: 'SELECT * FROM tb_funcionario JOIN tb_pessoa ON tb_funcionario.cpf = tb_pessoa.cpf WHERE tb_funcionario.cpf = $1;',
+        values: [req.params.cpf]
+      }
+      client.query(q, function (err, result) {
+        done();
+        if (err) {
+          console.log(err);
+          res.status(400).send('{' + err + '}');
+        } else {
+          res.status(200).send(result.rows);
+        }
+      });
+    }
+  });
+});
+sw.post('/inserirfuncionario', function (req, res, next) {
+  postgres.connect(function (err, client, done) {
+    if (err) {
+      console.log("Nao conseguiu acessar o  BD " + err);
+      res.status(400).send('{' + err + '}');
+    } else {
+      var q = {
+        text: ' insert into tb_funcionario (cargo, numero_ctps, numero_pis, cpf) values ($1, $2, $3, $4) returning cpf;',
+        values: [
+          req.body.cargo,
+          req.body.numero_ctps,
+          req.body.numero_pis,
+          req.body.cpf
+        ]
+      }
+      console.log(q);
+      client.query(q, function (err, result) {
+        done();
+        if (err) {
+          console.log('retornou 400 pelo inserirfuncionario');
+          res.status(400).send('{' + err + '}');
+        } else {
+          console.log('retornou 201 no inserirfuncionario');
+          res.status(201).send({
+           "cargo": req.body.cargo,
+           "numero_ctps": req.body.numero_ctps,
+           "numero_pis": req.body.numero_pis,
+            "cpf": req.body.cpf
+          })
+        }
+      });
+    }
+  });
+});
+sw.post('/alterarfuncionario/:cpf', (req, res) => {
+  postgres.connect(function (err, client, done) {
+    if (err) {
+      console.log("Não conseguiu acessar o BD: " + err);
+      res.status(400).send('{' + err + '}');
+    } else {
+      var q = {
+        text: 'update tb_funcionario set cpf= $1, cargo = $2, numero_ctps = $3, numero_pis = $4 where cpf = $1 returning cpf',
+        values: [
+          req.body.cpf,
+          req.body.cargo,
+          req.body.numero_ctps,
+          req.body.numero_pis
+        ]
+      }
+      console.log(q);
+      client.query(q, function (err, result) {
+        done(); // closing the connection;
+        if (err) {
+          console.log("Erro no alterar: " + err);
+          res.status(400).send('{' + err + '}');
+        } else {
+          res.status(200).send({
+            "cargo": req.body.cargo,
+            "numero_ctps": req.body.numero_ctps,
+            "numero_pis": req.body.numero_pis,
+             "cpf": req.body.cpf
+          });
+        }
+      });
+    }
+  });
+});
 
 const postgres = new pg.Pool(config);
+
 sw.listen(4000, function () {
   console.log('Server is running.. on Port 4000');
 });
