@@ -1,7 +1,8 @@
 
 $(document).ready(function () {
     var funcionario_popup = [];
-
+    var cpf_original;
+    var editando = false;
     var funcionarios = [];
     var dados = {
         sobrepor: false,
@@ -87,10 +88,12 @@ $(document).ready(function () {
                     minLength: minLength(4)
                 },
                 numero_ctps: {
-                    required
+                    required,
+                    maxLength: maxLength(10)
                 },
                 numero_pis: {
-                    required
+                    required,
+                    maxLength: maxLength(10)
                 }
             }
         },
@@ -140,9 +143,9 @@ $(document).ready(function () {
 
             alterar_pessoa: async function (pessoa) {
                 return new Promise((resolve, reject) => {
-
+console.log(pessoa);
                     try {
-                        this.$http.post('http://localhost:4000/alterarpessoa/' + pessoa.cpf, pessoa)
+                        this.$http.post('http://localhost:4000/alterarpessoa/' + pessoa.cpf_original, pessoa)
                             .then(response => {
                                 resolve(response.data);
                             })
@@ -177,21 +180,17 @@ $(document).ready(function () {
                     var funcionario = jQuery.extend({}, this.form_funcionario);
                     funcionario.tipo = "funcionario";
 
-                    if ((funcionarios.some(funcionario => funcionario.cpf === this.form_funcionario.cpf) == false)) {
+                    if ((!editando)) {
                         try {
                             // documentação do some(): https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/some
                             var objeto_pessoa = await this.inserir_pessoa(funcionario);
                             var objeto_funcionario = await this.$http.post('http://localhost:4000/inserirfuncionario', funcionario)
                                 .then(response => {
                                     alert('funcionario inserido');
-                                    return response.data;
-                                })
+                                    return response.data;})
                                 .catch(error => { alert('erro ao inserir' + error); })
                             console.log(objeto_funcionario);
-
                             var objeto_final = $.extend({}, objeto_funcionario, objeto_pessoa);
-
-
                             objeto_final.data_cadastro = this.$options.filters.formataData(objeto_final.data_cadastro);
                             objeto_final.data_nascimento = this.$options.filters.formataData(objeto_final.data_nascimento);
                             this.funcionarios.push(objeto_final);
@@ -200,10 +199,12 @@ $(document).ready(function () {
 
                     } else {
                         try {
+                            funcionario.cpf_original = cpf_original;
+                            console.log(funcionario);
                             this.form_funcionario.data_cadastro = funcionario.data_cadastro;
                             var pessoa_alterada = await this.alterar_pessoa(funcionario);
                             var funcionario_alterado = await new Promise((resolve, reject) => {
-                                this.$http.post('http://localhost:4000/alterarfuncionario/' + funcionario.cpf, funcionario)
+                                this.$http.post('http://localhost:4000/alterarfuncionario/' + cpf_original, funcionario)
                                     .then(response => {
                                         resolve(funcionario_alterado = response.data);
                                         alert('funcionario alterado');
@@ -213,23 +214,14 @@ $(document).ready(function () {
                                     });
                             }
                             )
-
                             var alteracao_final = $.extend({}, funcionario_alterado, pessoa_alterada);
 
                             // aqui mescla funcionario alterado e pessoa alterada pra incluir no vetor
-                            const index = this.funcionarios.findIndex(item => item.cpf === alteracao_final.cpf);
+                            const index = this.funcionarios.findIndex(item => item.cpf === funcionario.cpf_original);
                             if (index !== -1) { Vue.set(this.funcionarios, index, alteracao_final); }
                             alert('funcionario alterado ');
                         } catch (error) { alert(error.message); }
                     }
-
-
-
-
-
-
-
-
                 }
             },
             edita_funcionario: function (param_index) {
@@ -250,6 +242,7 @@ $(document).ready(function () {
                 this.form_funcionario.senha = this.funcionarios[param_index].senha;
                 this.form_funcionario.data_cadastro = this.funcionarios[param_index].data_cadastro;
                 editando = true;
+                cpf_original = this.funcionarios[param_index].cpf;
             },
             deleta_funcionario: function (param_index, cpf) {
                 this.$http.get('http://localhost:4000/deletarpessoa/' + cpf)

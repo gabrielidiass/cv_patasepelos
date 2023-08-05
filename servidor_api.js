@@ -41,7 +41,8 @@ sw.post('/inserirpessoa', function (req, res, next) {
           req.body.complemento,
           req.body.data_nascimento,
           req.body.numero_celular,
-          req.body.senha
+          req.body.senha,
+         
         ]
       }
       console.log(q);
@@ -84,7 +85,7 @@ sw.post('/alterarpessoa/:cpf', (req, res) => {
         console.log("é cliente")
       }
       var q = {
-        text: 'update tb_pessoa set tipo= $1, nome = $2, cpf= $3, rg= $4, email= $5, cep= $6, endereco= $7, complemento= $8, data_nascimento= $9, numero_celular= $10, senha= $11, data_cadastro = $12 where cpf = $3 returning cpf, nome',
+        text: 'update tb_pessoa set tipo= $1, nome = $2, cpf= $3, rg= $4, email= $5, cep= $6, endereco= $7, complemento= $8, data_nascimento= $9, numero_celular= $10, senha= $11, data_cadastro = $12 where cpf = $13 returning cpf, nome',
         values: [
           req.body.tipo,
           req.body.nome,
@@ -97,7 +98,8 @@ sw.post('/alterarpessoa/:cpf', (req, res) => {
           req.body.data_nascimento,
           req.body.numero_celular,
           req.body.senha,
-          req.body.data_cadastro
+          req.body.data_cadastro,
+          req.body.cpf_original
         ]
       } 
       console.log(q);
@@ -241,10 +243,11 @@ sw.post('/alterarcliente/:cpf', (req, res) => {
       res.status(400).send('{' + err + '}');
     } else {
       var q = {
-        text: 'update tb_cliente set cpf= $1, data_ultima_visita = $2 where cpf = $1 returning cpf, data_ultima_visita',
+        text: 'update tb_cliente set cpf= $1, data_ultima_visita = $2 where cpf = $3 returning cpf, data_ultima_visita',
         values: [
           req.body.cpf,
-          req.body.data_ultima_visita
+          req.body.data_ultima_visita,
+          req.body.cpf_original
         ]
       }
       console.log(q);
@@ -345,12 +348,13 @@ sw.post('/alterarfuncionario/:cpf', (req, res) => {
       res.status(400).send('{' + err + '}');
     } else {
       var q = {
-        text: 'update tb_funcionario set cpf= $1, cargo = $2, numero_ctps = $3, numero_pis = $4 where cpf = $1 returning cpf',
+        text: 'update tb_funcionario set cpf= $1, cargo = $2, numero_ctps = $3, numero_pis = $4 where cpf = $5 returning cpf',
         values: [
           req.body.cpf,
           req.body.cargo,
           req.body.numero_ctps,
-          req.body.numero_pis
+          req.body.numero_pis,
+          req.body.cpf_original
         ]
       }
       console.log(q);

@@ -9,6 +9,7 @@
         border-radius: 4px;
         background: white;
         padding: 5px 10px;
+        
     }
 
     .dirty {
@@ -54,10 +55,7 @@
         border-radius: 5px;
     }
 
-    body {
-        padding: 5%;
-    }
-
+   
     input {
         border: 1px solid silver;
         border-radius: 4px;

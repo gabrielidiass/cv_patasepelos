@@ -1,7 +1,8 @@
 
 $(document).ready(function () {
     var cliente_popup = [];
-  
+  var editando = false;
+  var cpf_original;
     var clientes = [];
     var dados = {
         sobrepor: false,
@@ -130,7 +131,7 @@ $(document).ready(function () {
                 return new Promise((resolve, reject) => {
 
                     try {
-                        this.$http.post('http://localhost:4000/alterarpessoa/' + pessoa.cpf, pessoa)
+                        this.$http.post('http://localhost:4000/alterarpessoa/' + pessoa.cpf_original, pessoa)
                             .then(response => {
                                 resolve(response.data);
                             })
@@ -164,9 +165,9 @@ $(document).ready(function () {
                     
                     var cliente = jQuery.extend({}, this.form_cliente);
                     cliente.tipo = "cliente";
-
-
-                    if ((clientes.some(cliente => cliente.cpf === this.form_cliente.cpf) == false)) {
+                    cliente.cpf_original = cpf_original;
+                    console.log(cpf_original);
+                    if ((!editando)) {
                         try {
                             // documentação do some(): https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/some
                             var objeto_pessoa = await this.inserir_pessoa(cliente);
@@ -193,7 +194,7 @@ $(document).ready(function () {
                             this.form_cliente.data_cadastro = cliente.data_cadastro;
                             var pessoa_alterada = await this.alterar_pessoa(cliente);
                             var cliente_alterado = await new Promise((resolve, reject) => {
-                                this.$http.post('http://localhost:4000/alterarcliente/' + cliente.cpf, cliente)
+                                this.$http.post('http://localhost:4000/alterarcliente/' + cliente.cpf_original, cliente)
                                     .then(response => {
                                         resolve(cliente_alterado = response.data);
                                         alert('cliente alterado');
@@ -207,7 +208,7 @@ $(document).ready(function () {
                             var alteracao_final = $.extend({}, cliente_alterado, pessoa_alterada);
 
                             // aqui mescla cliente alterado e pessoa alterada pra incluir no vetor
-                            const index = this.clientes.findIndex(item => item.cpf === alteracao_final.cpf);
+                            const index = this.clientes.findIndex(item => item.cpf === cliente.cpf_original);
                             if (index !== -1) { Vue.set(this.clientes, index, alteracao_final); }
                             alert('cliente alterado ');
                         } catch (error) { alert(error.message); }
@@ -237,6 +238,7 @@ $(document).ready(function () {
                 this.form_cliente.senha = this.clientes[param_index].senha;
                 this.form_cliente.data_cadastro = this.clientes[param_index].data_cadastro;
                 editando = true;
+                cpf_original = this.clientes[param_index].cpf;
             },
             deleta_cliente: function (param_index, cpf) {
                 this.$http.get('http://localhost:4000/deletarpessoa/' + cpf)
