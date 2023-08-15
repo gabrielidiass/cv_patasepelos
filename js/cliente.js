@@ -22,7 +22,7 @@ $(document).ready(function () {
             data_ultima_visita: ''
         },
         "cliente_popup": cliente_popup,
-
+"cpf_original": cpf_original
     }
     
     Vue.prototype.$http = axios;
@@ -36,7 +36,7 @@ $(document).ready(function () {
     } = window.validators
 
     new Vue({
-        el: '#app',
+        el: '#menu_cliente',
         data: dados,
        
         validations: {
@@ -163,10 +163,10 @@ $(document).ready(function () {
                 }
                 else {
                     
+                    
                     var cliente = jQuery.extend({}, this.form_cliente);
                     cliente.tipo = "cliente";
                     cliente.cpf_original = cpf_original;
-                    console.log(cpf_original);
                     if ((!editando)) {
                         try {
                             // documentação do some(): https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Array/some
@@ -175,6 +175,7 @@ $(document).ready(function () {
                                 .then(response => {
                                     objeto_cliente = response.data;
                                     alert('cliente inserido');
+                                    this.limpar_form_cliente();
                                 })
                                 .catch(error => { alert('erro ao inserir' + error); })
 
@@ -197,7 +198,6 @@ $(document).ready(function () {
                                 this.$http.post('http://localhost:4000/alterarcliente/' + cliente.cpf_original, cliente)
                                     .then(response => {
                                         resolve(cliente_alterado = response.data);
-                                        alert('cliente alterado');
                                     })
                                     .catch(error => {
                                         reject(alert('Erro ao alterar a cliente ' + error));
@@ -211,16 +211,9 @@ $(document).ready(function () {
                             const index = this.clientes.findIndex(item => item.cpf === cliente.cpf_original);
                             if (index !== -1) { Vue.set(this.clientes, index, alteracao_final); }
                             alert('cliente alterado ');
+                            this.limpar_form_cliente();
                         } catch (error) { alert(error.message); }
                     }
-
-
-
-
-
-
-
-
                 }
             },
             edita_cliente: function (param_index) {

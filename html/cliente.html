@@ -18,6 +18,7 @@
     <script type="text/javascript" src="https://unpkg.com/vuelidate@0.7.4/dist/vuelidate.min.js"></script>
     <script type="text/javascript" src="https://unpkg.com/vuelidate@0.7.4/dist/validators.min.js"></script>
     <script type="text/javascript" src="../js/cliente.js"></script>
+    <script type="text/javascript" src="../js/funcionario.js"></script>
 
 
 </head>
@@ -30,11 +31,148 @@
             <ul class="nav nav-pills nav-stacked">
                 <!-- <li><a data-toggle="pill" href="#menu_clionario">Funcionarios</a></li> -->
                 <li><a data-toggle="pill" href="#menu_cliente">Clientes</a></li>
-                <li><a  href="funcionario.html">Funcionarios</a></li>
+                <li><a  data-toggle="pill" href="#menu_funcionario">Funcionarios</a></li>
             </ul>
         </div>
         <div class="col-xs-6">
-            <div class="tab-content" id="app">
+            <div class="tab-content">
+                <div id="menu_funcionario" class="tab-pane fade">
+                    <h2>Funcionarios</h2>
+                    <table id="tabela_funcionario" class="table table-striped">
+                        <tr>
+                            <th scope="col">CPF</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Cargo</th>
+                            <th scope="col">Editar</th>
+                            <th scope="col">Remover</th>
+                            <th scope="col">Mostrar</th>
+                        </tr>
+                        <tbody>
+                            <tr v-for="(f, indice) in funcionarios">
+                                <td>{{f.cpf}}</td>
+                                <td>{{f.nome}}</td>
+                                <td>{{f.cargo}}</td>
+                                <td><button v-on:click="edita_funcionario(indice)" class="btn" type="button">Editar</button>
+                                </td>
+                                <td><button v-on:click="deleta_funcionario(indice, f.cpf)" class="btn"
+                                        type="button">Remover</button>
+                                </td>
+                                <td><button v-on:click="mostrar_funcionario(indice, f.cpf)" class="btn"
+                                        type="button">Mostrar</button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                    <div id="formulario_funcionario">
+                        <h3>Formulário para cadastrar e alterar funcionarios</h3>
+
+                        <div class="error" v-if="!$v.form_funcionario.nome.required">Este campo é obrigatório</div>
+                        <div class="form-group">
+                            <label for="funci_input_nome">Nome:</label>
+                            <input type="text" class="form-control" v-model="$v.form_funcionario.nome.$model"
+                                :class="status($v.form_funcionario.nome)" id="funci_input_nome">
+                        </div>
+                        <div class="error" v-if="!$v.form_funcionario.cargo.required">Este campo é obrigatório</div>
+                        <div class="form-group">
+                            <label for="funci_input_cargo">
+                                Cargo:</label>
+                            <input type="text" class="form-control" v-model="$v.form_funcionario.cargo.$model"
+                                :class="status($v.form_funcionario.cargo)" id="funci_input_cargo">
+                        </div>
+                        <div class="error" v-if="!$v.form_funcionario.cpf.required">Este campo é obrigatório</div>
+                        <div class="form-group">
+                            <label for="funci_input_cpf">CPF:</label>
+                            <input type="text" v-mask="'###.###.###-##'" class="form-control"
+                                v-model="$v.form_funcionario.cpf.$model" :class="status($v.form_funcionario.cpf)"
+                                id="funci_input_cpf">
+                        </div>
+                        <div class="error" v-if="!$v.form_funcionario.rg.required">Este campo é obrigatório </div>
+                        <div class="form-group">
+                            <label for=" funci_input_rg">RG:</label>
+                            <input type="text" class="form-control" v-model="$v.form_funcionario.rg.$model"
+                                :class="status($v.form_funcionario.rg)" id="funci_input_rg">
+                        </div>
+                        <div class="error" v-if="!$v.form_funcionario.data_nascimento.required">Este campo é obrigatório
+                        </div>
+                        <div class="form-group">
+                            <label for="funci_input_data_nascimento">Data de nascimento:</label>
+                            <input type="date" class="form-control" v-model="$v.form_funcionario.data_nascimento.$model"
+                                :class="status($v.form_funcionario.data_nascimento)" id="funci_input_data_nascimento">
+                        </div>
+                        <div class="form-group">
+                            <label for="funci_input_email">Email:</label>
+                            <input type="email" class="form-control" v-model="$v.form_funcionario.email.$model"
+                                :class="status($v.form_funcionario.email)" id="funci_input_email">
+                        </div>
+                        <div class="form-group">
+                            <label for="funci_input_endereco">Endereço:</label>
+                            <input type="text" class="form-control" v-model="$v.form_funcionario.endereco.$model"
+                                :class="status($v.form_funcionario.endereco)" id="funci_input_endereco">
+                        </div>
+                        <div class="form-group">
+                            <label for="funci_input_cep">CEP:</label>
+                            <input type="text" class="form-control" v-mask="'#####-###'"
+                                v-model="$v.form_funcionario.cep.$model" :class="status($v.form_funcionario.cep)"
+                                id="funci_input_cep">
+                        </div>
+                        <div class="form-group">
+                            <h4>Complemento:</h4>
+                            <input type="radio" id="casa" name="funci_input_complemento"
+                                v-model="$v.form_funcionario.complemento.$model"
+                                :class="status($v.form_funcionario.complemento)" value="casa">
+                            <label for="casa">Casa</label>
+                            <input type="radio" id="apartamento" name="funci_input_complemento"
+                                v-model="$v.form_funcionario.complemento.$model"
+                                :class="status($v.form_funcionario.complemento)" value="apartamento">
+                            <label for="apartamento">Apartamento</label>
+                        </div>
+                        <div class="form-group">
+                            <label for="funci_input_numero_celular">Numero de celular:</label>
+                            <input type="text" class="form-control" v-mask="'+55 (##) #####-####'"
+                                v-model="$v.form_funcionario.numero_celular.$model"
+                                :class="status($v.form_funcionario.numero_celular)" id="funci_input_numero_celular">
+                        </div>
+                        <div class="error" v-if="!$v.form_funcionario.numero_ctps.required">Este campo é obrigatório
+                        </div>
+                        <div id="inputContainer" class="form-group.hidden">
+                            <label for="funci_input_numero_ctps">Numero da Carteira de Trabalho:</label>
+                            <input type="text" class="form-control" v-mask="'######/####'" v-model="$v.form_funcionario.numero_ctps.$model"
+                                :class="status($v.form_funcionario.numero_ctps)" id="funci_input_numero_ctps">
+                        </div>
+                        <div id="inputContainer" class="form-group.hidden">
+                            <label for="funci_input_numero_pis">Numero do PIS:</label>
+                            <input type="text" class="form-control" v-mask="'###.#####.##-#'" v-model="$v.form_funcionario.numero_pis.$model"
+                                :class="status($v.form_funcionario.numero_pis)" id="funci_input_numero_pis">
+                        </div>
+                        <div class="error" v-if="!$v.form_funcionario.senha.required">Este campo é obrigatório</div>
+                        <label for="funci_input_senha">Senha:</label>
+                        <input type="password" class="form-control" v-model="$v.form_funcionario.senha.$model"
+                            :class="status($v.form_funcionario.senha)" id="funci_input_senha">
+                    </div>
+                    <button @click="inserir_funcionario($v)" class="btn btn-primary" type="button">Salvar</button>
+                    <button @click="limpar_form_funcionario()" class="btn btn-primary" type="button">Limpar</button>
+
+                    <div class="overlay" v-if="funcionario_popup" id="popupOverlay">
+                        <div class="popup-content">
+                            <p>Nome: {{ funcionario_popup.nome }}</p>
+                            <p>Cargo: {{ funcionario_popup.cargo }}</p>
+                            <p>CPF: {{ funcionario_popup.cpf }}</p>
+                            <p>RG: {{ funcionario_popup.rg }}</p>
+                            <p>E-mail: {{ funcionario_popup.email }}</p>
+                            <p>CEP: {{ funcionario_popup.cep }}</p>
+                            <p>Endereço: {{ funcionario_popup.endereco }}</p>
+                            <p>Complemento: {{ funcionario_popup.complemento }}</p>
+                            <p>Data de nascimento: {{ funcionario_popup.data_nascimento }}</p>
+                            <p>Celular: {{ funcionario_popup.celular }}</p>
+                            <p>Numero CTPS: {{ funcionario_popup.numero_ctps }}</p>
+                            <p>Numero PIS: {{ funcionario_popup.numero_pis }}</p>
+                            <p>Cadastrado desde: {{ funcionario_popup.data_cadastro }}</p>
+                
+                            <button @click="fecharPopup()">Fechar</button>
+                        </div>
+                    </div>
+                </div>
                 <div id="menu_cliente" class="tab-pane fade">
                     <h2>Clientes</h2>
                     <table id="tabela_cliente" class="table table-striped">
@@ -79,7 +217,7 @@
                                 v-model="$v.form_cliente.cpf.$model" :class="status($v.form_cliente.cpf)"
                                 id="cli_input_cpf">
                         </div>
-                        <div class="error" v-if="!$v.form_cliente.rg.required">Este campo é required </div>
+                        <div class="error" v-if="!$v.form_cliente.rg.required">Este campo é obrigatório </div>
                         <div class="form-group">
                             <label for=" cli_input_rg">RG:</label>
                             <input type="text" class="form-control" v-model="$v.form_cliente.rg.$model"
@@ -159,6 +297,8 @@
                     </div>
                 </div>
             </div>
+            
+
 
         </div>
     </div>
@@ -201,4 +341,90 @@
     th[scope="col"] {
         background-color: #bd1c1c;
     }
+   
+
+    input {
+        border: 1px solid silver;
+        border-radius: 4px;
+        background: white;
+        padding: 5px 10px;
+         border: 1px solid silver;
+        border-radius: 4px;
+        background: white;
+        padding: 5px 10px;
+    }
+
+    .dirty {
+        border-color: #5A5;
+        background: #EFE;
+    }
+
+    .dirty:focus {
+        outline-color: #8E8;
+    }
+
+    .error {
+        border-color: red;
+        background: #FDD;
+    }
+
+    .error:focus {
+        outline-color: #F99;
+    }
+
+    .hidden {
+        display: none;
+    }
+    .overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Estilo para o conteúdo do popup */
+    .popup-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 300px;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 5px;
+    }
+
+   
+    input {
+        border: 1px solid silver;
+        border-radius: 4px;
+        background: white;
+        padding: 5px 10px;
+    }
+
+    .dirty {
+        border-color: #5A5;
+        background: #EFE;
+    }
+
+    .dirty:focus {
+        outline-color: #8E8;
+    }
+
+    .error {
+        border-color: red;
+        background: #FDD;
+    }
+
+    .error:focus {
+        outline-color: #F99;
+    }
+
+    th[scope="col"] {
+        background-color: #bd1c1c;
+    }
 </style>
+

@@ -38,7 +38,7 @@ $(document).ready(function () {
     } = window.validators
 
     new Vue({
-        el: '#app',
+        el: '#menu_funcionario',
         data: dados,
 
         validations: {
@@ -143,7 +143,6 @@ $(document).ready(function () {
 
             alterar_pessoa: async function (pessoa) {
                 return new Promise((resolve, reject) => {
-console.log(pessoa);
                     try {
                         this.$http.post('http://localhost:4000/alterarpessoa/' + pessoa.cpf_original, pessoa)
                             .then(response => {
@@ -187,9 +186,9 @@ console.log(pessoa);
                             var objeto_funcionario = await this.$http.post('http://localhost:4000/inserirfuncionario', funcionario)
                                 .then(response => {
                                     alert('funcionario inserido');
+                                    this.limpar_form_funcionario();
                                     return response.data;})
                                 .catch(error => { alert('erro ao inserir' + error); })
-                            console.log(objeto_funcionario);
                             var objeto_final = $.extend({}, objeto_funcionario, objeto_pessoa);
                             objeto_final.data_cadastro = this.$options.filters.formataData(objeto_final.data_cadastro);
                             objeto_final.data_nascimento = this.$options.filters.formataData(objeto_final.data_nascimento);
@@ -200,14 +199,12 @@ console.log(pessoa);
                     } else {
                         try {
                             funcionario.cpf_original = cpf_original;
-                            console.log(funcionario);
                             this.form_funcionario.data_cadastro = funcionario.data_cadastro;
                             var pessoa_alterada = await this.alterar_pessoa(funcionario);
                             var funcionario_alterado = await new Promise((resolve, reject) => {
                                 this.$http.post('http://localhost:4000/alterarfuncionario/' + cpf_original, funcionario)
                                     .then(response => {
                                         resolve(funcionario_alterado = response.data);
-                                        alert('funcionario alterado');
                                     })
                                     .catch(error => {
                                         reject(alert('Erro ao alterar a funcionario ' + error));
@@ -220,6 +217,7 @@ console.log(pessoa);
                             const index = this.funcionarios.findIndex(item => item.cpf === funcionario.cpf_original);
                             if (index !== -1) { Vue.set(this.funcionarios, index, alteracao_final); }
                             alert('funcionario alterado ');
+                            this.limpar_form_funcionario();
                         } catch (error) { alert(error.message); }
                     }
                 }

@@ -9,7 +9,10 @@
         border-radius: 4px;
         background: white;
         padding: 5px 10px;
-        
+         border: 1px solid silver;
+        border-radius: 4px;
+        background: white;
+        padding: 5px 10px;
     }
 
     .dirty {
